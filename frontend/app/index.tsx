@@ -60,8 +60,11 @@ export default function HomeScreen() {
   const loadLocalArticles = async () => {
     try {
       setLoading(true);
-      const stored = await AsyncStorage.getItem(STORAGE_KEY);
-      if (stored) {
+      const filePath = `${FileSystem.documentDirectory}${STORAGE_KEY}.json`;
+      const fileInfo = await FileSystem.getInfoAsync(filePath);
+      
+      if (fileInfo.exists) {
+        const stored = await FileSystem.readAsStringAsync(filePath);
         const data = JSON.parse(stored);
         setArticles(data);
       }
@@ -74,7 +77,8 @@ export default function HomeScreen() {
 
   const saveLocalArticles = async (data: Article[]) => {
     try {
-      await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      const filePath = `${FileSystem.documentDirectory}${STORAGE_KEY}.json`;
+      await FileSystem.writeAsStringAsync(filePath, JSON.stringify(data));
     } catch (error) {
       console.error('Error saving articles:', error);
     }
