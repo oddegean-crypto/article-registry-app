@@ -542,45 +542,38 @@ const styles = StyleSheet.create({
   },
   headerRow: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
     marginBottom: 12,
-    alignItems: 'center',
   },
   headerLeft: {
-    width: 100,
-    marginRight: 12,
+    flex: 1,
+    marginRight: 16,
   },
   headerRight: {
-    flex: 1,
-  },
-  seasonLabel: {
-    fontSize: 12,
-    color: '#666',
-    marginBottom: 2,
-  },
-  seasonValue: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#333',
-  },
-  sectionLabel: {
-    fontSize: 12,
-    color: '#666',
-    marginBottom: 2,
-  },
-  sectionValue: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#333',
-  },
-  articleCode: {
-    fontSize: 24,
-    fontWeight: '700',
-    color: '#007AFF',
+    alignItems: 'flex-end',
   },
   articleName: {
-    fontSize: 20,
-    fontWeight: '600',
+    fontSize: 21,
+    fontWeight: '700',
     color: '#333',
+    marginBottom: 8,
+  },
+  articleCode: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#007AFF',
+  },
+  seasonValue: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#8B0000',
+    marginBottom: 6,
+  },
+  sectionValue: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#B8860B',
   },
   tagsContainer: {
     flexDirection: 'row',
