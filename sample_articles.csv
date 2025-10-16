@@ -1,0 +1,6 @@
+Article Code,Article Name,Color Code,Color Name,Treatment Name,Supplier,Section,Season,Composition,Weight GSM,Width CM,Base Price EUR
+ART001,Cotton Fabric,COL001,Navy Blue,Dyed,Supplier A,Men,Spring 2024,100% Cotton,200,150,12.50
+ART002,Silk Blend,COL002,Ivory,Raw,Supplier B,Women,Summer 2024,70% Silk 30% Cotton,180,140,25.00
+ART003,Denim Fabric,COL003,Dark Indigo,Washed,Supplier A,Unisex,Fall 2024,98% Cotton 2% Elastane,350,145,18.75
+ART004,Linen Fabric,COL004,Beige,Natural,Supplier C,Home,Spring 2024,100% Linen,220,160,15.00
+ART005,Polyester Blend,COL005,Black,Treated,Supplier B,Sports,Year Round,65% Polyester 35% Cotton,240,150,10.50
