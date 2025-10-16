@@ -122,6 +122,7 @@ export default function FilterScreen() {
     setMinPrice('');
     setMaxPrice('');
     await storage.setItem(FILTER_KEY, JSON.stringify({}));
+    router.back();
   };
 
   const renderFilterSection = (
