@@ -546,24 +546,24 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   articleName: {
-    fontSize: 21,
+    fontSize: 24,
     fontWeight: '700',
     color: '#333',
     marginBottom: 8,
   },
   articleCode: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: '600',
     color: '#007AFF',
   },
   seasonValue: {
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: '600',
     color: '#8B0000',
     marginBottom: 6,
   },
   sectionValue: {
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: '600',
     color: '#B8860B',
   },
