@@ -97,8 +97,42 @@ export default function ArticleDetailsScreen() {
   const generatePDF = async () => {
     if (!article) return;
 
+    // Show alert to choose PDF type
+    if (Platform.OS === 'web') {
+      const choice = window.confirm('Choose PDF type:\n\nClick OK for WSMAIN (With Supplier Info)\nClick Cancel for WOMAIN (Without Supplier Info)');
+      await createPDF(choice ? 'WSMAIN' : 'WOMAIN');
+    } else {
+      Alert.alert(
+        'Choose PDF Type',
+        'Select the type of PDF you want to export:',
+        [
+          {
+            text: 'Cancel',
+            style: 'cancel',
+          },
+          {
+            text: 'WOMAIN',
+            onPress: () => createPDF('WOMAIN'),
+            style: 'default',
+          },
+          {
+            text: 'WSMAIN',
+            onPress: () => createPDF('WSMAIN'),
+            style: 'default',
+          },
+        ]
+      );
+    }
+  };
+
+  const createPDF = async (pdfType: 'WSMAIN' | 'WOMAIN') => {
+    if (!article) return;
+
     try {
       setExporting(true);
+
+      const includeSupplier = pdfType === 'WSMAIN';
+      const pdfTitle = pdfType === 'WSMAIN' ? 'WSMAIN - Complete Report' : 'WOMAIN - Without Supplier Info';
 
       const html = `
         <!DOCTYPE html>
@@ -118,22 +152,62 @@ export default function ArticleDetailsScreen() {
               padding-bottom: 10px;
               margin-bottom: 30px;
             }
+            .pdf-type {
+              background: #f0f0f0;
+              padding: 10px 15px;
+              border-radius: 8px;
+              margin-bottom: 20px;
+              font-weight: 600;
+              color: #007AFF;
+            }
             .header {
               background: #f5f5f5;
               padding: 20px;
               border-radius: 8px;
               margin-bottom: 30px;
             }
-            .header h2 {
-              margin: 0 0 10px 0;
-              color: #333;
+            .header-row {
+              display: flex;
+              justify-content: space-between;
+              margin-bottom: 10px;
             }
-            .header p {
-              margin: 5px 0;
-              font-size: 14px;
-              color: #666;
+            .header-left h2 {
+              margin: 0 0 8px 0;
+              font-size: 28px;
+            }
+            .header-left p {
+              margin: 0;
+              font-size: 24px;
+              font-weight: 600;
+              color: #007AFF;
+            }
+            .header-right {
+              text-align: right;
+            }
+            .header-right p {
+              margin: 0 0 6px 0;
+              font-size: 15px;
+              font-weight: 600;
+            }
+            .season {
+              color: #8B0000;
             }
             .section {
+              color: #B8860B;
+            }
+            .tags {
+              margin-top: 15px;
+              display: flex;
+              gap: 10px;
+            }
+            .tag {
+              background: #e0e0e0;
+              padding: 5px 10px;
+              border-radius: 6px;
+              font-size: 11px;
+              color: #666;
+            }
+            .section-box {
               margin-bottom: 25px;
             }
             .section-title {
@@ -174,24 +248,36 @@ export default function ArticleDetailsScreen() {
           </style>
         </head>
         <body>
-          <h1>Article Registry - Detail Report</h1>
+          <h1>Article Registry - ${pdfTitle}</h1>
+          
+          <div class="pdf-type">Document Type: ${pdfType}</div>
           
           <div class="header">
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
-              <div style="flex: 1;">
-                <h2 style="margin: 0 0 8px 0; font-size: 28px;">${article.articleName || 'No name'}</h2>
-                <p style="margin: 0; font-size: 24px; font-weight: 600; color: #007AFF;">${article.articleCode}</p>
+            <div class="header-row">
+              <div class="header-left">
+                <h2>${article.articleName || 'No name'}</h2>
               </div>
-              <div style="text-align: right;">
-                <p style="margin: 0 0 6px 0; font-size: 15px; font-weight: 600; color: #8B0000;">${article.season || '-'}</p>
-                <p style="margin: 0; font-size: 15px; font-weight: 600; color: #B8860B;">${article.section || '-'}</p>
+              <div class="header-right">
+                <p class="season">${article.season || '-'}</p>
               </div>
             </div>
-            ${article.colorCode ? `<p style="margin: 5px 0;">Color: ${article.colorCode} ${article.colorName ? '- ' + article.colorName : ''}</p>` : ''}
-            ${article.treatmentName ? `<p style="margin: 5px 0;">Treatment: ${article.treatmentName}</p>` : ''}
+            <div class="header-row">
+              <div class="header-left">
+                <p>${article.articleCode}</p>
+              </div>
+              <div class="header-right">
+                <p class="section">${article.section || '-'}</p>
+              </div>
+            </div>
+            ${article.colorCode || article.treatmentName ? `
+              <div class="tags">
+                ${article.colorCode ? `<span class="tag">Color: ${article.colorCode}</span>` : ''}
+                ${article.treatmentName ? `<span class="tag">Treatment: ${article.treatmentName}</span>` : ''}
+              </div>
+            ` : ''}
           </div>
 
-          <div class="section">
+          <div class="section-box">
             <div class="section-title">Fabric Specifications</div>
             ${renderDetailRow('Composition', article.composition)}
             ${renderDetailRow('Weight GSM', article.weightGSM)}
@@ -202,7 +288,7 @@ export default function ArticleDetailsScreen() {
             ${renderDetailRow('Care Label', article.careLabel)}
           </div>
 
-          <div class="section">
+          <div class="section-box">
             <div class="section-title">Color & Treatment</div>
             ${renderDetailRow('Color Code', article.colorCode)}
             ${renderDetailRow('Color Name', article.colorName)}
@@ -210,21 +296,24 @@ export default function ArticleDetailsScreen() {
             ${renderDetailRow('Treatment Name', article.treatmentName)}
           </div>
 
-          <div class="section">
+          ${includeSupplier ? `
+          <div class="section-box">
             <div class="section-title">Supplier Information</div>
             ${renderDetailRow('Supplier', article.supplier)}
             ${renderDetailRow('Supp. Art. Code', article.suppArtCode)}
             ${renderDetailRow('Base Price EUR', article.basePriceEUR)}
           </div>
+          ` : ''}
 
-          <div class="section">
+          <div class="section-box">
             <div class="section-title">Additional Information</div>
             ${renderDetailRow('Barcode/QR', article.barcodeQR)}
           </div>
 
           <div class="footer">
             Generated on ${new Date().toLocaleString()}<br>
-            Article Registry Mobile App
+            Article Registry Mobile App - ${pdfType}<br>
+            ${includeSupplier ? 'Complete Information with Supplier Details' : 'Without Supplier Information'}
           </div>
         </body>
         </html>
@@ -236,7 +325,7 @@ export default function ArticleDetailsScreen() {
       if (await Sharing.isAvailableAsync()) {
         await Sharing.shareAsync(uri, {
           mimeType: 'application/pdf',
-          dialogTitle: `Share Article ${article.articleCode}`,
+          dialogTitle: `Share Article ${article.articleCode} - ${pdfType}`,
           UTI: 'com.adobe.pdf',
         });
       } else {
