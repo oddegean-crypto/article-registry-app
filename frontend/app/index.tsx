@@ -186,6 +186,7 @@ export default function HomeScreen() {
     try {
       // For web, use native file input
       if (Platform.OS === 'web') {
+        console.log('Using web file input method');
         const input = document.createElement('input');
         input.type = 'file';
         input.accept = '.csv,text/csv';
@@ -201,7 +202,7 @@ export default function HomeScreen() {
               const parsedArticles = parseCSV(fileContent);
 
               if (parsedArticles.length === 0) {
-                Alert.alert('Error', 'No valid articles found in CSV file');
+                window.alert('No valid articles found in CSV file');
                 setLoading(false);
                 return;
               }
@@ -213,91 +214,97 @@ export default function HomeScreen() {
               }));
 
               // Ask user: Append or Replace?
-              if (window.confirm(`Found ${parsedArticles.length} articles. Click OK to REPLACE all data, or Cancel to APPEND to existing data.`)) {
+              const shouldReplace = window.confirm(`Found ${parsedArticles.length} articles. Click OK to REPLACE all data, or Cancel to APPEND to existing data.`);
+              
+              if (shouldReplace) {
                 // Replace
                 setArticles(articlesWithIds);
                 await saveLocalArticles(articlesWithIds);
-                Alert.alert('Success', `Imported ${parsedArticles.length} articles`);
+                window.alert(`Successfully imported ${parsedArticles.length} articles`);
               } else {
                 // Append
                 const merged = [...articles, ...articlesWithIds];
                 setArticles(merged);
                 await saveLocalArticles(merged);
-                Alert.alert('Success', `Added ${parsedArticles.length} articles`);
+                window.alert(`Successfully added ${parsedArticles.length} articles`);
               }
+              setLoading(false);
             } catch (error) {
               console.error('Error parsing CSV:', error);
-              Alert.alert('Error', 'Failed to parse CSV file');
-            } finally {
+              window.alert('Failed to parse CSV file');
               setLoading(false);
             }
           };
           reader.readAsText(file);
         };
         input.click();
-        return;
-      }
+      } else {
+        // For mobile, use DocumentPicker
+        console.log('Using mobile DocumentPicker method');
+        const result = await DocumentPicker.getDocumentAsync({
+          type: 'text/comma-separated-values',
+          copyToCacheDirectory: true,
+        });
 
-      // For mobile, use DocumentPicker
-      const result = await DocumentPicker.getDocumentAsync({
-        type: 'text/comma-separated-values',
-        copyToCacheDirectory: true,
-      });
+        if (result.canceled) return;
 
-      if (result.canceled) return;
+        setLoading(true);
+        const fileUri = result.assets[0].uri;
+        const fileContent = await FileSystem.readAsStringAsync(fileUri);
+        const parsedArticles = parseCSV(fileContent);
 
-      setLoading(true);
-      const fileUri = result.assets[0].uri;
-      const fileContent = await FileSystem.readAsStringAsync(fileUri);
-      const parsedArticles = parseCSV(fileContent);
+        if (parsedArticles.length === 0) {
+          Alert.alert('Error', 'No valid articles found in CSV file');
+          setLoading(false);
+          return;
+        }
 
-      if (parsedArticles.length === 0) {
-        Alert.alert('Error', 'No valid articles found in CSV file');
-        setLoading(false);
-        return;
-      }
+        // Add unique IDs to articles
+        const articlesWithIds = parsedArticles.map((article, index) => ({
+          ...article,
+          id: `${article.articleCode}-${article.colorCode}-${article.treatmentName}-${Date.now()}-${index}`,
+        }));
 
-      // Add unique IDs to articles
-      const articlesWithIds = parsedArticles.map((article, index) => ({
-        ...article,
-        id: `${article.articleCode}-${article.colorCode}-${article.treatmentName}-${Date.now()}-${index}`,
-      }));
-
-      // Ask user: Append or Replace?
-      Alert.alert(
-        'Import Mode',
-        `Found ${parsedArticles.length} articles. How would you like to import?`,
-        [
-          {
-            text: 'Cancel',
-            style: 'cancel',
-            onPress: () => setLoading(false),
-          },
-          {
-            text: 'Replace All',
-            style: 'destructive',
-            onPress: async () => {
-              setArticles(articlesWithIds);
-              await saveLocalArticles(articlesWithIds);
-              setLoading(false);
-              Alert.alert('Success', `Imported ${parsedArticles.length} articles`);
+        // Ask user: Append or Replace?
+        Alert.alert(
+          'Import Mode',
+          `Found ${parsedArticles.length} articles. How would you like to import?`,
+          [
+            {
+              text: 'Cancel',
+              style: 'cancel',
+              onPress: () => setLoading(false),
             },
-          },
-          {
-            text: 'Append',
-            onPress: async () => {
-              const merged = [...articles, ...articlesWithIds];
-              setArticles(merged);
-              await saveLocalArticles(merged);
-              setLoading(false);
-              Alert.alert('Success', `Added ${parsedArticles.length} articles`);
+            {
+              text: 'Replace All',
+              style: 'destructive',
+              onPress: async () => {
+                setArticles(articlesWithIds);
+                await saveLocalArticles(articlesWithIds);
+                setLoading(false);
+                Alert.alert('Success', `Imported ${parsedArticles.length} articles`);
+              },
             },
-          },
-        ]
-      );
+            {
+              text: 'Append',
+              onPress: async () => {
+                const merged = [...articles, ...articlesWithIds];
+                setArticles(merged);
+                await saveLocalArticles(merged);
+                setLoading(false);
+                Alert.alert('Success', `Added ${parsedArticles.length} articles`);
+              },
+            },
+          ]
+        );
+      }
     } catch (error) {
       console.error('Error importing CSV:', error);
-      Alert.alert('Error', 'Failed to import CSV file');
+      if (Platform.OS === 'web') {
+        window.alert('Failed to import CSV file');
+      } else {
+        Alert.alert('Error', 'Failed to import CSV file');
+      }
       setLoading(false);
     }
   };
