@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import * as DocumentPicker from 'expo-document-picker';
-import * as FileSystem from 'expo-file-system';
+import * as FileSystemLegacy from 'expo-file-system/legacy';
 import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -28,10 +28,10 @@ const storage = {
       return localStorage.getItem(key);
     }
     try {
-      const filePath = `${FileSystem.documentDirectory}${key}.json`;
-      const fileInfo = await FileSystem.getInfoAsync(filePath);
+      const filePath = `${FileSystemLegacy.documentDirectory}${key}.json`;
+      const fileInfo = await FileSystemLegacy.getInfoAsync(filePath);
       if (fileInfo.exists) {
-        return await FileSystem.readAsStringAsync(filePath);
+        return await FileSystemLegacy.readAsStringAsync(filePath);
       }
       return null;
     } catch {
@@ -43,8 +43,8 @@ const storage = {
       localStorage.setItem(key, value);
       return;
     }
-    const filePath = `${FileSystem.documentDirectory}${key}.json`;
-    await FileSystem.writeAsStringAsync(filePath, value);
+    const filePath = `${FileSystemLegacy.documentDirectory}${key}.json`;
+    await FileSystemLegacy.writeAsStringAsync(filePath, value);
   },
 };
 
