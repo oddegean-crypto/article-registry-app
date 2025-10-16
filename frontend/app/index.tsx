@@ -11,8 +11,6 @@ import {
   RefreshControl,
   Platform,
   StatusBar,
-  ScrollView,
-  Modal,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import * as DocumentPicker from 'expo-document-picker';
@@ -448,44 +446,6 @@ export default function HomeScreen() {
     setRefreshing(false);
   }, []);
 
-  const getStats = () => {
-    const total = articles.length;
-    const bySeason: { [key: string]: number } = {};
-    const bySection: { [key: string]: number } = {};
-    const bySupplier: { [key: string]: number } = {};
-    let minPrice = Infinity;
-    let maxPrice = 0;
-
-    articles.forEach(article => {
-      if (article.season) {
-        bySeason[article.season] = (bySeason[article.season] || 0) + 1;
-      }
-      if (article.section) {
-        bySection[article.section] = (bySection[article.section] || 0) + 1;
-      }
-      if (article.supplier) {
-        bySupplier[article.supplier] = (bySupplier[article.supplier] || 0) + 1;
-      }
-      const price = parseFloat(article.basePriceEUR || '0');
-      if (price > 0) {
-        minPrice = Math.min(minPrice, price);
-        maxPrice = Math.max(maxPrice, price);
-      }
-    });
-
-    return {
-      total,
-      bySeason,
-      bySection,
-      bySupplier,
-      priceRange: minPrice === Infinity ? 'N/A' : `€${minPrice.toFixed(2)} - €${maxPrice.toFixed(2)}`,
-      recentCount: recentArticles.length,
-      favoritesCount: favorites.length,
-    };
-  };
-
-  const stats = getStats();
-
   const renderArticleItem = ({ item }: { item: Article }) => (
     <TouchableOpacity
       style={styles.articleItem}
@@ -533,101 +493,26 @@ export default function HomeScreen() {
     </TouchableOpacity>
   );
 
-  const renderStatCard = (title: string, value: string | number, icon: string) => (
-    <View style={styles.statCard}>
-      <Ionicons name={icon as any} size={24} color="#007AFF" />
-      <Text style={styles.statValue}>{value}</Text>
-      <Text style={styles.statTitle}>{title}</Text>
-    </View>
-  );
-
-  const renderCategoryCard = (title: string, data: { [key: string]: number }) => {
-    const entries = Object.entries(data).sort((a, b) => b[1] - a[1]).slice(0, 5);
-    if (entries.length === 0) return null;
-
-    return (
-      <View style={styles.categoryCard}>
-        <Text style={styles.categoryTitle}>{title}</Text>
-        {entries.map(([key, value]) => (
-          <View key={key} style={styles.categoryItem}>
-            <Text style={styles.categoryLabel} numberOfLines={1}>{key}</Text>
-            <Text style={styles.categoryValue}>{value}</Text>
-          </View>
-        ))}
-      </View>
-    );
-  };
-
-  const SortModal = () => (
-    <Modal
-      visible={sortModalVisible}
-      transparent
-      animationType="fade"
-      onRequestClose={() => setSortModalVisible(false)}
-    >
-      <TouchableOpacity
-        style={styles.modalOverlay}
-        activeOpacity={1}
-        onPress={() => setSortModalVisible(false)}
-      >
-        <View style={styles.sortModal}>
-          <Text style={styles.modalTitle}>Sort By</Text>
-          {[
-            { key: 'name', label: 'Article Name', icon: 'text' },
-            { key: 'code', label: 'Article Code', icon: 'barcode' },
-            { key: 'price', label: 'Price', icon: 'cash' },
-            { key: 'date', label: 'Date Added', icon: 'calendar' },
-          ].map(option => (
-            <TouchableOpacity
-              key={option.key}
-              style={styles.sortOption}
-              onPress={() => {
-                setCurrentSort(option.key as SortOption);
-                setSortModalVisible(false);
-              }}
-            >
-              <Ionicons name={option.icon as any} size={20} color="#007AFF" />
-              <Text style={styles.sortOptionText}>{option.label}</Text>
-              {currentSort === option.key && (
-                <Ionicons name="checkmark" size={20} color="#007AFF" />
-              )}
-            </TouchableOpacity>
-          ))}
-        </View>
-      </TouchableOpacity>
-    </Modal>
-  );
-
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       <StatusBar barStyle="dark-content" />
       
       {/* Header */}
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Article Registry</Text>
+        <View style={styles.headerLeft}>
+          <Text style={styles.headerTitle}>Article Registry</Text>
+          <Text style={styles.headerSubtitle}>{articles.length} articles</Text>
+        </View>
+        {articles.length > 0 && (
+          <TouchableOpacity
+            style={styles.statsButton}
+            onPress={() => router.push('/stats')}
+          >
+            <Ionicons name="stats-chart" size={24} color="#007AFF" />
+            <Text style={styles.statsButtonText}>Stats</Text>
+          </TouchableOpacity>
+        )}
       </View>
-
-      {/* Stats Cards */}
-      {articles.length > 0 && (
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          style={styles.statsContainer}
-          contentContainerStyle={styles.statsContent}
-        >
-          {renderStatCard('Total', stats.total, 'albums')}
-          {renderStatCard('Favorites', stats.favoritesCount, 'heart')}
-          {renderStatCard('Recent', stats.recentCount, 'time')}
-          {renderCategoryCard('By Season', stats.bySeason)}
-          {renderCategoryCard('By Section', stats.bySection)}
-          {renderCategoryCard('By Supplier', stats.bySupplier)}
-          <View style={styles.statCard}>
-            <Ionicons name="cash" size={24} color="#007AFF" />
-            <Text style={styles.statValue} numberOfLines={1}>{stats.priceRange}</Text>
-            <Text style={styles.statTitle}>Price Range</Text>
-          </View>
-        </ScrollView>
-      )}
 
       {/* View Mode Tabs */}
       <View style={styles.tabs}>
@@ -805,7 +690,44 @@ export default function HomeScreen() {
         />
       )}
 
-      <SortModal />
+      {/* Sort Modal */}
+      <Modal
+        visible={sortModalVisible}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setSortModalVisible(false)}
+      >
+        <TouchableOpacity
+          style={styles.modalOverlay}
+          activeOpacity={1}
+          onPress={() => setSortModalVisible(false)}
+        >
+          <View style={styles.sortModal}>
+            <Text style={styles.modalTitle}>Sort By</Text>
+            {[
+              { key: 'name', label: 'Article Name', icon: 'text' },
+              { key: 'code', label: 'Article Code', icon: 'barcode' },
+              { key: 'price', label: 'Price', icon: 'cash' },
+              { key: 'date', label: 'Date Added', icon: 'calendar' },
+            ].map(option => (
+              <TouchableOpacity
+                key={option.key}
+                style={styles.sortOption}
+                onPress={() => {
+                  setCurrentSort(option.key as SortOption);
+                  setSortModalVisible(false);
+                }}
+              >
+                <Ionicons name={option.icon as any} size={20} color="#007AFF" />
+                <Text style={styles.sortOptionText}>{option.label}</Text>
+                {currentSort === option.key && (
+                  <Ionicons name="checkmark" size={20} color="#007AFF" />
+                )}
+              </TouchableOpacity>
+            ))}
+          </View>
+        </TouchableOpacity>
+      </Modal>
     </SafeAreaView>
   );
 }
@@ -816,78 +738,41 @@ const styles = StyleSheet.create({
     backgroundColor: '#f5f5f5',
   },
   header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     backgroundColor: '#fff',
     paddingHorizontal: 20,
     paddingVertical: 16,
     borderBottomWidth: 1,
     borderBottomColor: '#e0e0e0',
   },
+  headerLeft: {
+    flex: 1,
+  },
   headerTitle: {
     fontSize: 28,
     fontWeight: '700',
     color: '#333',
   },
-  statsContainer: {
-    backgroundColor: '#fff',
-    borderBottomWidth: 1,
-    borderBottomColor: '#e0e0e0',
-  },
-  statsContent: {
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    gap: 12,
-  },
-  statCard: {
-    backgroundColor: '#f8f9fa',
-    padding: 16,
-    borderRadius: 12,
-    alignItems: 'center',
-    minWidth: 100,
-    borderWidth: 1,
-    borderColor: '#e0e0e0',
-  },
-  statValue: {
-    fontSize: 24,
-    fontWeight: '700',
-    color: '#333',
-    marginTop: 8,
-  },
-  statTitle: {
-    fontSize: 12,
-    color: '#666',
-    marginTop: 4,
-    textAlign: 'center',
-  },
-  categoryCard: {
-    backgroundColor: '#f8f9fa',
-    padding: 16,
-    borderRadius: 12,
-    minWidth: 200,
-    borderWidth: 1,
-    borderColor: '#e0e0e0',
-  },
-  categoryTitle: {
+  headerSubtitle: {
     fontSize: 14,
+    color: '#666',
+    marginTop: 2,
+  },
+  statsButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#E3F2FD',
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    borderRadius: 12,
+    gap: 6,
+  },
+  statsButtonText: {
+    fontSize: 16,
     fontWeight: '600',
     color: '#007AFF',
-    marginBottom: 12,
-  },
-  categoryItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: 6,
-  },
-  categoryLabel: {
-    fontSize: 13,
-    color: '#666',
-    flex: 1,
-  },
-  categoryValue: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#333',
-    marginLeft: 8,
   },
   tabs: {
     flexDirection: 'row',
