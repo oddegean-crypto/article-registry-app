@@ -24,6 +24,7 @@ const STORAGE_KEY = 'article_registry';
 const FAVORITES_KEY = 'article_favorites';
 const RECENT_KEY = 'article_recent';
 const SAVED_SEARCHES_KEY = 'saved_searches';
+const FILTER_KEY = 'article_filters';
 
 // Platform-specific storage helper
 const storage = {
