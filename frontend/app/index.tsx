@@ -1067,4 +1067,21 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#333',
   },
+  filterBadge: {
+    position: 'absolute',
+    top: -2,
+    right: -2,
+    backgroundColor: '#FF6B6B',
+    borderRadius: 8,
+    width: 16,
+    height: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  filterDot: {
+    width: 6,
+    height: 6,
+    backgroundColor: '#fff',
+    borderRadius: 3,
+  },
 });
