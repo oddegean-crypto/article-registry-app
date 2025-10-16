@@ -629,6 +629,17 @@ export default function HomeScreen() {
         >
           <Ionicons name="filter" size={20} color="#007AFF" />
           <Text style={styles.secondaryButtonText}>Filter</Text>
+          {activeFilters && (
+            (activeFilters.seasons?.length > 0 || 
+             activeFilters.sections?.length > 0 || 
+             activeFilters.suppliers?.length > 0 || 
+             activeFilters.minPrice || 
+             activeFilters.maxPrice) && (
+              <View style={styles.filterBadge}>
+                <View style={styles.filterDot} />
+              </View>
+            )
+          )}
         </TouchableOpacity>
 
         <TouchableOpacity
