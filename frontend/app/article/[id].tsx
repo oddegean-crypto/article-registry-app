@@ -177,21 +177,37 @@ export default function ArticleDetailsScreen() {
           <h1>Article Registry - Detail Report</h1>
           
           <div class="header">
-            <h2>${article.articleCode}</h2>
-            <p><strong>${article.articleName || 'No name'}</strong></p>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+              <div>
+                <p style="margin: 0; font-size: 12px; color: #666;">Season</p>
+                <p style="margin: 0; font-size: 16px; font-weight: 600;">${article.season || '-'}</p>
+              </div>
+              <div style="text-align: right;">
+                <h2 style="margin: 0;">${article.articleName || 'No name'}</h2>
+              </div>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+              <div>
+                <p style="margin: 0; font-size: 12px; color: #666;">Section</p>
+                <p style="margin: 0; font-size: 16px; font-weight: 600;">${article.section || '-'}</p>
+              </div>
+              <div style="text-align: right;">
+                <p style="margin: 0; font-size: 24px; font-weight: 700; color: #007AFF;">${article.articleCode}</p>
+              </div>
+            </div>
             ${article.colorCode ? `<p>Color Code: ${article.colorCode} ${article.colorName ? '- ' + article.colorName : ''}</p>` : ''}
             ${article.treatmentName ? `<p>Treatment: ${article.treatmentName}</p>` : ''}
           </div>
 
           <div class="section">
-            <div class="section-title">Basic Information</div>
-            ${renderDetailRow('Article Code', article.articleCode)}
-            ${renderDetailRow('Article Name', article.articleName)}
-            ${renderDetailRow('Supplier', article.supplier)}
-            ${renderDetailRow('Supplier Code', article.supplierCode)}
-            ${renderDetailRow('Supp. Art. Code', article.suppArtCode)}
-            ${renderDetailRow('Section', article.section)}
-            ${renderDetailRow('Season', article.season)}
+            <div class="section-title">Fabric Specifications</div>
+            ${renderDetailRow('Composition', article.composition)}
+            ${renderDetailRow('Weight GSM', article.weightGSM)}
+            ${renderDetailRow('Width CM', article.widthCM)}
+            ${renderDetailRow('Stretch', article.stretch)}
+            ${renderDetailRow('Weave', article.weave)}
+            ${renderDetailRow('Dye Type', article.dyeType)}
+            ${renderDetailRow('Care Label', article.careLabel)}
           </div>
 
           <div class="section">
@@ -203,21 +219,15 @@ export default function ArticleDetailsScreen() {
           </div>
 
           <div class="section">
-            <div class="section-title">Fabric Specifications</div>
-            ${renderDetailRow('Composition', article.composition)}
-            ${renderDetailRow('Weave', article.weave)}
-            ${renderDetailRow('Stretch', article.stretch)}
-            ${renderDetailRow('Construction', article.construction)}
-            ${renderDetailRow('Weight GSM', article.weightGSM)}
-            ${renderDetailRow('Width CM', article.widthCM)}
-            ${renderDetailRow('Dye Type', article.dyeType)}
+            <div class="section-title">Supplier Information</div>
+            ${renderDetailRow('Supplier', article.supplier)}
+            ${renderDetailRow('Supp. Art. Code', article.suppArtCode)}
+            ${renderDetailRow('Base Price EUR', article.basePriceEUR)}
           </div>
 
           <div class="section">
             <div class="section-title">Additional Information</div>
-            ${renderDetailRow('Care Label', article.careLabel)}
             ${renderDetailRow('Barcode/QR', article.barcodeQR)}
-            ${renderDetailRow('Base Price EUR', article.basePriceEUR)}
           </div>
 
           <div class="footer">
