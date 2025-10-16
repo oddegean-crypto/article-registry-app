@@ -250,7 +250,7 @@ export default function HomeScreen() {
 
         setLoading(true);
         const fileUri = result.assets[0].uri;
-        const fileContent = await FileSystem.readAsStringAsync(fileUri);
+        const fileContent = await FileSystemLegacy.readAsStringAsync(fileUri);
         const parsedArticles = parseCSV(fileContent);
 
         if (parsedArticles.length === 0) {
