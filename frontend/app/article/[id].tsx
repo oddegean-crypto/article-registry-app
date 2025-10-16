@@ -356,17 +356,27 @@ ${new Date().toLocaleString()}
       <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollContent}>
         {/* Article Header */}
         <View style={styles.articleHeader}>
+          {/* First Row: Article Name & Season */}
           <View style={styles.headerRow}>
             <View style={styles.headerLeft}>
               <Text style={styles.articleName}>{article.articleName || 'No name'}</Text>
-              <Text style={styles.articleCode}>{article.articleCode}</Text>
             </View>
             <View style={styles.headerRight}>
               <Text style={styles.seasonValue}>{article.season || '-'}</Text>
+            </View>
+          </View>
+          
+          {/* Second Row: Article Code & Section */}
+          <View style={styles.headerRow}>
+            <View style={styles.headerLeft}>
+              <Text style={styles.articleCode}>{article.articleCode}</Text>
+            </View>
+            <View style={styles.headerRight}>
               <Text style={styles.sectionValue}>{article.section || '-'}</Text>
             </View>
           </View>
           
+          {/* Color & Treatment Tags - Smaller */}
           {(article.colorCode || article.treatmentName) && (
             <View style={styles.tagsContainer}>
               {article.colorCode && (
