@@ -132,7 +132,6 @@ export default function ArticleDetailsScreen() {
       setExporting(true);
 
       const includeSupplier = pdfType === 'WSMAIN';
-      const pdfTitle = pdfType === 'WSMAIN' ? 'WSMAIN - Complete Report' : 'WOMAIN - Without Supplier Info';
 
       const html = `
         <!DOCTYPE html>
@@ -248,7 +247,7 @@ export default function ArticleDetailsScreen() {
           </style>
         </head>
         <body>
-          <h1>Article Registry - ${pdfTitle}</h1>
+          <h1>AISA & CO. - Article Data Sheet</h1>
           
           <div class="pdf-type">Document Type: ${pdfType}</div>
           
@@ -312,8 +311,7 @@ export default function ArticleDetailsScreen() {
 
           <div class="footer">
             Generated on ${new Date().toLocaleString()}<br>
-            Article Registry Mobile App - ${pdfType}<br>
-            ${includeSupplier ? 'Complete Information with Supplier Details' : 'Without Supplier Information'}
+            AISA & CO. Mobile App - Article Data Sheet
           </div>
         </body>
         </html>
