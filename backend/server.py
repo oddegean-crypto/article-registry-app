@@ -131,10 +131,15 @@ async def get_articles(search: Optional[str] = None, limit: int = 1000):
 @app.get("/api/articles/{article_id}", response_model=ArticleResponse)
 async def get_article(article_id: str):
     try:
+        if not ObjectId.is_valid(article_id):
+            raise HTTPException(status_code=404, detail="Article not found")
+            
         article = await articles_collection.find_one({"_id": ObjectId(article_id)})
         if not article:
             raise HTTPException(status_code=404, detail="Article not found")
         return article_helper(article)
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
