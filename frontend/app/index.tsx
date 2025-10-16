@@ -13,7 +13,6 @@ import {
   StatusBar,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import * as SecureStore from 'expo-secure-store';
 import * as DocumentPicker from 'expo-document-picker';
 import * as FileSystem from 'expo-file-system';
 import { router } from 'expo-router';
@@ -21,6 +20,33 @@ import { Ionicons } from '@expo/vector-icons';
 
 const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL || '';
 const STORAGE_KEY = 'article_registry';
+
+// Platform-specific storage helper
+const storage = {
+  async getItem(key: string): Promise<string | null> {
+    if (Platform.OS === 'web') {
+      return localStorage.getItem(key);
+    }
+    try {
+      const filePath = `${FileSystem.documentDirectory}${key}.json`;
+      const fileInfo = await FileSystem.getInfoAsync(filePath);
+      if (fileInfo.exists) {
+        return await FileSystem.readAsStringAsync(filePath);
+      }
+      return null;
+    } catch {
+      return null;
+    }
+  },
+  async setItem(key: string, value: string): Promise<void> {
+    if (Platform.OS === 'web') {
+      localStorage.setItem(key, value);
+      return;
+    }
+    const filePath = `${FileSystem.documentDirectory}${key}.json`;
+    await FileSystem.writeAsStringAsync(filePath, value);
+  },
+};
 
 interface Article {
   id: string;
