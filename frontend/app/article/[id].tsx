@@ -366,21 +366,12 @@ ${new Date().toLocaleString()}
         <View style={styles.articleHeader}>
           <View style={styles.headerRow}>
             <View style={styles.headerLeft}>
-              <Text style={styles.seasonLabel}>Season</Text>
-              <Text style={styles.seasonValue}>{article.season || '-'}</Text>
-            </View>
-            <View style={styles.headerRight}>
               <Text style={styles.articleName}>{article.articleName || 'No name'}</Text>
-            </View>
-          </View>
-          
-          <View style={styles.headerRow}>
-            <View style={styles.headerLeft}>
-              <Text style={styles.sectionLabel}>Section</Text>
-              <Text style={styles.sectionValue}>{article.section || '-'}</Text>
+              <Text style={styles.articleCode}>{article.articleCode}</Text>
             </View>
             <View style={styles.headerRight}>
-              <Text style={styles.articleCode}>{article.articleCode}</Text>
+              <Text style={styles.seasonValue}>{article.season || '-'}</Text>
+              <Text style={styles.sectionValue}>{article.section || '-'}</Text>
             </View>
           </View>
           
