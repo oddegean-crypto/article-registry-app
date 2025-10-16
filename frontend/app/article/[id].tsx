@@ -139,44 +139,36 @@ export default function ArticleDetailsScreen() {
         <head>
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
           <style>
-            @page {
-              size: A4;
-              margin: 15mm;
-            }
             body {
               font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-              padding: 0;
-              margin: 0;
+              padding: 40px;
               background: white;
               color: #333;
-              font-size: 10px;
-              line-height: 1.3;
             }
             h1 {
               color: #007AFF;
-              border-bottom: 2px solid #007AFF;
-              padding-bottom: 6px;
-              margin: 0 0 15px 0;
-              font-size: 18px;
+              border-bottom: 3px solid #007AFF;
+              padding-bottom: 10px;
+              margin-bottom: 30px;
             }
             .header {
               background: #f5f5f5;
-              padding: 10px;
-              border-radius: 6px;
-              margin-bottom: 15px;
+              padding: 20px;
+              border-radius: 8px;
+              margin-bottom: 30px;
             }
             .header-row {
               display: flex;
               justify-content: space-between;
-              margin-bottom: 5px;
+              margin-bottom: 10px;
             }
             .header-left h2 {
-              margin: 0 0 4px 0;
-              font-size: 16px;
+              margin: 0 0 8px 0;
+              font-size: 28px;
             }
             .header-left p {
               margin: 0;
-              font-size: 14px;
+              font-size: 24px;
               font-weight: 600;
               color: #007AFF;
             }
@@ -184,8 +176,8 @@ export default function ArticleDetailsScreen() {
               text-align: right;
             }
             .header-right p {
-              margin: 0 0 3px 0;
-              font-size: 11px;
+              margin: 0 0 6px 0;
+              font-size: 15px;
               font-weight: 600;
             }
             .season {
@@ -195,56 +187,54 @@ export default function ArticleDetailsScreen() {
               color: #B8860B;
             }
             .tags {
-              margin-top: 8px;
+              margin-top: 15px;
               display: flex;
-              gap: 6px;
+              gap: 10px;
             }
             .tag {
               background: #e0e0e0;
-              padding: 3px 6px;
-              border-radius: 4px;
-              font-size: 9px;
+              padding: 5px 10px;
+              border-radius: 6px;
+              font-size: 11px;
               color: #666;
             }
             .section-box {
-              margin-bottom: 12px;
+              margin-bottom: 25px;
             }
             .section-title {
-              font-size: 12px;
+              font-size: 18px;
               font-weight: 600;
               color: #007AFF;
-              margin-bottom: 6px;
+              margin-bottom: 12px;
               border-bottom: 1px solid #e0e0e0;
-              padding-bottom: 3px;
+              padding-bottom: 5px;
             }
             .detail-row {
               display: flex;
-              padding: 4px 0;
-              border-bottom: 1px solid #f5f5f5;
+              padding: 8px 0;
+              border-bottom: 1px solid #f0f0f0;
             }
             .detail-label {
               font-weight: 600;
               color: #555;
-              width: 120px;
+              width: 180px;
               flex-shrink: 0;
-              font-size: 9px;
             }
             .detail-value {
               color: #333;
               flex: 1;
-              font-size: 9px;
             }
             .empty-value {
               color: #999;
               font-style: italic;
             }
             .footer {
-              margin-top: 15px;
+              margin-top: 40px;
               text-align: center;
               color: #999;
-              font-size: 9px;
+              font-size: 12px;
               border-top: 1px solid #e0e0e0;
-              padding-top: 8px;
+              padding-top: 20px;
             }
           </style>
         </head>
