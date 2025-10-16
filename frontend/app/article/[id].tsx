@@ -18,6 +18,25 @@ import { Ionicons } from '@expo/vector-icons';
 
 const STORAGE_KEY = 'article_registry';
 
+// Platform-specific storage helper
+const storage = {
+  async getItem(key: string): Promise<string | null> {
+    if (Platform.OS === 'web') {
+      return localStorage.getItem(key);
+    }
+    try {
+      const filePath = `${FileSystem.documentDirectory}${key}.json`;
+      const fileInfo = await FileSystem.getInfoAsync(filePath);
+      if (fileInfo.exists) {
+        return await FileSystem.readAsStringAsync(filePath);
+      }
+      return null;
+    } catch {
+      return null;
+    }
+  },
+};
+
 interface Article {
   id: string;
   articleCode: string;
