@@ -354,8 +354,26 @@ ${new Date().toLocaleString()}
       <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollContent}>
         {/* Article Header */}
         <View style={styles.articleHeader}>
-          <Text style={styles.articleCode}>{article.articleCode}</Text>
-          <Text style={styles.articleName}>{article.articleName || 'No name'}</Text>
+          <View style={styles.headerRow}>
+            <View style={styles.headerLeft}>
+              <Text style={styles.seasonLabel}>Season</Text>
+              <Text style={styles.seasonValue}>{article.season || '-'}</Text>
+            </View>
+            <View style={styles.headerRight}>
+              <Text style={styles.articleName}>{article.articleName || 'No name'}</Text>
+            </View>
+          </View>
+          
+          <View style={styles.headerRow}>
+            <View style={styles.headerLeft}>
+              <Text style={styles.sectionLabel}>Section</Text>
+              <Text style={styles.sectionValue}>{article.section || '-'}</Text>
+            </View>
+            <View style={styles.headerRight}>
+              <Text style={styles.articleCode}>{article.articleCode}</Text>
+            </View>
+          </View>
+          
           {(article.colorCode || article.treatmentName) && (
             <View style={styles.tagsContainer}>
               {article.colorCode && (
@@ -372,16 +390,16 @@ ${new Date().toLocaleString()}
           )}
         </View>
 
-        {/* Basic Information */}
+        {/* Fabric Specifications */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Basic Information</Text>
-          {renderDetail('Article Code', article.articleCode)}
-          {renderDetail('Article Name', article.articleName)}
-          {renderDetail('Supplier', article.supplier)}
-          {renderDetail('Supplier Code', article.supplierCode)}
-          {renderDetail('Supp. Art. Code', article.suppArtCode)}
-          {renderDetail('Section', article.section)}
-          {renderDetail('Season', article.season)}
+          <Text style={styles.sectionTitle}>Fabric Specifications</Text>
+          {renderDetail('Composition', article.composition)}
+          {renderDetail('Weight GSM', article.weightGSM)}
+          {renderDetail('Width CM', article.widthCM)}
+          {renderDetail('Stretch', article.stretch)}
+          {renderDetail('Weave', article.weave)}
+          {renderDetail('Dye Type', article.dyeType)}
+          {renderDetail('Care Label', article.careLabel)}
         </View>
 
         {/* Color & Treatment */}
@@ -393,24 +411,18 @@ ${new Date().toLocaleString()}
           {renderDetail('Treatment Name', article.treatmentName)}
         </View>
 
-        {/* Fabric Specifications */}
+        {/* Supplier Information */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Fabric Specifications</Text>
-          {renderDetail('Composition', article.composition)}
-          {renderDetail('Weave', article.weave)}
-          {renderDetail('Stretch', article.stretch)}
-          {renderDetail('Construction', article.construction)}
-          {renderDetail('Weight GSM', article.weightGSM)}
-          {renderDetail('Width CM', article.widthCM)}
-          {renderDetail('Dye Type', article.dyeType)}
+          <Text style={styles.sectionTitle}>Supplier Information</Text>
+          {renderDetail('Supplier', article.supplier)}
+          {renderDetail('Supp. Art. Code', article.suppArtCode)}
+          {renderDetail('Base Price EUR', article.basePriceEUR)}
         </View>
 
         {/* Additional Information */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Additional Information</Text>
-          {renderDetail('Care Label', article.careLabel)}
           {renderDetail('Barcode/QR', article.barcodeQR)}
-          {renderDetail('Base Price EUR', article.basePriceEUR)}
         </View>
 
         <View style={styles.bottomPadding} />
