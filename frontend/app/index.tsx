@@ -225,42 +225,53 @@ export default function HomeScreen() {
       filtered.sort((a, b) => recentArticles.indexOf(a.id) - recentArticles.indexOf(b.id));
     }
 
+    // Apply advanced filters
+    if (activeFilters) {
+      // Filter by seasons
+      if (activeFilters.seasons && activeFilters.seasons.length > 0) {
+        filtered = filtered.filter(a => 
+          a.season && activeFilters.seasons.includes(a.season)
+        );
+      }
+
+      // Filter by sections
+      if (activeFilters.sections && activeFilters.sections.length > 0) {
+        filtered = filtered.filter(a => 
+          a.section && activeFilters.sections.includes(a.section)
+        );
+      }
+
+      // Filter by suppliers
+      if (activeFilters.suppliers && activeFilters.suppliers.length > 0) {
+        filtered = filtered.filter(a => 
+          a.supplier && activeFilters.suppliers.includes(a.supplier)
+        );
+      }
+
+      // Filter by price range
+      if (activeFilters.minPrice || activeFilters.maxPrice) {
+        filtered = filtered.filter(a => {
+          const price = parseFloat(a.basePriceEUR || '0');
+          const min = activeFilters.minPrice ? parseFloat(activeFilters.minPrice) : 0;
+          const max = activeFilters.maxPrice ? parseFloat(activeFilters.maxPrice) : Infinity;
+          return price >= min && price <= max;
+        });
+      }
+    }
+
     // Filter by search query
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase();
       filtered = filtered.filter((article) => {
-        return (
-          article.articleCode?.toLowerCase().includes(query) ||
-          article.articleName?.toLowerCase().includes(query) ||
-          article.colorCode?.toLowerCase().includes(query) ||
-          article.colorName?.toLowerCase().includes(query) ||
-          article.treatmentName?.toLowerCase().includes(query) ||
-          article.section?.toLowerCase().includes(query) ||
-          article.season?.toLowerCase().includes(query) ||
-          article.supplier?.toLowerCase().includes(query)
-        );
-      });
-    }
+        return (\n          article.articleCode?.toLowerCase().includes(query) ||\n          article.articleName?.toLowerCase().includes(query) ||\n          article.colorCode?.toLowerCase().includes(query) ||\n          article.colorName?.toLowerCase().includes(query) ||\n          article.treatmentName?.toLowerCase().includes(query) ||\n          article.section?.toLowerCase().includes(query) ||\n          article.season?.toLowerCase().includes(query) ||\n          article.supplier?.toLowerCase().includes(query)\n        );\n      });\n    }
 
     // Sort
     if (viewMode !== 'recent') {
       filtered.sort((a, b) => {
         switch (currentSort) {
-          case 'name':
-            return (a.articleName || '').localeCompare(b.articleName || '');
-          case 'code':
-            return (a.articleCode || '').localeCompare(b.articleCode || '');
-          case 'price':
-            return parseFloat(a.basePriceEUR || '0') - parseFloat(b.basePriceEUR || '0');
-          case 'date':
-          default:
-            return 0;
-        }
-      });
-    }
+          case 'name':\n            return (a.articleName || '').localeCompare(b.articleName || '');\n          case 'code':\n            return (a.articleCode || '').localeCompare(b.articleCode || '');\n          case 'price':\n            return parseFloat(a.basePriceEUR || '0') - parseFloat(b.basePriceEUR || '0');\n          case 'date':\n          default:\n            return 0;\n        }\n      });\n    }
 
-    setFilteredArticles(filtered);
-  };
+    setFilteredArticles(filtered);\n  };
 
   const parseCSV = (text: string): any[] => {
     const lines = text.split(/\r?\n/);
