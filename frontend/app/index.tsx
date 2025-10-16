@@ -86,12 +86,14 @@ export default function HomeScreen() {
   const [viewMode, setViewMode] = useState<ViewMode>('all');
   const [sortModalVisible, setSortModalVisible] = useState(false);
   const [currentSort, setCurrentSort] = useState<SortOption>('name');
+  const [activeFilters, setActiveFilters] = useState<any>(null);
 
   useEffect(() => {
     loadLocalArticles();
     loadFavorites();
     loadRecentArticles();
     loadSavedSearches();
+    loadFilters();
   }, []);
 
   useEffect(() => {
