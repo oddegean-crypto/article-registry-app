@@ -179,12 +179,12 @@ export default function ArticleDetailsScreen() {
           <div class="header">
             <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
               <div style="flex: 1;">
-                <h2 style="margin: 0 0 8px 0; font-size: 21px;">${article.articleName || 'No name'}</h2>
-                <p style="margin: 0; font-size: 18px; font-weight: 600; color: #007AFF;">${article.articleCode}</p>
+                <h2 style="margin: 0 0 8px 0; font-size: 24px;">${article.articleName || 'No name'}</h2>
+                <p style="margin: 0; font-size: 20px; font-weight: 600; color: #007AFF;">${article.articleCode}</p>
               </div>
               <div style="text-align: right;">
-                <p style="margin: 0 0 6px 0; font-size: 16px; font-weight: 600; color: #8B0000;">${article.season || '-'}</p>
-                <p style="margin: 0; font-size: 16px; font-weight: 600; color: #B8860B;">${article.section || '-'}</p>
+                <p style="margin: 0 0 6px 0; font-size: 15px; font-weight: 600; color: #8B0000;">${article.season || '-'}</p>
+                <p style="margin: 0; font-size: 15px; font-weight: 600; color: #B8860B;">${article.section || '-'}</p>
               </div>
             </div>
             ${article.colorCode ? `<p style="margin: 5px 0;">Color: ${article.colorCode} ${article.colorName ? '- ' + article.colorName : ''}</p>` : ''}
