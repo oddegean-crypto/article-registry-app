@@ -151,14 +151,6 @@ export default function ArticleDetailsScreen() {
               padding-bottom: 10px;
               margin-bottom: 30px;
             }
-            .pdf-type {
-              background: #f0f0f0;
-              padding: 10px 15px;
-              border-radius: 8px;
-              margin-bottom: 20px;
-              font-weight: 600;
-              color: #007AFF;
-            }
             .header {
               background: #f5f5f5;
               padding: 20px;
@@ -248,8 +240,6 @@ export default function ArticleDetailsScreen() {
         </head>
         <body>
           <h1>AISA & CO. - Article Data Sheet</h1>
-          
-          <div class="pdf-type">Document Type: ${pdfType}</div>
           
           <div class="header">
             <div class="header-row">
