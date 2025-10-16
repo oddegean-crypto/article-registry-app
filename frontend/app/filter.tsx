@@ -1,0 +1,343 @@
+import React, { useState, useEffect } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+  TextInput,
+  Platform,
+} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { router } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
+import * as FileSystemLegacy from 'expo-file-system/legacy';
+
+const STORAGE_KEY = 'article_registry';
+const FILTER_KEY = 'article_filters';
+
+const storage = {
+  async getItem(key: string): Promise<string | null> {
+    if (Platform.OS === 'web') {
+      return localStorage.getItem(key);
+    }
+    try {
+      const filePath = `${FileSystemLegacy.documentDirectory}${key}.json`;
+      const fileInfo = await FileSystemLegacy.getInfoAsync(filePath);
+      if (fileInfo.exists) {
+        return await FileSystemLegacy.readAsStringAsync(filePath);
+      }
+      return null;
+    } catch {
+      return null;
+    }
+  },
+  async setItem(key: string, value: string): Promise<void> {
+    if (Platform.OS === 'web') {
+      localStorage.setItem(key, value);
+      return;
+    }
+    const filePath = `${FileSystemLegacy.documentDirectory}${key}.json`;
+    await FileSystemLegacy.writeAsStringAsync(filePath, value);
+  },
+};
+
+export default function FilterScreen() {
+  const [seasons, setSeasons] = useState<string[]>([]);
+  const [sections, setSections] = useState<string[]>([]);
+  const [suppliers, setSuppliers] = useState<string[]>([]);
+  
+  const [selectedSeasons, setSelectedSeasons] = useState<string[]>([]);
+  const [selectedSections, setSelectedSections] = useState<string[]>([]);
+  const [selectedSuppliers, setSelectedSuppliers] = useState<string[]>([]);
+  const [minPrice, setMinPrice] = useState('');
+  const [maxPrice, setMaxPrice] = useState('');
+
+  useEffect(() => {
+    loadArticlesAndFilters();
+  }, []);
+
+  const loadArticlesAndFilters = async () => {
+    try {
+      // Load articles to get filter options
+      const stored = await storage.getItem(STORAGE_KEY);
+      if (stored) {
+        const articles = JSON.parse(stored);
+        
+        const seasonSet = new Set<string>();
+        const sectionSet = new Set<string>();
+        const supplierSet = new Set<string>();
+        
+        articles.forEach((article: any) => {
+          if (article.season) seasonSet.add(article.season);
+          if (article.section) sectionSet.add(article.section);
+          if (article.supplier) supplierSet.add(article.supplier);
+        });
+        
+        setSeasons(Array.from(seasonSet).sort());
+        setSections(Array.from(sectionSet).sort());
+        setSuppliers(Array.from(supplierSet).sort());
+      }
+
+      // Load saved filters
+      const savedFilters = await storage.getItem(FILTER_KEY);
+      if (savedFilters) {
+        const filters = JSON.parse(savedFilters);
+        setSelectedSeasons(filters.seasons || []);
+        setSelectedSections(filters.sections || []);
+        setSelectedSuppliers(filters.suppliers || []);
+        setMinPrice(filters.minPrice || '');
+        setMaxPrice(filters.maxPrice || '');
+      }
+    } catch (error) {
+      console.error('Error loading filters:', error);
+    }
+  };
+
+  const toggleSelection = (item: string, list: string[], setter: (list: string[]) => void) => {
+    if (list.includes(item)) {
+      setter(list.filter(i => i !== item));
+    } else {
+      setter([...list, item]);
+    }
+  };
+
+  const applyFilters = async () => {
+    const filters = {
+      seasons: selectedSeasons,
+      sections: selectedSections,
+      suppliers: selectedSuppliers,
+      minPrice,
+      maxPrice,
+    };
+    
+    await storage.setItem(FILTER_KEY, JSON.stringify(filters));
+    router.back();
+  };
+
+  const clearFilters = async () => {
+    setSelectedSeasons([]);
+    setSelectedSections([]);
+    setSelectedSuppliers([]);
+    setMinPrice('');
+    setMaxPrice('');
+    await storage.setItem(FILTER_KEY, JSON.stringify({}));
+  };
+
+  const renderFilterSection = (
+    title: string,
+    items: string[],
+    selected: string[],
+    onToggle: (item: string) => void
+  ) => (
+    <View style={styles.filterSection}>
+      <Text style={styles.filterTitle}>{title}</Text>
+      <View style={styles.filterOptions}>
+        {items.map(item => (
+          <TouchableOpacity
+            key={item}
+            style={[
+              styles.filterChip,
+              selected.includes(item) && styles.filterChipSelected,
+            ]}
+            onPress={() => onToggle(item)}
+          >
+            <Text
+              style={[
+                styles.filterChipText,
+                selected.includes(item) && styles.filterChipTextSelected,
+              ]}
+            >
+              {item}
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+    </View>
+  );
+
+  return (
+    <SafeAreaView style={styles.container} edges={['top']}>
+      {/* Header */}
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
+          <Ionicons name="arrow-back" size={24} color="#007AFF" />
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>Advanced Filters</Text>
+        <TouchableOpacity onPress={clearFilters}>
+          <Text style={styles.clearText}>Clear</Text>
+        </TouchableOpacity>
+      </View>
+
+      <ScrollView style={styles.content} contentContainerStyle={styles.scrollContent}>
+        {/* Season Filter */}
+        {renderFilterSection(
+          'Season',
+          seasons,
+          selectedSeasons,
+          (item) => toggleSelection(item, selectedSeasons, setSelectedSeasons)
+        )}
+
+        {/* Section Filter */}
+        {renderFilterSection(
+          'Section',
+          sections,
+          selectedSections,
+          (item) => toggleSelection(item, selectedSections, setSelectedSections)
+        )}
+
+        {/* Supplier Filter */}
+        {renderFilterSection(
+          'Supplier',
+          suppliers,
+          selectedSuppliers,
+          (item) => toggleSelection(item, selectedSuppliers, setSelectedSuppliers)
+        )}
+
+        {/* Price Range */}
+        <View style={styles.filterSection}>
+          <Text style={styles.filterTitle}>Price Range (EUR)</Text>
+          <View style={styles.priceInputs}>
+            <TextInput
+              style={styles.priceInput}
+              placeholder="Min"
+              value={minPrice}
+              onChangeText={setMinPrice}
+              keyboardType="decimal-pad"
+              placeholderTextColor="#999"
+            />
+            <Text style={styles.priceSeparator}>-</Text>
+            <TextInput
+              style={styles.priceInput}
+              placeholder="Max"
+              value={maxPrice}
+              onChangeText={setMaxPrice}
+              keyboardType="decimal-pad"
+              placeholderTextColor="#999"
+            />
+          </View>
+        </View>
+
+        <View style={styles.bottomPadding} />
+      </ScrollView>
+
+      {/* Apply Button */}
+      <View style={styles.footer}>
+        <TouchableOpacity style={styles.applyButton} onPress={applyFilters}>
+          <Text style={styles.applyButtonText}>Apply Filters</Text>
+        </TouchableOpacity>
+      </View>
+    </SafeAreaView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#f5f5f5',
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#e0e0e0',
+  },
+  backBtn: {
+    padding: 4,
+    marginRight: 12,
+  },
+  headerTitle: {
+    flex: 1,
+    fontSize: 20,
+    fontWeight: '600',
+    color: '#333',
+  },
+  clearText: {
+    fontSize: 16,
+    color: '#007AFF',
+    fontWeight: '600',
+  },
+  content: {
+    flex: 1,
+  },
+  scrollContent: {
+    padding: 16,
+  },
+  filterSection: {
+    marginBottom: 24,
+  },
+  filterTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#333',
+    marginBottom: 12,
+  },
+  filterOptions: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+  },
+  filterChip: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 20,
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: '#e0e0e0',
+  },
+  filterChipSelected: {
+    backgroundColor: '#007AFF',
+    borderColor: '#007AFF',
+  },
+  filterChipText: {
+    fontSize: 14,
+    color: '#666',
+  },
+  filterChipTextSelected: {
+    color: '#fff',
+    fontWeight: '600',
+  },
+  priceInputs: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  priceInput: {
+    flex: 1,
+    height: 48,
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#e0e0e0',
+    paddingHorizontal: 16,
+    fontSize: 16,
+    color: '#333',
+  },
+  priceSeparator: {
+    fontSize: 18,
+    color: '#666',
+  },
+  bottomPadding: {
+    height: 100,
+  },
+  footer: {
+    backgroundColor: '#fff',
+    padding: 16,
+    borderTopWidth: 1,
+    borderTopColor: '#e0e0e0',
+  },
+  applyButton: {
+    backgroundColor: '#007AFF',
+    paddingVertical: 16,
+    borderRadius: 12,
+    alignItems: 'center',
+  },
+  applyButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+});
