@@ -546,13 +546,13 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   articleName: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: '700',
     color: '#333',
     marginBottom: 8,
   },
   articleCode: {
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: '600',
     color: '#007AFF',
   },
