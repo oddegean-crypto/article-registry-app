@@ -545,8 +545,8 @@ const styles = StyleSheet.create({
   headerRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    marginBottom: 12,
+    alignItems: 'center',
+    marginBottom: 8,
   },
   headerLeft: {
     flex: 1,
@@ -559,7 +559,6 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: '700',
     color: '#333',
-    marginBottom: 8,
   },
   articleCode: {
     fontSize: 24,
@@ -570,7 +569,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: '600',
     color: '#8B0000',
-    marginBottom: 6,
   },
   sectionValue: {
     fontSize: 15,
@@ -580,18 +578,19 @@ const styles = StyleSheet.create({
   tagsContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 8,
+    gap: 6,
+    marginTop: 12,
   },
   tag: {
     backgroundColor: '#f0f0f0',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 8,
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 6,
   },
   tagText: {
-    fontSize: 14,
-    color: '#666',
+    fontSize: 11,
     fontWeight: '500',
+    color: '#666',
   },
   section: {
     backgroundColor: '#fff',
