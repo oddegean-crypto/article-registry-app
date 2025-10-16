@@ -539,17 +539,47 @@ const styles = StyleSheet.create({
       },
     }),
   },
+  headerRow: {
+    flexDirection: 'row',
+    marginBottom: 12,
+    alignItems: 'center',
+  },
+  headerLeft: {
+    width: 100,
+    marginRight: 12,
+  },
+  headerRight: {
+    flex: 1,
+  },
+  seasonLabel: {
+    fontSize: 12,
+    color: '#666',
+    marginBottom: 2,
+  },
+  seasonValue: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#333',
+  },
+  sectionLabel: {
+    fontSize: 12,
+    color: '#666',
+    marginBottom: 2,
+  },
+  sectionValue: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#333',
+  },
   articleCode: {
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: '700',
     color: '#007AFF',
-    marginBottom: 8,
   },
   articleName: {
     fontSize: 20,
     fontWeight: '600',
     color: '#333',
-    marginBottom: 12,
   },
   tagsContainer: {
     flexDirection: 'row',
