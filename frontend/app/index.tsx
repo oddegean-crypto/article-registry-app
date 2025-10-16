@@ -98,7 +98,25 @@ export default function HomeScreen() {
 
   useEffect(() => {
     filterAndSortArticles();
-  }, [searchQuery, articles, favorites, recentArticles, viewMode, currentSort]);
+  }, [searchQuery, articles, favorites, recentArticles, viewMode, currentSort, activeFilters]);
+
+  // Reload filters when screen comes into focus
+  useEffect(() => {
+    const unsubscribe = router.setParams as any;
+    loadFilters();
+    return () => {};
+  }, []);
+
+  const loadFilters = async () => {
+    try {
+      const stored = await storage.getItem(FILTER_KEY);
+      if (stored) {
+        setActiveFilters(JSON.parse(stored));
+      }
+    } catch (error) {
+      console.error('Error loading filters:', error);
+    }
+  };
 
   const loadLocalArticles = async () => {
     try {
