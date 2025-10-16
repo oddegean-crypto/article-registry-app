@@ -75,11 +75,8 @@ export default function ArticleDetailsScreen() {
   const loadArticle = async () => {
     try {
       setLoading(true);
-      const filePath = `${FileSystem.documentDirectory}${STORAGE_KEY}.json`;
-      const fileInfo = await FileSystem.getInfoAsync(filePath);
-      
-      if (fileInfo.exists) {
-        const stored = await FileSystem.readAsStringAsync(filePath);
+      const stored = await storage.getItem(STORAGE_KEY);
+      if (stored) {
         const articles: Article[] = JSON.parse(stored);
         const found = articles.find((a) => a.id === id);
         if (found) {
