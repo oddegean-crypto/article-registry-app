@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router, useLocalSearchParams } from 'expo-router';
-import * as FileSystem from 'expo-file-system';
+import * as FileSystemLegacy from 'expo-file-system/legacy';
 import * as Print from 'expo-print';
 import * as Sharing from 'expo-sharing';
 import { Ionicons } from '@expo/vector-icons';
@@ -25,10 +25,10 @@ const storage = {
       return localStorage.getItem(key);
     }
     try {
-      const filePath = `${FileSystem.documentDirectory}${key}.json`;
-      const fileInfo = await FileSystem.getInfoAsync(filePath);
+      const filePath = `${FileSystemLegacy.documentDirectory}${key}.json`;
+      const fileInfo = await FileSystemLegacy.getInfoAsync(filePath);
       if (fileInfo.exists) {
-        return await FileSystem.readAsStringAsync(filePath);
+        return await FileSystemLegacy.readAsStringAsync(filePath);
       }
       return null;
     } catch {
