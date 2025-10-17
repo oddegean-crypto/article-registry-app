@@ -229,10 +229,13 @@ export default function HomeScreen() {
       filtered.sort((a, b) => recentArticles.indexOf(a.id) - recentArticles.indexOf(b.id));
     }
 
-    // Apply advanced filters
-    if (activeFilters) {
+    // Apply advanced filters - only if filters exist and are not empty
+    if (activeFilters && Object.keys(activeFilters).length > 0) {
+      console.log('Applying filters:', activeFilters);
+      
       // Filter by seasons
       if (activeFilters.seasons && activeFilters.seasons.length > 0) {
+        console.log('Filtering by seasons:', activeFilters.seasons);
         filtered = filtered.filter(a => 
           a.season && activeFilters.seasons.includes(a.season)
         );
@@ -240,6 +243,7 @@ export default function HomeScreen() {
 
       // Filter by sections
       if (activeFilters.sections && activeFilters.sections.length > 0) {
+        console.log('Filtering by sections:', activeFilters.sections);
         filtered = filtered.filter(a => 
           a.section && activeFilters.sections.includes(a.section)
         );
@@ -247,6 +251,7 @@ export default function HomeScreen() {
 
       // Filter by suppliers
       if (activeFilters.suppliers && activeFilters.suppliers.length > 0) {
+        console.log('Filtering by suppliers:', activeFilters.suppliers);
         filtered = filtered.filter(a => 
           a.supplier && activeFilters.suppliers.includes(a.supplier)
         );
@@ -254,6 +259,7 @@ export default function HomeScreen() {
 
       // Filter by price range
       if (activeFilters.minPrice || activeFilters.maxPrice) {
+        console.log('Filtering by price:', activeFilters.minPrice, '-', activeFilters.maxPrice);
         filtered = filtered.filter(a => {
           const price = parseFloat(a.basePriceEUR || '0');
           const min = activeFilters.minPrice ? parseFloat(activeFilters.minPrice) : 0;
@@ -261,6 +267,8 @@ export default function HomeScreen() {
           return price >= min && price <= max;
         });
       }
+    } else {
+      console.log('No filters active');
     }
 
     // Filter by search query
@@ -297,6 +305,7 @@ export default function HomeScreen() {
       });
     }
 
+    console.log('Filtered articles count:', filtered.length);
     setFilteredArticles(filtered);
   };
 
