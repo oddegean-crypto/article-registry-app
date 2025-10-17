@@ -93,25 +93,29 @@ export default function HomeScreen() {
     loadFavorites();
     loadRecentArticles();
     loadSavedSearches();
-    loadFilters();
   }, []);
+
+  // Reload filters when screen comes into focus
+  useFocusEffect(
+    useCallback(() => {
+      loadFilters();
+    }, [])
+  );
 
   useEffect(() => {
     filterAndSortArticles();
   }, [searchQuery, articles, favorites, recentArticles, viewMode, currentSort, activeFilters]);
 
-  // Reload filters when screen comes into focus
-  useEffect(() => {
-    const unsubscribe = router.setParams as any;
-    loadFilters();
-    return () => {};
-  }, []);
-
   const loadFilters = async () => {
     try {
       const stored = await storage.getItem(FILTER_KEY);
       if (stored) {
-        setActiveFilters(JSON.parse(stored));
+        const filters = JSON.parse(stored);
+        setActiveFilters(filters);
+        console.log('Loaded filters:', filters);
+      } else {
+        setActiveFilters(null);
+        console.log('No filters found');
       }
     } catch (error) {
       console.error('Error loading filters:', error);
