@@ -618,32 +618,86 @@ ${new Date().toLocaleString()}
       </View>
 
       <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollContent}>
-        {/* Market Selection */}
+        {/* Market Selection Dropdown */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Select Market</Text>
-          <View style={styles.marketButtons}>
-            {MARKETS.map((m) => (
-              <TouchableOpacity
-                key={m.value}
-                style={[
-                  styles.marketButton,
-                  selectedMarket === m.value && styles.marketButtonActive,
-                ]}
-                onPress={() => setSelectedMarket(m.value)}
-              >
-                <Text
-                  style={[
-                    styles.marketButtonText,
-                    selectedMarket === m.value && styles.marketButtonTextActive,
-                  ]}
-                >
-                  {m.label}
-                </Text>
-                <Text style={styles.marketCommission}>{(m.commission * 100).toFixed(0)}%</Text>
-              </TouchableOpacity>
-            ))}
+          
+          <TouchableOpacity 
+            style={styles.dropdown}
+            onPress={() => setShowMarketPicker(true)}
+          >
+            <View style={styles.dropdownContent}>
+              <Text style={styles.dropdownText}>
+                {MARKETS.find(m => m.value === selectedMarket)?.label || 'Select Market'}
+              </Text>
+              <Ionicons name="chevron-down" size={20} color="#666" />
+            </View>
+          </TouchableOpacity>
+
+          {/* Commission Rate Input */}
+          <View style={styles.commissionSection}>
+            <Text style={styles.inputLabel}>Commission Rate (%):</Text>
+            <TextInput
+              style={styles.input}
+              value={customCommission}
+              onChangeText={setCustomCommission}
+              keyboardType="decimal-pad"
+              placeholder="5"
+            />
           </View>
         </View>
+
+        {/* Market Picker Modal */}
+        <Modal
+          visible={showMarketPicker}
+          transparent={true}
+          animationType="slide"
+          onRequestClose={() => setShowMarketPicker(false)}
+        >
+          <TouchableOpacity 
+            style={styles.modalOverlay}
+            activeOpacity={1}
+            onPress={() => setShowMarketPicker(false)}
+          >
+            <View style={styles.modalContent}>
+              <View style={styles.modalHeader}>
+                <Text style={styles.modalTitle}>Select Market</Text>
+                <TouchableOpacity onPress={() => setShowMarketPicker(false)}>
+                  <Ionicons name="close" size={24} color="#666" />
+                </TouchableOpacity>
+              </View>
+              
+              {MARKETS.map((market) => (
+                <TouchableOpacity
+                  key={market.value}
+                  style={[
+                    styles.modalItem,
+                    selectedMarket === market.value && styles.modalItemActive,
+                  ]}
+                  onPress={() => {
+                    setSelectedMarket(market.value);
+                    setShowMarketPicker(false);
+                  }}
+                >
+                  <View>
+                    <Text style={[
+                      styles.modalItemText,
+                      selectedMarket === market.value && styles.modalItemTextActive,
+                    ]}>
+                      {market.label}
+                    </Text>
+                    <Text style={styles.modalItemSubtext}>
+                      Default: {(market.commission * 100).toFixed(0)}% commission
+                    </Text>
+                  </View>
+                  {selectedMarket === market.value && (
+                    <Ionicons name="checkmark" size={24} color="#007AFF" />
+                  )}
+                </TouchableOpacity>
+              ))}
+            </View>
+          </TouchableOpacity>
+        </Modal>
 
         {/* Base Price */}
         <View style={styles.section}>
