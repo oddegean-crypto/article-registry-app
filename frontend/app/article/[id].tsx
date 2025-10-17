@@ -735,12 +735,14 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   fab: {
+    flex: 1,
     backgroundColor: '#007AFF',
     borderRadius: 28,
     paddingHorizontal: 20,
     paddingVertical: 14,
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
     gap: 8,
     ...Platform.select({
       ios: {
