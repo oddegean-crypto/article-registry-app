@@ -202,7 +202,29 @@ backend:
         comment: "DELETE /api/articles/{id} endpoint working correctly - successfully deletes articles and returns success response. Note: Related GET endpoint has 500 error issue but deletion itself works."
 
 frontend:
-  # No frontend testing performed as per instructions
+  - task: "Pricing Calculator Feature"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/app/pricing/[id].tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Implemented complete pricing calculator with: market selection (Italy 5%, Spain 6%, France 5%, USA 10%), profit margins, transport costs, sampling surcharge, USD FX rate. Added pricing history with save/load/delete functionality - stores last 20 calculations per article offline. PDF export with professional template and email to sales@aisatrade.com. Ready for testing."
+  
+  - task: "Pricing Calculator History/Cache"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/app/pricing/[id].tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Added pricing history feature with expandable history section showing all past calculations. Users can: save calculations, view history (up to 20 per article), load previous calculations, delete history items. History stored in local storage for offline access."
 
 metadata:
   created_by: "testing_agent"
