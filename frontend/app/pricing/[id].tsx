@@ -327,13 +327,21 @@ export default function PricingCalculatorScreen() {
       profitMargin = parseFloat(profitMarginOther) || 0;
     }
 
+    // Step 1: Base + Profit Margin
     let price = basePrice + profitMargin;
 
-    // Apply commission (use custom commission rate)
+    // Step 2: Convert to USD/yrd if USA (BEFORE commission, transport, sampling)
+    if (market.region === 'usa') {
+      const fx = parseFloat(fxRate) || 1;
+      // Convert EUR/mt to USD/yrd: multiply by FX rate, then divide by 1.09361 (mt to yrd conversion)
+      price = (price * fx) / 1.09361;
+    }
+
+    // Step 3: Apply commission (use custom commission rate)
     const commissionRate = parseFloat(customCommission) / 100 || 0;
     price = price * (1 + commissionRate);
 
-    // Apply transport if enabled
+    // Step 4: Apply transport if enabled
     if (useTransport) {
       const transport = transportType === 'truck' 
         ? parseFloat(transportTruck) || 0 
@@ -341,17 +349,10 @@ export default function PricingCalculatorScreen() {
       price += transport;
     }
 
-    // Apply sampling surcharge if enabled
+    // Step 5: Apply sampling surcharge if enabled
     if (useSampling) {
       const surcharge = parseFloat(samplingRate) || 0;
       price = price * (1 + surcharge / 100);
-    }
-
-    // Apply USD conversion and /yrd conversion if USA
-    if (market.region === 'usa') {
-      const fx = parseFloat(fxRate) || 1;
-      // Convert EUR/mt to USD/yrd: multiply by FX rate, then divide by 1.09361 (mt to yrd conversion)
-      price = (price * fx) / 1.09361;
     }
 
     setFinalPrice(price);
