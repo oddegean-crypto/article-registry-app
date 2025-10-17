@@ -678,6 +678,24 @@ export default function HomeScreen() {
           )}
         </TouchableOpacity>
 
+        {activeFilters && (
+          (activeFilters.seasons?.length > 0 || 
+           activeFilters.sections?.length > 0 || 
+           activeFilters.suppliers?.length > 0 || 
+           activeFilters.minPrice || 
+           activeFilters.maxPrice) && (
+            <TouchableOpacity
+              style={[styles.actionButton, styles.clearButton]}
+              onPress={async () => {
+                await storage.setItem(FILTER_KEY, JSON.stringify({}));
+                setActiveFilters(null);
+              }}
+            >
+              <Ionicons name="refresh" size={20} color="#FF6B6B" />
+            </TouchableOpacity>
+          )
+        )}
+
         <TouchableOpacity
           style={[styles.actionButton, styles.secondaryButton]}
           onPress={() => setSortModalVisible(true)}
