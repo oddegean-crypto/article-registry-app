@@ -137,10 +137,19 @@ export default function PricingCalculatorScreen() {
   }, [id]);
 
   useEffect(() => {
+    // Update custom commission when market changes
+    const market = MARKETS.find(m => m.value === selectedMarket);
+    if (market) {
+      setCustomCommission((market.commission * 100).toFixed(0));
+    }
+  }, [selectedMarket]);
+
+  useEffect(() => {
     calculatePrice();
   }, [
     article,
     selectedMarket,
+    customCommission,
     profitMarginEurope,
     profitMarginUSA,
     profitMarginOther,
