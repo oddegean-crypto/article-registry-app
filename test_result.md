@@ -234,12 +234,14 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Get Single Article by ID Endpoint"
-  stuck_tasks:
-    - "Get Single Article by ID Endpoint"
+    - "Pricing Calculator Feature"
+    - "Pricing Calculator History/Cache"
+  stuck_tasks: []
   test_all: false
   test_priority: "high_first"
 
 agent_communication:
   - agent: "testing"
     message: "Completed comprehensive backend API testing. All major CRUD operations working correctly. Found one error handling issue in GET /api/articles/{id} endpoint that returns HTTP 500 instead of 404 for non-existent articles. This is due to HTTPException(404) being caught by outer exception handler and converted to 500. Core functionality works but error codes are incorrect."
+  - agent: "main"
+    message: "Implemented complete Pricing Calculator feature with history/cache functionality. Key features: 1) Market selection with commissions (Italy 5%, Spain 6%, France 5%, USA 10%), 2) Profit margin inputs per region, 3) Optional transport costs (truck/air), 4) Optional sampling surcharge, 5) Manual USD FX rate for USA market, 6) Real-time price calculation, 7) Save/Load/Delete pricing history (up to 20 per article), 8) Professional PDF export with AISA & CO branding, 9) Email to sales@aisatrade.com. All data stored offline in local storage. Ready for frontend testing."
