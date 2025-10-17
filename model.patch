@@ -1,322 +1,327 @@
 diff --git a/model.patch b/model.patch
-index 4ccf813..e69de29 100644
+index 4d75875..e69de29 100644
 --- a/model.patch
 +++ b/model.patch
-@@ -1,317 +0,0 @@
+@@ -1,322 +0,0 @@
 -diff --git a/model.patch b/model.patch
--index d3e9be3..e69de29 100644
+-index 4ccf813..e69de29 100644
 ---- a/model.patch
 -+++ b/model.patch
--@@ -1,312 +0,0 @@
---diff --git a/frontend/app/pricing/[id].tsx b/frontend/app/pricing/[id].tsx
---index 21203e1..a562cda 100644
------ a/frontend/app/pricing/[id].tsx
---+++ b/frontend/app/pricing/[id].tsx
---@@ -226,7 +226,7 @@ export default function PricingCalculatorScreen() {
---       fxRate: market.region === 'usa' ? fxRate : undefined,
---       finalPrice,
---       basePrice: parseFloat(article.basePriceEUR) || 0,
----      commission: market.commission,
---+      commission: parseFloat(customCommission) / 100,
---     };
--- 
---     try {
---@@ -284,6 +284,9 @@ export default function PricingCalculatorScreen() {
---       setSamplingRate(item.samplingRate);
---     }
---     
---+    // Load custom commission rate
---+    setCustomCommission((item.commission * 100).toFixed(0));
---+    
---     setShowHistory(false);
---     Alert.alert('Loaded', 'Previous calculation loaded successfully');
---   };
---@@ -465,7 +468,7 @@ export default function PricingCalculatorScreen() {
---           </div>
---           <div class="row">
---             <span class="label">Commission (${market.label}):</span>
----            <span class="value">${(market.commission * 100).toFixed(0)}%</span>
---+            <span class="value">${customCommission}%</span>
---           </div>
---         </div>
--- 
---@@ -552,7 +555,7 @@ Date: ${date}
--- --- Base Information ---
--- Base Price: €${basePrice.toFixed(2)}/mt
--- Profit Margin: €${market.region === 'europe' ? profitMarginEurope : market.region === 'usa' ? profitMarginUSA : profitMarginOther}/mt
----Commission: ${(market.commission * 100).toFixed(0)}%
---+Commission: ${customCommission}%
--- 
--- ${market.region === 'usa' ? `--- USD Conversion ---
--- Exchange Rate: ${fxRate}
+-@@ -1,317 +0,0 @@
 --diff --git a/model.patch b/model.patch
---index dc0a9e9..e69de29 100644
+--index d3e9be3..e69de29 100644
 ----- a/model.patch
 --+++ b/model.patch
---@@ -1,266 +0,0 @@
----diff --git a/frontend/app/article/[id].tsx b/frontend/app/article/[id].tsx
----index bd8f4e3..3b329ba 100644
------- a/frontend/app/article/[id].tsx
----+++ b/frontend/app/article/[id].tsx
----@@ -730,6 +730,7 @@ const styles = StyleSheet.create({
----     position: 'absolute',
----     bottom: 20,
----     right: 20,
----+    flexDirection: 'row',
----     gap: 12,
----   },
----   fab: {
+--@@ -1,312 +0,0 @@
+---diff --git a/frontend/app/pricing/[id].tsx b/frontend/app/pricing/[id].tsx
+---index 21203e1..a562cda 100644
+------ a/frontend/app/pricing/[id].tsx
+---+++ b/frontend/app/pricing/[id].tsx
+---@@ -226,7 +226,7 @@ export default function PricingCalculatorScreen() {
+---       fxRate: market.region === 'usa' ? fxRate : undefined,
+---       finalPrice,
+---       basePrice: parseFloat(article.basePriceEUR) || 0,
+----      commission: market.commission,
+---+      commission: parseFloat(customCommission) / 100,
+---     };
+--- 
+---     try {
+---@@ -284,6 +284,9 @@ export default function PricingCalculatorScreen() {
+---       setSamplingRate(item.samplingRate);
+---     }
+---     
+---+    // Load custom commission rate
+---+    setCustomCommission((item.commission * 100).toFixed(0));
+---+    
+---     setShowHistory(false);
+---     Alert.alert('Loaded', 'Previous calculation loaded successfully');
+---   };
+---@@ -465,7 +468,7 @@ export default function PricingCalculatorScreen() {
+---           </div>
+---           <div class="row">
+---             <span class="label">Commission (${market.label}):</span>
+----            <span class="value">${(market.commission * 100).toFixed(0)}%</span>
+---+            <span class="value">${customCommission}%</span>
+---           </div>
+---         </div>
+--- 
+---@@ -552,7 +555,7 @@ Date: ${date}
+--- --- Base Information ---
+--- Base Price: €${basePrice.toFixed(2)}/mt
+--- Profit Margin: €${market.region === 'europe' ? profitMarginEurope : market.region === 'usa' ? profitMarginUSA : profitMarginOther}/mt
+----Commission: ${(market.commission * 100).toFixed(0)}%
+---+Commission: ${customCommission}%
+--- 
+--- ${market.region === 'usa' ? `--- USD Conversion ---
+--- Exchange Rate: ${fxRate}
 ---diff --git a/model.patch b/model.patch
----index b0f7c47..e69de29 100644
+---index dc0a9e9..e69de29 100644
 ------ a/model.patch
 ---+++ b/model.patch
----@@ -1,249 +0,0 @@
+---@@ -1,266 +0,0 @@
+----diff --git a/frontend/app/article/[id].tsx b/frontend/app/article/[id].tsx
+----index bd8f4e3..3b329ba 100644
+------- a/frontend/app/article/[id].tsx
+----+++ b/frontend/app/article/[id].tsx
+----@@ -730,6 +730,7 @@ const styles = StyleSheet.create({
+----     position: 'absolute',
+----     bottom: 20,
+----     right: 20,
+----+    flexDirection: 'row',
+----     gap: 12,
+----   },
+----   fab: {
 ----diff --git a/model.patch b/model.patch
-----index b3cff8b..e69de29 100644
+----index b0f7c47..e69de29 100644
 ------- a/model.patch
 ----+++ b/model.patch
-----@@ -1,244 +0,0 @@
------diff --git a/frontend/app/index.tsx b/frontend/app/index.tsx
------index 87a5439..6e91392 100644
--------- a/frontend/app/index.tsx
------+++ b/frontend/app/index.tsx
------@@ -629,6 +629,17 @@ export default function HomeScreen() {
------         >
------           <Ionicons name="filter" size={20} color="#007AFF" />
------           <Text style={styles.secondaryButtonText}>Filter</Text>
------+          {activeFilters && (
------+            (activeFilters.seasons?.length > 0 || 
------+             activeFilters.sections?.length > 0 || 
------+             activeFilters.suppliers?.length > 0 || 
------+             activeFilters.minPrice || 
------+             activeFilters.maxPrice) && (
------+              <View style={styles.filterBadge}>
------+                <View style={styles.filterDot} />
------+              </View>
------+            )
------+          )}
------         </TouchableOpacity>
------ 
------         <TouchableOpacity
------@@ -1056,4 +1067,21 @@ const styles = StyleSheet.create({
------     fontSize: 16,
------     color: '#333',
------   },
------+  filterBadge: {
------+    position: 'absolute',
------+    top: -2,
------+    right: -2,
------+    backgroundColor: '#FF6B6B',
------+    borderRadius: 8,
------+    width: 16,
------+    height: 16,
------+    justifyContent: 'center',
------+    alignItems: 'center',
------+  },
------+  filterDot: {
------+    width: 6,
------+    height: 6,
------+    backgroundColor: '#fff',
------+    borderRadius: 3,
------+  },
------ });
------\ No newline at end of file
+----@@ -1,249 +0,0 @@
 -----diff --git a/model.patch b/model.patch
------index 8c13a56..e69de29 100644
+-----index b3cff8b..e69de29 100644
 -------- a/model.patch
 -----+++ b/model.patch
------@@ -1,194 +0,0 @@
-------diff --git a/frontend/app/article/[id].tsx b/frontend/app/article/[id].tsx
-------index b4d57c4..b977c2b 100644
---------- a/frontend/app/article/[id].tsx
-------+++ b/frontend/app/article/[id].tsx
-------@@ -545,8 +545,8 @@ const styles = StyleSheet.create({
-------   headerRow: {
-------     flexDirection: 'row',
-------     justifyContent: 'space-between',
--------    alignItems: 'flex-start',
--------    marginBottom: 12,
-------+    alignItems: 'center',
-------+    marginBottom: 8,
-------   },
-------   headerLeft: {
-------     flex: 1,
-------@@ -559,7 +559,6 @@ const styles = StyleSheet.create({
-------     fontSize: 28,
-------     fontWeight: '700',
+-----@@ -1,244 +0,0 @@
+------diff --git a/frontend/app/index.tsx b/frontend/app/index.tsx
+------index 87a5439..6e91392 100644
+--------- a/frontend/app/index.tsx
+------+++ b/frontend/app/index.tsx
+------@@ -629,6 +629,17 @@ export default function HomeScreen() {
+------         >
+------           <Ionicons name="filter" size={20} color="#007AFF" />
+------           <Text style={styles.secondaryButtonText}>Filter</Text>
+------+          {activeFilters && (
+------+            (activeFilters.seasons?.length > 0 || 
+------+             activeFilters.sections?.length > 0 || 
+------+             activeFilters.suppliers?.length > 0 || 
+------+             activeFilters.minPrice || 
+------+             activeFilters.maxPrice) && (
+------+              <View style={styles.filterBadge}>
+------+                <View style={styles.filterDot} />
+------+              </View>
+------+            )
+------+          )}
+------         </TouchableOpacity>
+------ 
+------         <TouchableOpacity
+------@@ -1056,4 +1067,21 @@ const styles = StyleSheet.create({
+------     fontSize: 16,
 ------     color: '#333',
--------    marginBottom: 8,
 ------   },
-------   articleCode: {
-------     fontSize: 24,
-------@@ -570,7 +569,6 @@ const styles = StyleSheet.create({
-------     fontSize: 15,
-------     fontWeight: '600',
-------     color: '#8B0000',
--------    marginBottom: 6,
-------   },
-------   sectionValue: {
-------     fontSize: 15,
-------@@ -580,18 +578,19 @@ const styles = StyleSheet.create({
-------   tagsContainer: {
-------     flexDirection: 'row',
-------     flexWrap: 'wrap',
--------    gap: 8,
-------+    gap: 6,
-------+    marginTop: 12,
-------   },
-------   tag: {
-------     backgroundColor: '#f0f0f0',
--------    paddingHorizontal: 12,
--------    paddingVertical: 6,
--------    borderRadius: 8,
-------+    paddingHorizontal: 8,
-------+    paddingVertical: 3,
-------+    borderRadius: 6,
-------   },
-------   tagText: {
--------    fontSize: 14,
--------    color: '#666',
-------+    fontSize: 11,
-------     fontWeight: '500',
-------+    color: '#666',
-------   },
-------   section: {
-------     backgroundColor: '#fff',
+------+  filterBadge: {
+------+    position: 'absolute',
+------+    top: -2,
+------+    right: -2,
+------+    backgroundColor: '#FF6B6B',
+------+    borderRadius: 8,
+------+    width: 16,
+------+    height: 16,
+------+    justifyContent: 'center',
+------+    alignItems: 'center',
+------+  },
+------+  filterDot: {
+------+    width: 6,
+------+    height: 6,
+------+    backgroundColor: '#fff',
+------+    borderRadius: 3,
+------+  },
+------ });
+------\ No newline at end of file
 ------diff --git a/model.patch b/model.patch
-------index 5c77db5..e69de29 100644
+------index 8c13a56..e69de29 100644
 --------- a/model.patch
 ------+++ b/model.patch
-------@@ -1,132 +0,0 @@
--------diff --git a/test_result.md b/test_result.md
--------index 187cba4..5b0ab8c 100644
----------- a/test_result.md
--------+++ b/test_result.md
--------@@ -100,4 +100,124 @@
-------- 
-------- #====================================================================================================
-------- # Testing Data - Main Agent and testing sub agent both should log testing data below this section
---------#====================================================================================================
--------\ No newline at end of file
--------+#====================================================================================================
--------+
--------+user_problem_statement: "Article Registry backend API testing - comprehensive testing of all endpoints including CRUD operations, bulk import, search functionality, and data persistence"
--------+
--------+backend:
--------+  - task: "Health Check Endpoint"
--------+    implemented: true
--------+    working: true
--------+    file: "/app/backend/server.py"
--------+    stuck_count: 0
--------+    priority: "high"
--------+    needs_retesting: false
--------+    status_history:
--------+      - working: true
--------+        agent: "testing"
--------+        comment: "GET /api/health endpoint working correctly - returns healthy status and database connection confirmed"
--------+
--------+  - task: "Get All Articles Endpoint"
--------+    implemented: true
--------+    working: true
--------+    file: "/app/backend/server.py"
--------+    stuck_count: 0
--------+    priority: "high"
--------+    needs_retesting: false
--------+    status_history:
--------+      - working: true
--------+        agent: "testing"
--------+        comment: "GET /api/articles endpoint working correctly - returns empty array initially and populated array after data creation"
--------+
--------+  - task: "Create Single Article Endpoint"
--------+    implemented: true
--------+    working: true
--------+    file: "/app/backend/server.py"
--------+    stuck_count: 0
--------+    priority: "high"
--------+    needs_retesting: false
--------+    status_history:
--------+      - working: true
--------+        agent: "testing"
--------+        comment: "POST /api/articles endpoint working correctly - successfully creates articles with proper response including ID and timestamps"
--------+
--------+  - task: "Get Single Article by ID Endpoint"
--------+    implemented: true
--------+    working: false
--------+    file: "/app/backend/server.py"
--------+    stuck_count: 1
--------+    priority: "high"
--------+    needs_retesting: false
--------+    status_history:
--------+      - working: false
--------+        agent: "testing"
--------+        comment: "GET /api/articles/{id} has error handling issue - returns HTTP 500 instead of 404 for non-existent articles due to exception handling logic. The HTTPException(404) is being caught by outer try-catch and converted to 500 error."
--------+
--------+  - task: "Bulk Import Articles Endpoint"
--------+    implemented: true
--------+    working: true
--------+    file: "/app/backend/server.py"
--------+    stuck_count: 0
--------+    priority: "high"
--------+    needs_retesting: false
--------+    status_history:
--------+      - working: true
--------+        agent: "testing"
--------+        comment: "POST /api/articles/bulk endpoint working correctly - successfully imports multiple articles in append mode with proper response showing inserted/updated counts"
--------+
--------+  - task: "Search Articles Functionality"
--------+    implemented: true
--------+    working: true
--------+    file: "/app/backend/server.py"
--------+    stuck_count: 0
--------+    priority: "medium"
--------+    needs_retesting: false
--------+    status_history:
--------+      - working: true
--------+        agent: "testing"
--------+        comment: "GET /api/articles?search=query endpoint working correctly - successfully filters articles based on search terms across multiple fields"
--------+
--------+  - task: "Update Article Endpoint"
--------+    implemented: true
--------+    working: true
--------+    file: "/app/backend/server.py"
--------+    stuck_count: 0
--------+    priority: "high"
--------+    needs_retesting: false
--------+    status_history:
--------+      - working: true
--------+        agent: "testing"
--------+        comment: "PUT /api/articles/{id} endpoint working correctly - successfully updates article data and returns updated article with proper timestamps"
--------+
--------+  - task: "Delete Article Endpoint"
--------+    implemented: true
--------+    working: true
--------+    file: "/app/backend/server.py"
--------+    stuck_count: 0
--------+    priority: "high"
--------+    needs_retesting: false
--------+    status_history:
--------+      - working: true
--------+        agent: "testing"
--------+        comment: "DELETE /api/articles/{id} endpoint working correctly - successfully deletes articles and returns success response. Note: Related GET endpoint has 500 error issue but deletion itself works."
--------+
--------+frontend:
--------+  # No frontend testing performed as per instructions
--------+
--------+metadata:
--------+  created_by: "testing_agent"
--------+  version: "1.0"
--------+  test_sequence: 1
--------+  run_ui: false
--------+
--------+test_plan:
--------+  current_focus:
--------+    - "Get Single Article by ID Endpoint"
--------+  stuck_tasks:
--------+    - "Get Single Article by ID Endpoint"
--------+  test_all: false
--------+  test_priority: "high_first"
--------+
--------+agent_communication:
--------+  - agent: "testing"
--------+    message: "Completed comprehensive backend API testing. All major CRUD operations working correctly. Found one error handling issue in GET /api/articles/{id} endpoint that returns HTTP 500 instead of 404 for non-existent articles. This is due to HTTPException(404) being caught by outer exception handler and converted to 500. Core functionality works but error codes are incorrect."
--------\ No newline at end of file
+------@@ -1,194 +0,0 @@
+-------diff --git a/frontend/app/article/[id].tsx b/frontend/app/article/[id].tsx
+-------index b4d57c4..b977c2b 100644
+---------- a/frontend/app/article/[id].tsx
+-------+++ b/frontend/app/article/[id].tsx
+-------@@ -545,8 +545,8 @@ const styles = StyleSheet.create({
+-------   headerRow: {
+-------     flexDirection: 'row',
+-------     justifyContent: 'space-between',
+--------    alignItems: 'flex-start',
+--------    marginBottom: 12,
+-------+    alignItems: 'center',
+-------+    marginBottom: 8,
+-------   },
+-------   headerLeft: {
+-------     flex: 1,
+-------@@ -559,7 +559,6 @@ const styles = StyleSheet.create({
+-------     fontSize: 28,
+-------     fontWeight: '700',
+-------     color: '#333',
+--------    marginBottom: 8,
+-------   },
+-------   articleCode: {
+-------     fontSize: 24,
+-------@@ -570,7 +569,6 @@ const styles = StyleSheet.create({
+-------     fontSize: 15,
+-------     fontWeight: '600',
+-------     color: '#8B0000',
+--------    marginBottom: 6,
+-------   },
+-------   sectionValue: {
+-------     fontSize: 15,
+-------@@ -580,18 +578,19 @@ const styles = StyleSheet.create({
+-------   tagsContainer: {
+-------     flexDirection: 'row',
+-------     flexWrap: 'wrap',
+--------    gap: 8,
+-------+    gap: 6,
+-------+    marginTop: 12,
+-------   },
+-------   tag: {
+-------     backgroundColor: '#f0f0f0',
+--------    paddingHorizontal: 12,
+--------    paddingVertical: 6,
+--------    borderRadius: 8,
+-------+    paddingHorizontal: 8,
+-------+    paddingVertical: 3,
+-------+    borderRadius: 6,
+-------   },
+-------   tagText: {
+--------    fontSize: 14,
+--------    color: '#666',
+-------+    fontSize: 11,
+-------     fontWeight: '500',
+-------+    color: '#666',
+-------   },
+-------   section: {
+-------     backgroundColor: '#fff',
+-------diff --git a/model.patch b/model.patch
+-------index 5c77db5..e69de29 100644
+---------- a/model.patch
+-------+++ b/model.patch
+-------@@ -1,132 +0,0 @@
+--------diff --git a/test_result.md b/test_result.md
+--------index 187cba4..5b0ab8c 100644
+----------- a/test_result.md
+--------+++ b/test_result.md
+--------@@ -100,4 +100,124 @@
+-------- 
+-------- #====================================================================================================
+-------- # Testing Data - Main Agent and testing sub agent both should log testing data below this section
+---------#====================================================================================================
+--------\ No newline at end of file
+--------+#====================================================================================================
+--------+
+--------+user_problem_statement: "Article Registry backend API testing - comprehensive testing of all endpoints including CRUD operations, bulk import, search functionality, and data persistence"
+--------+
+--------+backend:
+--------+  - task: "Health Check Endpoint"
+--------+    implemented: true
+--------+    working: true
+--------+    file: "/app/backend/server.py"
+--------+    stuck_count: 0
+--------+    priority: "high"
+--------+    needs_retesting: false
+--------+    status_history:
+--------+      - working: true
+--------+        agent: "testing"
+--------+        comment: "GET /api/health endpoint working correctly - returns healthy status and database connection confirmed"
+--------+
+--------+  - task: "Get All Articles Endpoint"
+--------+    implemented: true
+--------+    working: true
+--------+    file: "/app/backend/server.py"
+--------+    stuck_count: 0
+--------+    priority: "high"
+--------+    needs_retesting: false
+--------+    status_history:
+--------+      - working: true
+--------+        agent: "testing"
+--------+        comment: "GET /api/articles endpoint working correctly - returns empty array initially and populated array after data creation"
+--------+
+--------+  - task: "Create Single Article Endpoint"
+--------+    implemented: true
+--------+    working: true
+--------+    file: "/app/backend/server.py"
+--------+    stuck_count: 0
+--------+    priority: "high"
+--------+    needs_retesting: false
+--------+    status_history:
+--------+      - working: true
+--------+        agent: "testing"
+--------+        comment: "POST /api/articles endpoint working correctly - successfully creates articles with proper response including ID and timestamps"
+--------+
+--------+  - task: "Get Single Article by ID Endpoint"
+--------+    implemented: true
+--------+    working: false
+--------+    file: "/app/backend/server.py"
+--------+    stuck_count: 1
+--------+    priority: "high"
+--------+    needs_retesting: false
+--------+    status_history:
+--------+      - working: false
+--------+        agent: "testing"
+--------+        comment: "GET /api/articles/{id} has error handling issue - returns HTTP 500 instead of 404 for non-existent articles due to exception handling logic. The HTTPException(404) is being caught by outer try-catch and converted to 500 error."
+--------+
+--------+  - task: "Bulk Import Articles Endpoint"
+--------+    implemented: true
+--------+    working: true
+--------+    file: "/app/backend/server.py"
+--------+    stuck_count: 0
+--------+    priority: "high"
+--------+    needs_retesting: false
+--------+    status_history:
+--------+      - working: true
+--------+        agent: "testing"
+--------+        comment: "POST /api/articles/bulk endpoint working correctly - successfully imports multiple articles in append mode with proper response showing inserted/updated counts"
+--------+
+--------+  - task: "Search Articles Functionality"
+--------+    implemented: true
+--------+    working: true
+--------+    file: "/app/backend/server.py"
+--------+    stuck_count: 0
+--------+    priority: "medium"
+--------+    needs_retesting: false
+--------+    status_history:
+--------+      - working: true
+--------+        agent: "testing"
+--------+        comment: "GET /api/articles?search=query endpoint working correctly - successfully filters articles based on search terms across multiple fields"
+--------+
+--------+  - task: "Update Article Endpoint"
+--------+    implemented: true
+--------+    working: true
+--------+    file: "/app/backend/server.py"
+--------+    stuck_count: 0
+--------+    priority: "high"
+--------+    needs_retesting: false
+--------+    status_history:
+--------+      - working: true
+--------+        agent: "testing"
+--------+        comment: "PUT /api/articles/{id} endpoint working correctly - successfully updates article data and returns updated article with proper timestamps"
+--------+
+--------+  - task: "Delete Article Endpoint"
+--------+    implemented: true
+--------+    working: true
+--------+    file: "/app/backend/server.py"
+--------+    stuck_count: 0
+--------+    priority: "high"
+--------+    needs_retesting: false
+--------+    status_history:
+--------+      - working: true
+--------+        agent: "testing"
+--------+        comment: "DELETE /api/articles/{id} endpoint working correctly - successfully deletes articles and returns success response. Note: Related GET endpoint has 500 error issue but deletion itself works."
+--------+
+--------+frontend:
+--------+  # No frontend testing performed as per instructions
+--------+
+--------+metadata:
+--------+  created_by: "testing_agent"
+--------+  version: "1.0"
+--------+  test_sequence: 1
+--------+  run_ui: false
+--------+
+--------+test_plan:
+--------+  current_focus:
+--------+    - "Get Single Article by ID Endpoint"
+--------+  stuck_tasks:
+--------+    - "Get Single Article by ID Endpoint"
+--------+  test_all: false
+--------+  test_priority: "high_first"
+--------+
+--------+agent_communication:
+--------+  - agent: "testing"
+--------+    message: "Completed comprehensive backend API testing. All major CRUD operations working correctly. Found one error handling issue in GET /api/articles/{id} endpoint that returns HTTP 500 instead of 404 for non-existent articles. This is due to HTTPException(404) being caught by outer exception handler and converted to 500. Core functionality works but error codes are incorrect."
+--------\ No newline at end of file
