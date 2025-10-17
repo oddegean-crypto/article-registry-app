@@ -508,21 +508,31 @@ ${new Date().toLocaleString()}
         <View style={styles.bottomPadding} />
       </ScrollView>
 
-      {/* Floating Action Button */}
-      <TouchableOpacity
-        style={styles.fab}
-        onPress={generatePDF}
-        disabled={exporting}
-      >
-        {exporting ? (
-          <ActivityIndicator size="small" color="#fff" />
-        ) : (
-          <>
-            <Ionicons name="document-text" size={24} color="#fff" />
-            <Text style={styles.fabText}>Export PDF</Text>
-          </>
-        )}
-      </TouchableOpacity>
+      {/* Floating Action Buttons */}
+      <View style={styles.fabContainer}>
+        <TouchableOpacity
+          style={[styles.fab, styles.fabSecondary]}
+          onPress={() => router.push(`/pricing/${encodeURIComponent(article.id)}`)}
+        >
+          <Ionicons name="calculator" size={24} color="#007AFF" />
+          <Text style={styles.fabTextSecondary}>PRICING</Text>
+        </TouchableOpacity>
+        
+        <TouchableOpacity
+          style={styles.fab}
+          onPress={generatePDF}
+          disabled={exporting}
+        >
+          {exporting ? (
+            <ActivityIndicator size="small" color="#fff" />
+          ) : (
+            <>
+              <Ionicons name="document-text" size={24} color="#fff" />
+              <Text style={styles.fabText}>Export PDF</Text>
+            </>
+          )}
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 
