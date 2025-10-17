@@ -509,7 +509,9 @@ export default function PricingCalculatorScreen() {
 
         <div class="final-price">
           <p style="margin: 0; font-size: 14px;">Final Selling Price</p>
-          <h2>€${finalPrice.toFixed(2)}/mt</h2>
+          <h2>${market.region === 'usa' 
+            ? `$${finalPrice.toFixed(2)}/yrd` 
+            : `€${finalPrice.toFixed(2)}/mt`}</h2>
         </div>
 
         <div class="footer">
