@@ -465,7 +465,7 @@ export default function PricingCalculatorScreen() {
           </div>
           <div class="row">
             <span class="label">Commission (${market.label}):</span>
-            <span class="value">${(market.commission * 100).toFixed(0)}%</span>
+            <span class="value">${customCommission}%</span>
           </div>
         </div>
 
