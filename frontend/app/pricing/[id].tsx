@@ -959,7 +959,9 @@ ${new Date().toLocaleString()}
                         </Text>
                       </View>
                       <Text style={styles.historyItemPrice}>
-                        €{item.finalPrice.toFixed(2)}/mt
+                        {item.market === 'usa' 
+                          ? `$${item.finalPrice.toFixed(2)}/yrd` 
+                          : `€${item.finalPrice.toFixed(2)}/mt`}
                       </Text>
                     </View>
                     
