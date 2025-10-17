@@ -834,15 +834,107 @@ ${new Date().toLocaleString()}
 
         {/* Action Buttons */}
         <View style={styles.actionButtons}>
+          <TouchableOpacity style={styles.actionButton} onPress={savePricingCalculation}>
+            <Ionicons name="save" size={20} color="#fff" />
+            <Text style={styles.actionButtonText}>Save</Text>
+          </TouchableOpacity>
           <TouchableOpacity style={styles.actionButton} onPress={generatePricingReport}>
             <Ionicons name="document-text" size={20} color="#fff" />
             <Text style={styles.actionButtonText}>Export PDF</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.actionButton} onPress={sendEmail}>
             <Ionicons name="mail" size={20} color="#fff" />
-            <Text style={styles.actionButtonText}>Send Email</Text>
+            <Text style={styles.actionButtonText}>Email</Text>
           </TouchableOpacity>
         </View>
+
+        {/* Pricing History Section */}
+        {pricingHistory.length > 0 && (
+          <View style={styles.historySection}>
+            <TouchableOpacity 
+              style={styles.historyHeader}
+              onPress={() => setShowHistory(!showHistory)}
+            >
+              <View style={styles.historyHeaderLeft}>
+                <Ionicons name="time" size={20} color="#007AFF" />
+                <Text style={styles.historyTitle}>
+                  Pricing History ({pricingHistory.length})
+                </Text>
+              </View>
+              <Ionicons 
+                name={showHistory ? 'chevron-up' : 'chevron-down'} 
+                size={20} 
+                color="#007AFF" 
+              />
+            </TouchableOpacity>
+
+            {showHistory && (
+              <View style={styles.historyList}>
+                {pricingHistory.map((item) => (
+                  <View key={item.id} style={styles.historyItem}>
+                    <View style={styles.historyItemHeader}>
+                      <View style={styles.historyItemInfo}>
+                        <Text style={styles.historyItemMarket}>{item.marketLabel}</Text>
+                        <Text style={styles.historyItemDate}>
+                          {new Date(item.timestamp).toLocaleString()}
+                        </Text>
+                      </View>
+                      <Text style={styles.historyItemPrice}>
+                        €{item.finalPrice.toFixed(2)}/mt
+                      </Text>
+                    </View>
+                    
+                    <View style={styles.historyItemDetails}>
+                      <Text style={styles.historyItemDetail}>
+                        Base: €{item.basePrice.toFixed(2)} + Profit: €{item.profitMargin}
+                      </Text>
+                      {item.useTransport && (
+                        <Text style={styles.historyItemDetail}>
+                          Transport: {item.transportType} (€{item.transportCost})
+                        </Text>
+                      )}
+                      {item.useSampling && (
+                        <Text style={styles.historyItemDetail}>
+                          Sampling: {item.samplingRate}%
+                        </Text>
+                      )}
+                    </View>
+
+                    <View style={styles.historyItemActions}>
+                      <TouchableOpacity 
+                        style={styles.historyItemButton}
+                        onPress={() => loadHistoryItem(item)}
+                      >
+                        <Ionicons name="refresh" size={16} color="#007AFF" />
+                        <Text style={styles.historyItemButtonText}>Load</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity 
+                        style={[styles.historyItemButton, styles.historyItemButtonDanger]}
+                        onPress={() => {
+                          Alert.alert(
+                            'Delete Calculation',
+                            'Are you sure you want to delete this calculation?',
+                            [
+                              { text: 'Cancel', style: 'cancel' },
+                              { 
+                                text: 'Delete', 
+                                onPress: () => deleteHistoryItem(item.id),
+                                style: 'destructive'
+                              },
+                            ]
+                          );
+                        }}
+                      >
+                        <Ionicons name="trash" size={16} color="#FF3B30" />
+                        <Text style={styles.historyItemButtonTextDanger}>Delete</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                ))}
+              </View>
+            )}
+          </View>
+        )}
 
         <View style={styles.bottomPadding} />
       </ScrollView>
