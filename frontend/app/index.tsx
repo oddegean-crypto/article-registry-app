@@ -703,8 +703,10 @@ export default function HomeScreen() {
             <TouchableOpacity
               style={[styles.actionButton, styles.clearButton]}
               onPress={async () => {
+                console.log('Clearing all filters...');
                 await storage.setItem(FILTER_KEY, JSON.stringify({}));
                 setActiveFilters(null);
+                console.log('Filters cleared, activeFilters set to null');
               }}
             >
               <Ionicons name="refresh" size={20} color="#FF6B6B" />
