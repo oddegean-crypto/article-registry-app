@@ -284,6 +284,9 @@ export default function PricingCalculatorScreen() {
       setSamplingRate(item.samplingRate);
     }
     
+    // Load custom commission rate
+    setCustomCommission((item.commission * 100).toFixed(0));
+    
     setShowHistory(false);
     Alert.alert('Loaded', 'Previous calculation loaded successfully');
   };
