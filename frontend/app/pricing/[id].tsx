@@ -102,6 +102,8 @@ export default function PricingCalculatorScreen() {
   const { id } = useLocalSearchParams();
   const [article, setArticle] = useState<Article | null>(null);
   const [loading, setLoading] = useState(true);
+  const [pricingHistory, setPricingHistory] = useState<PricingCalculation[]>([]);
+  const [showHistory, setShowHistory] = useState(false);
   
   // Market selection
   const [selectedMarket, setSelectedMarket] = useState('italy');
