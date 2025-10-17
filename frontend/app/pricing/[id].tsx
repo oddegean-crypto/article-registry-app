@@ -108,6 +108,8 @@ export default function PricingCalculatorScreen() {
   
   // Market selection
   const [selectedMarket, setSelectedMarket] = useState('italy');
+  const [showMarketPicker, setShowMarketPicker] = useState(false);
+  const [customCommission, setCustomCommission] = useState('5');
   
   // Profit margins (EUR/mt)
   const [profitMarginEurope, setProfitMarginEurope] = useState('0.80');
