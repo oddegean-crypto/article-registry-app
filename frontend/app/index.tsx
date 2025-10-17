@@ -109,13 +109,29 @@ export default function HomeScreen() {
   const loadFilters = async () => {
     try {
       const stored = await storage.getItem(FILTER_KEY);
-      if (stored) {
+      console.log('Raw stored filters:', stored);
+      if (stored && stored !== '{}') {
         const filters = JSON.parse(stored);
-        setActiveFilters(filters);
-        console.log('Loaded filters:', filters);
+        console.log('Parsed filters:', filters);
+        
+        // Check if filters actually have values
+        const hasFilters = 
+          (filters.seasons && filters.seasons.length > 0) ||
+          (filters.sections && filters.sections.length > 0) ||
+          (filters.suppliers && filters.suppliers.length > 0) ||
+          filters.minPrice ||
+          filters.maxPrice;
+        
+        if (hasFilters) {
+          setActiveFilters(filters);
+          console.log('Active filters set:', filters);
+        } else {
+          setActiveFilters(null);
+          console.log('No active filters - empty object');
+        }
       } else {
         setActiveFilters(null);
-        console.log('No filters found');
+        console.log('No filters found in storage');
       }
     } catch (error) {
       console.error('Error loading filters:', error);
