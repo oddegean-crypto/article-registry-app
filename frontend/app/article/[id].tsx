@@ -730,6 +730,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 20,
     right: 20,
+    flexDirection: 'row',
     gap: 12,
   },
   fab: {
