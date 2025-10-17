@@ -111,8 +111,13 @@ export default function FilterScreen() {
       maxPrice,
     };
     
+    console.log('Saving filters:', filters);
     await storage.setItem(FILTER_KEY, JSON.stringify(filters));
-    router.back();
+    
+    // Add a small delay to ensure the data is saved
+    setTimeout(() => {
+      router.back();
+    }, 100);
   };
 
   const clearFilters = async () => {
