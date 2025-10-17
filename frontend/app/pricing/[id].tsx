@@ -66,6 +66,30 @@ interface Article {
   [key: string]: any;
 }
 
+interface PricingCalculation {
+  id: string;
+  timestamp: string;
+  articleId: string;
+  articleCode: string;
+  articleName: string;
+  market: string;
+  marketLabel: string;
+  profitMargin: string;
+  useTransport: boolean;
+  transportType?: 'truck' | 'air';
+  transportCost?: string;
+  useSampling: boolean;
+  samplingRate?: string;
+  fxRate?: string;
+  finalPrice: number;
+  basePrice: number;
+  commission: number;
+}
+
+interface PricingHistory {
+  [articleId: string]: PricingCalculation[];
+}
+
 const MARKETS = [
   { label: 'Italy', value: 'italy', commission: 0.05, region: 'europe' },
   { label: 'Spain', value: 'spain', commission: 0.06, region: 'europe' },
