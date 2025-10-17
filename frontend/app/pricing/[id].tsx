@@ -332,8 +332,9 @@ export default function PricingCalculatorScreen() {
       price = (price * fx) / 1.09361;
     }
 
-    // Apply commission
-    price = price * (1 + market.commission);
+    // Apply commission (use custom commission rate)
+    const commissionRate = parseFloat(customCommission) / 100 || 0;
+    price = price * (1 + commissionRate);
 
     // Apply transport if enabled
     if (useTransport) {
