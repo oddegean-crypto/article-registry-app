@@ -726,10 +726,13 @@ const styles = StyleSheet.create({
   bottomPadding: {
     height: 80,
   },
-  fab: {
+  fabContainer: {
     position: 'absolute',
     bottom: 20,
     right: 20,
+    gap: 12,
+  },
+  fab: {
     backgroundColor: '#007AFF',
     borderRadius: 28,
     paddingHorizontal: 20,
@@ -749,8 +752,18 @@ const styles = StyleSheet.create({
       },
     }),
   },
+  fabSecondary: {
+    backgroundColor: '#fff',
+    borderWidth: 2,
+    borderColor: '#007AFF',
+  },
   fabText: {
     color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  fabTextSecondary: {
+    color: '#007AFF',
     fontSize: 16,
     fontWeight: '600',
   },
