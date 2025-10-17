@@ -226,7 +226,7 @@ export default function PricingCalculatorScreen() {
       fxRate: market.region === 'usa' ? fxRate : undefined,
       finalPrice,
       basePrice: parseFloat(article.basePriceEUR) || 0,
-      commission: market.commission,
+      commission: parseFloat(customCommission) / 100,
     };
 
     try {
