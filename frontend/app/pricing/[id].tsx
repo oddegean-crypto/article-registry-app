@@ -159,6 +159,8 @@ export default function PricingCalculatorScreen() {
         const found = articles.find((a) => a.id === id);
         if (found) {
           setArticle(found);
+          // Load pricing history for this article
+          await loadPricingHistory();
         } else {
           Alert.alert('Error', 'Article not found');
           router.back();
@@ -169,6 +171,128 @@ export default function PricingCalculatorScreen() {
       Alert.alert('Error', 'Failed to load article');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const loadPricingHistory = async () => {
+    try {
+      const historyStr = await storage.getItem(PRICING_HISTORY_KEY);
+      if (historyStr) {
+        const allHistory: PricingHistory = JSON.parse(historyStr);
+        const articleHistory = allHistory[id as string] || [];
+        // Sort by timestamp descending (newest first)
+        setPricingHistory(articleHistory.sort((a, b) => 
+          new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+        ));
+      }
+    } catch (error) {
+      console.error('Error loading pricing history:', error);
+    }
+  };
+
+  const savePricingCalculation = async () => {
+    if (!article || finalPrice === null) return;
+
+    const market = MARKETS.find(m => m.value === selectedMarket);
+    if (!market) return;
+
+    const calculation: PricingCalculation = {
+      id: Date.now().toString(),
+      timestamp: new Date().toISOString(),
+      articleId: article.id,
+      articleCode: article.articleCode,
+      articleName: article.articleName || 'N/A',
+      market: selectedMarket,
+      marketLabel: market.label,
+      profitMargin: market.region === 'europe' ? profitMarginEurope : 
+                    market.region === 'usa' ? profitMarginUSA : profitMarginOther,
+      useTransport,
+      transportType: useTransport ? transportType : undefined,
+      transportCost: useTransport ? (transportType === 'truck' ? transportTruck : transportAir) : undefined,
+      useSampling,
+      samplingRate: useSampling ? samplingRate : undefined,
+      fxRate: market.region === 'usa' ? fxRate : undefined,
+      finalPrice,
+      basePrice: parseFloat(article.basePriceEUR) || 0,
+      commission: market.commission,
+    };
+
+    try {
+      const historyStr = await storage.getItem(PRICING_HISTORY_KEY);
+      let allHistory: PricingHistory = historyStr ? JSON.parse(historyStr) : {};
+      
+      if (!allHistory[article.id]) {
+        allHistory[article.id] = [];
+      }
+      
+      allHistory[article.id].unshift(calculation);
+      
+      // Keep only last 20 calculations per article
+      if (allHistory[article.id].length > 20) {
+        allHistory[article.id] = allHistory[article.id].slice(0, 20);
+      }
+      
+      await storage.setItem(PRICING_HISTORY_KEY, JSON.stringify(allHistory));
+      setPricingHistory(allHistory[article.id]);
+      
+      Alert.alert('Success', 'Pricing calculation saved to history');
+    } catch (error) {
+      console.error('Error saving pricing calculation:', error);
+      Alert.alert('Error', 'Failed to save calculation');
+    }
+  };
+
+  const loadHistoryItem = (item: PricingCalculation) => {
+    setSelectedMarket(item.market);
+    
+    const market = MARKETS.find(m => m.value === item.market);
+    if (!market) return;
+    
+    if (market.region === 'europe') {
+      setProfitMarginEurope(item.profitMargin);
+    } else if (market.region === 'usa') {
+      setProfitMarginUSA(item.profitMargin);
+      if (item.fxRate) setFxRate(item.fxRate);
+    } else {
+      setProfitMarginOther(item.profitMargin);
+    }
+    
+    setUseTransport(item.useTransport);
+    if (item.useTransport && item.transportType && item.transportCost) {
+      setTransportType(item.transportType);
+      if (item.transportType === 'truck') {
+        setTransportTruck(item.transportCost);
+      } else {
+        setTransportAir(item.transportCost);
+      }
+    }
+    
+    setUseSampling(item.useSampling);
+    if (item.useSampling && item.samplingRate) {
+      setSamplingRate(item.samplingRate);
+    }
+    
+    setShowHistory(false);
+    Alert.alert('Loaded', 'Previous calculation loaded successfully');
+  };
+
+  const deleteHistoryItem = async (itemId: string) => {
+    if (!article) return;
+
+    try {
+      const historyStr = await storage.getItem(PRICING_HISTORY_KEY);
+      if (!historyStr) return;
+      
+      let allHistory: PricingHistory = JSON.parse(historyStr);
+      
+      if (allHistory[article.id]) {
+        allHistory[article.id] = allHistory[article.id].filter(item => item.id !== itemId);
+        await storage.setItem(PRICING_HISTORY_KEY, JSON.stringify(allHistory));
+        setPricingHistory(allHistory[article.id]);
+      }
+    } catch (error) {
+      console.error('Error deleting history item:', error);
+      Alert.alert('Error', 'Failed to delete history item');
     }
   };
 
