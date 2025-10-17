@@ -18,6 +18,7 @@ import * as MailComposer from 'expo-mail-composer';
 import { Ionicons } from '@expo/vector-icons';
 
 const STORAGE_KEY = 'article_registry';
+const PRICING_HISTORY_KEY = 'pricing_history';
 
 const storage = {
   async getItem(key: string): Promise<string | null> {
@@ -33,6 +34,18 @@ const storage = {
       return null;
     } catch {
       return null;
+    }
+  },
+  async setItem(key: string, value: string): Promise<void> {
+    if (Platform.OS === 'web') {
+      localStorage.setItem(key, value);
+    } else {
+      try {
+        const filePath = `${FileSystemLegacy.documentDirectory}${key}.json`;
+        await FileSystemLegacy.writeAsStringAsync(filePath, value);
+      } catch (error) {
+        console.error('Error writing to storage:', error);
+      }
     }
   },
 };
