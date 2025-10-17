@@ -898,7 +898,11 @@ ${new Date().toLocaleString()}
         {finalPrice !== null && (
           <View style={styles.finalPriceCard}>
             <Text style={styles.finalPriceLabel}>Final Selling Price</Text>
-            <Text style={styles.finalPriceValue}>€{finalPrice.toFixed(2)}/mt</Text>
+            <Text style={styles.finalPriceValue}>
+              {market?.region === 'usa' 
+                ? `$${finalPrice.toFixed(2)}/yrd` 
+                : `€${finalPrice.toFixed(2)}/mt`}
+            </Text>
             <Text style={styles.finalPriceMarket}>{market?.label}</Text>
           </View>
         )}
