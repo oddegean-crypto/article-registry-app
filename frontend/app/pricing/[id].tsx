@@ -329,12 +329,6 @@ export default function PricingCalculatorScreen() {
 
     let price = basePrice + profitMargin;
 
-    // Apply USD conversion if USA
-    if (market.region === 'usa') {
-      const fx = parseFloat(fxRate) || 1;
-      price = (price * fx) / 1.09361;
-    }
-
     // Apply commission (use custom commission rate)
     const commissionRate = parseFloat(customCommission) / 100 || 0;
     price = price * (1 + commissionRate);
@@ -351,6 +345,13 @@ export default function PricingCalculatorScreen() {
     if (useSampling) {
       const surcharge = parseFloat(samplingRate) || 0;
       price = price * (1 + surcharge / 100);
+    }
+
+    // Apply USD conversion and /yrd conversion if USA
+    if (market.region === 'usa') {
+      const fx = parseFloat(fxRate) || 1;
+      // Convert EUR/mt to USD/yrd: multiply by FX rate, then divide by 1.09361 (mt to yrd conversion)
+      price = (price * fx) / 1.09361;
     }
 
     setFinalPrice(price);
