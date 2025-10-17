@@ -552,7 +552,7 @@ Date: ${date}
 --- Base Information ---
 Base Price: €${basePrice.toFixed(2)}/mt
 Profit Margin: €${market.region === 'europe' ? profitMarginEurope : market.region === 'usa' ? profitMarginUSA : profitMarginOther}/mt
-Commission: ${(market.commission * 100).toFixed(0)}%
+Commission: ${customCommission}%
 
 ${market.region === 'usa' ? `--- USD Conversion ---
 Exchange Rate: ${fxRate}
