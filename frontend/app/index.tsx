@@ -1112,6 +1112,21 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#666',
   },
+  salesBadgeMain: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#ECFDF5',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 8,
+    gap: 4,
+    marginLeft: 8,
+  },
+  salesBadgeMainText: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: '#10B981',
+  },
   favoriteBtn: {
     padding: 4,
   },
