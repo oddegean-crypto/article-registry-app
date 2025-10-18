@@ -228,6 +228,24 @@ export default function FilterScreen() {
           </View>
         </View>
 
+        {/* Sold Items Toggle */}
+        <View style={styles.filterSection}>
+          <TouchableOpacity 
+            style={styles.soldItemsToggle}
+            onPress={() => setSoldItemsOnly(!soldItemsOnly)}
+          >
+            <View style={styles.soldItemsToggleLeft}>
+              <Ionicons name="cart" size={20} color={soldItemsOnly ? '#10B981' : '#666'} />
+              <Text style={[styles.soldItemsToggleText, soldItemsOnly && styles.soldItemsToggleTextActive]}>
+                Show Only Sold Items
+              </Text>
+            </View>
+            <View style={[styles.toggleSwitch, soldItemsOnly && styles.toggleSwitchActive]}>
+              <View style={[styles.toggleCircle, soldItemsOnly && styles.toggleCircleActive]} />
+            </View>
+          </TouchableOpacity>
+        </View>
+
         <View style={styles.bottomPadding} />
       </ScrollView>
 
