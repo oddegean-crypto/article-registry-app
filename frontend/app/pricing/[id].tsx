@@ -494,6 +494,7 @@ export default function PricingCalculatorScreen() {
           </div>
         </div>
 
+        ${pdfType === 'full' ? `
         <div class="section">
           <div class="section-title">Base Information</div>
           <div class="row">
@@ -509,8 +510,9 @@ export default function PricingCalculatorScreen() {
             <span class="value">${customCommission}%</span>
           </div>
         </div>
+        ` : ''}
 
-        ${market.region === 'usa' ? `
+        ${pdfType === 'full' && market.region === 'usa' ? `
         <div class="section">
           <div class="section-title">USD Conversion</div>
           <div class="row">
