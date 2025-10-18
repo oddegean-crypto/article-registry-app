@@ -124,7 +124,8 @@ export default function HomeScreen() {
           (filters.sections && filters.sections.length > 0) ||
           (filters.suppliers && filters.suppliers.length > 0) ||
           filters.minPrice ||
-          filters.maxPrice;
+          filters.maxPrice ||
+          filters.soldItemsOnly;
         
         if (hasFilters) {
           setActiveFilters(filters);
