@@ -180,6 +180,35 @@ export default function FilterScreen() {
       </View>
 
       <ScrollView style={styles.content} contentContainerStyle={styles.scrollContent}>
+        {/* Sold Items Filter - First */}
+        <View style={styles.filterSection}>
+          <Text style={styles.filterTitle}>Sales Filter</Text>
+          <View style={styles.filterOptions}>
+            <TouchableOpacity
+              style={[
+                styles.filterChip,
+                soldItemsOnly && styles.filterChipSelected,
+              ]}
+              onPress={() => setSoldItemsOnly(!soldItemsOnly)}
+            >
+              <Ionicons 
+                name={soldItemsOnly ? "cart" : "cart-outline"} 
+                size={16} 
+                color={soldItemsOnly ? "#fff" : "#007AFF"} 
+                style={{marginRight: 6}}
+              />
+              <Text
+                style={[
+                  styles.filterChipText,
+                  soldItemsOnly && styles.filterChipTextSelected,
+                ]}
+              >
+                Show Only Sold Items
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
         {/* Season Filter */}
         {renderFilterSection(
           'Season',
