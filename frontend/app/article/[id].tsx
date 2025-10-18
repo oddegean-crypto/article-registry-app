@@ -1314,23 +1314,76 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     borderWidth: 1,
     borderColor: '#e0e0e0',
-    position: 'relative',
   },
   saleItemHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 8,
+    alignItems: 'flex-start',
+    marginBottom: 12,
+  },
+  saleItemHeaderLeft: {
+    flex: 1,
+  },
+  saleItemActions: {
+    flexDirection: 'row',
+    gap: 8,
+  },
+  editSaleButton: {
+    padding: 8,
+    backgroundColor: '#E3F2FD',
+    borderRadius: 8,
+  },
+  deleteSaleButton: {
+    padding: 8,
+    backgroundColor: '#FFEBEE',
+    borderRadius: 8,
   },
   saleCustomer: {
     fontSize: 18,
     fontWeight: '600',
     color: '#333',
-    flex: 1,
+    marginBottom: 4,
   },
   saleDate: {
-    fontSize: 13,
+    fontSize: 12,
     color: '#999',
+  },
+  saleDetailRow: {
+    marginBottom: 8,
+  },
+  saleDetailItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  saleDetailLabel: {
+    fontSize: 14,
+    color: '#666',
+    fontWeight: '500',
+  },
+  saleDetailValue: {
+    fontSize: 14,
+    color: '#333',
+    fontWeight: '600',
+  },
+  saleTotalRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 12,
+    paddingTop: 12,
+    borderTopWidth: 1,
+    borderTopColor: '#e0e0e0',
+  },
+  saleTotalLabel: {
+    fontSize: 15,
+    fontWeight: '600',
+    color: '#666',
+  },
+  saleTotalValue: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#10B981',
   },
   saleColor: {
     fontSize: 14,
@@ -1351,12 +1404,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     color: '#007AFF',
-  },
-  deleteSaleButton: {
-    position: 'absolute',
-    top: 12,
-    right: 12,
-    padding: 8,
   },
   addSaleModalContent: {
     backgroundColor: '#fff',
