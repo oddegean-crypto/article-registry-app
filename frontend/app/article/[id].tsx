@@ -141,12 +141,12 @@ export default function ArticleDetailsScreen() {
     }
   };
 
-  const loadSalesHistory = async (articleCode: string) => {
+  const loadSalesHistory = async (articleId: string) => {
     try {
       const historyStr = await storage.getItem(SALES_HISTORY_KEY);
       if (historyStr) {
         const allHistory: SalesHistory = JSON.parse(historyStr);
-        const articleSales = allHistory[articleCode] || [];
+        const articleSales = allHistory[articleId] || [];
         // Sort by timestamp descending (newest first)
         setSalesHistory(articleSales.sort((a, b) => 
           new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
