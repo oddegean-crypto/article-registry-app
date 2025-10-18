@@ -126,8 +126,8 @@ export default function ArticleDetailsScreen() {
         const found = articles.find((a) => a.id === id);
         if (found) {
           setArticle(found);
-          // Load sales history for this article
-          await loadSalesHistory(found.articleCode);
+          // Load sales history for this article by ID
+          await loadSalesHistory(found.id);
         } else {
           Alert.alert('Error', 'Article not found');
           router.back();
