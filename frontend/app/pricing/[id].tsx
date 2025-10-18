@@ -85,6 +85,7 @@ interface PricingCalculation {
   finalPrice: number;
   basePrice: number;
   commission: number;
+  note?: string;
 }
 
 interface PricingHistory {
