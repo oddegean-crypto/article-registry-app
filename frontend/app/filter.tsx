@@ -111,6 +111,7 @@ export default function FilterScreen() {
       suppliers: selectedSuppliers,
       minPrice,
       maxPrice,
+      soldItemsOnly,
     };
     
     console.log('Saving filters:', filters);
@@ -128,6 +129,7 @@ export default function FilterScreen() {
     setSelectedSuppliers([]);
     setMinPrice('');
     setMaxPrice('');
+    setSoldItemsOnly(false);
     await storage.setItem(FILTER_KEY, JSON.stringify({}));
     router.back();
   };
