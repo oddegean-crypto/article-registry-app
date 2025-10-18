@@ -124,6 +124,8 @@ export default function ArticleDetailsScreen() {
         const found = articles.find((a) => a.id === id);
         if (found) {
           setArticle(found);
+          // Load sales history for this article
+          await loadSalesHistory(found.articleCode);
         } else {
           Alert.alert('Error', 'Article not found');
           router.back();
@@ -135,6 +137,101 @@ export default function ArticleDetailsScreen() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const loadSalesHistory = async (articleCode: string) => {
+    try {
+      const historyStr = await storage.getItem(SALES_HISTORY_KEY);
+      if (historyStr) {
+        const allHistory: SalesHistory = JSON.parse(historyStr);
+        const articleSales = allHistory[articleCode] || [];
+        // Sort by timestamp descending (newest first)
+        setSalesHistory(articleSales.sort((a, b) => 
+          new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+        ));
+      }
+    } catch (error) {
+      console.error('Error loading sales history:', error);
+    }
+  };
+
+  const saveSale = async () => {
+    if (!article) return;
+
+    if (!saleCustomer.trim() || !saleColor.trim() || !saleQuantity.trim() || !salePrice.trim()) {
+      Alert.alert('Error', 'Please fill in all fields');
+      return;
+    }
+
+    const sale: Sale = {
+      id: Date.now().toString(),
+      timestamp: new Date().toISOString(),
+      articleCode: article.articleCode,
+      customer: saleCustomer.trim(),
+      color: saleColor.trim(),
+      quantity: saleQuantity.trim(),
+      price: salePrice.trim(),
+      currency: saleCurrency,
+      unit: saleUnit,
+    };
+
+    try {
+      const historyStr = await storage.getItem(SALES_HISTORY_KEY);
+      let allHistory: SalesHistory = historyStr ? JSON.parse(historyStr) : {};
+      
+      if (!allHistory[article.articleCode]) {
+        allHistory[article.articleCode] = [];
+      }
+      
+      allHistory[article.articleCode].unshift(sale);
+      
+      await storage.setItem(SALES_HISTORY_KEY, JSON.stringify(allHistory));
+      setSalesHistory(allHistory[article.articleCode]);
+      
+      // Reset form
+      setShowAddSaleModal(false);
+      setSaleCustomer('');
+      setSaleColor('');
+      setSaleQuantity('');
+      setSalePrice('');
+      setSaleCurrency('EUR');
+      setSaleUnit('mt');
+      
+      Alert.alert('Success', 'Sale recorded successfully');
+    } catch (error) {
+      console.error('Error saving sale:', error);
+      Alert.alert('Error', 'Failed to save sale');
+    }
+  };
+
+  const deleteSale = async (saleId: string) => {
+    if (!article) return;
+
+    try {
+      const historyStr = await storage.getItem(SALES_HISTORY_KEY);
+      if (!historyStr) return;
+      
+      let allHistory: SalesHistory = JSON.parse(historyStr);
+      
+      if (allHistory[article.articleCode]) {
+        allHistory[article.articleCode] = allHistory[article.articleCode].filter(
+          sale => sale.id !== saleId
+        );
+        await storage.setItem(SALES_HISTORY_KEY, JSON.stringify(allHistory));
+        setSalesHistory(allHistory[article.articleCode]);
+        Alert.alert('Success', 'Sale deleted');
+      }
+    } catch (error) {
+      console.error('Error deleting sale:', error);
+      Alert.alert('Error', 'Failed to delete sale');
+    }
+  };
+
+  const getTotalQuantitySold = () => {
+    return salesHistory.reduce((total, sale) => {
+      const qty = parseFloat(sale.quantity) || 0;
+      return total + qty;
+    }, 0);
   };
 
   const generatePDF = async () => {
