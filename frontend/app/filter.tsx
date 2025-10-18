@@ -52,6 +52,7 @@ export default function FilterScreen() {
   const [selectedSuppliers, setSelectedSuppliers] = useState<string[]>([]);
   const [minPrice, setMinPrice] = useState('');
   const [maxPrice, setMaxPrice] = useState('');
+  const [soldItemsOnly, setSoldItemsOnly] = useState(false);
 
   useEffect(() => {
     loadArticlesAndFilters();
