@@ -348,6 +348,96 @@ export default function StatsScreen() {
           </View>
         )}
 
+        {/* Sales Statistics */}
+        {stats.sales.totalOrders > 0 && (
+          <View style={styles.salesSection}>
+            <View style={styles.categoryHeader}>
+              <Ionicons name="cart" size={24} color="#10B981" />
+              <Text style={styles.categoryTitle}>Sales & Orders</Text>
+            </View>
+
+            {/* Sales Overview Cards */}
+            <View style={styles.salesCardsGrid}>
+              <View style={styles.salesCard}>
+                <Ionicons name="receipt" size={24} color="#10B981" />
+                <Text style={styles.salesCardValue}>{stats.sales.totalOrders}</Text>
+                <Text style={styles.salesCardLabel}>Total Orders</Text>
+              </View>
+              <View style={styles.salesCard}>
+                <Ionicons name="cube" size={24} color="#007AFF" />
+                <Text style={styles.salesCardValue}>{stats.sales.totalQuantity.toFixed(1)}</Text>
+                <Text style={styles.salesCardLabel}>Units Sold</Text>
+              </View>
+            </View>
+
+            {/* Revenue Cards */}
+            <View style={styles.revenueSection}>
+              <Text style={styles.revenueSectionTitle}>Total Revenue</Text>
+              <View style={styles.revenueCards}>
+                {stats.sales.totalRevenue.EUR > 0 && (
+                  <View style={styles.revenueCard}>
+                    <Text style={styles.revenueCurrency}>EUR</Text>
+                    <Text style={styles.revenueAmount}>
+                      €{stats.sales.totalRevenue.EUR.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                    </Text>
+                  </View>
+                )}
+                {stats.sales.totalRevenue.USD > 0 && (
+                  <View style={styles.revenueCard}>
+                    <Text style={styles.revenueCurrency}>USD</Text>
+                    <Text style={styles.revenueAmount}>
+                      ${stats.sales.totalRevenue.USD.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                    </Text>
+                  </View>
+                )}
+              </View>
+            </View>
+
+            {/* Top Selling Articles */}
+            {stats.sales.topSellingArticles.length > 0 && (
+              <View style={styles.topSellingSection}>
+                <Text style={styles.revenueSectionTitle}>Top Selling Articles</Text>
+                {stats.sales.topSellingArticles.map((article, index) => (
+                  <View key={index} style={styles.topSellingItem}>
+                    <View style={styles.topSellingRank}>
+                      <Text style={styles.topSellingRankText}>{index + 1}</Text>
+                    </View>
+                    <View style={styles.topSellingInfo}>
+                      <Text style={styles.topSellingCode}>{article.articleCode}</Text>
+                      <Text style={styles.topSellingDetails}>
+                        {article.quantity.toFixed(1)} units • {article.orders} orders
+                      </Text>
+                    </View>
+                  </View>
+                ))}
+              </View>
+            )}
+
+            {/* Recent Sales */}
+            {stats.sales.recentSales.length > 0 && (
+              <View style={styles.recentSalesSection}>
+                <Text style={styles.revenueSectionTitle}>Recent Sales</Text>
+                {stats.sales.recentSales.slice(0, 5).map((sale, index) => (
+                  <View key={index} style={styles.recentSaleItem}>
+                    <View style={styles.recentSaleHeader}>
+                      <Text style={styles.recentSaleCustomer}>{sale.customer}</Text>
+                      <Text style={styles.recentSaleAmount}>
+                        {sale.currency === 'EUR' ? '€' : '$'}{parseFloat(sale.price).toFixed(2)}
+                      </Text>
+                    </View>
+                    <Text style={styles.recentSaleDetails}>
+                      {sale.articleCode} • {sale.quantity} units
+                    </Text>
+                    <Text style={styles.recentSaleDate}>
+                      {new Date(sale.timestamp).toLocaleDateString()}
+                    </Text>
+                  </View>
+                ))}
+              </View>
+            )}
+          </View>
+        )}
+
         {/* By Season */}
         {renderCategorySection('By Season', stats.bySeason, 'sunny', '#FFA500')}
 
