@@ -56,6 +56,7 @@ const storage = {
 interface Sale {
   id: string;
   timestamp: string;
+  articleId: string;
   articleCode: string;
   customer: string;
   color: string;
@@ -66,7 +67,7 @@ interface Sale {
 }
 
 interface SalesHistory {
-  [articleCode: string]: Sale[];
+  [articleId: string]: Sale[];
 }
 
 interface Article {
