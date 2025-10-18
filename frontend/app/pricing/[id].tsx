@@ -371,6 +371,32 @@ export default function PricingCalculatorScreen() {
   const generatePricingReport = async () => {
     if (!article || finalPrice === null) return;
 
+    // Show alert to choose PDF type
+    Alert.alert(
+      'Choose PDF Type',
+      'Select the type of pricing report:',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Simplified',
+          onPress: () => createPricingPDF('simplified'),
+          style: 'default',
+        },
+        {
+          text: 'Full Details',
+          onPress: () => createPricingPDF('full'),
+          style: 'default',
+        },
+      ]
+    );
+  };
+
+  const createPricingPDF = async (pdfType: 'full' | 'simplified') => {
+    if (!article || finalPrice === null) return;
+
     const market = MARKETS.find(m => m.value === selectedMarket);
     if (!market) return;
 
