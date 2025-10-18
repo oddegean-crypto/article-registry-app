@@ -952,7 +952,7 @@ ${new Date().toLocaleString()}
 
         {/* Action Buttons */}
         <View style={styles.actionButtons}>
-          <TouchableOpacity style={styles.actionButton} onPress={savePricingCalculation}>
+          <TouchableOpacity style={styles.actionButton} onPress={() => setShowSaveModal(true)}>
             <Ionicons name="save" size={20} color="#fff" />
             <Text style={styles.actionButtonText}>Save</Text>
           </TouchableOpacity>
@@ -965,6 +965,63 @@ ${new Date().toLocaleString()}
             <Text style={styles.actionButtonText}>Email</Text>
           </TouchableOpacity>
         </View>
+
+        {/* Save Note Modal */}
+        <Modal
+          visible={showSaveModal}
+          transparent={true}
+          animationType="slide"
+          onRequestClose={() => setShowSaveModal(false)}
+        >
+          <TouchableOpacity 
+            style={styles.modalOverlay}
+            activeOpacity={1}
+            onPress={() => setShowSaveModal(false)}
+          >
+            <View style={styles.saveModalContent} onStartShouldSetResponder={() => true}>
+              <View style={styles.modalHeader}>
+                <Text style={styles.modalTitle}>Save Pricing Calculation</Text>
+                <TouchableOpacity onPress={() => setShowSaveModal(false)}>
+                  <Ionicons name="close" size={24} color="#666" />
+                </TouchableOpacity>
+              </View>
+              
+              <View style={styles.saveModalBody}>
+                <Text style={styles.inputLabel}>Add Note (Optional)</Text>
+                <Text style={styles.inputHint}>e.g., Customer name, company, or reference</Text>
+                <TextInput
+                  style={styles.saveNoteInput}
+                  value={saveNote}
+                  onChangeText={setSaveNote}
+                  placeholder="Enter note..."
+                  placeholderTextColor="#999"
+                  multiline
+                  numberOfLines={3}
+                  autoFocus
+                />
+                
+                <View style={styles.saveModalButtons}>
+                  <TouchableOpacity 
+                    style={[styles.saveModalButton, styles.saveModalButtonCancel]}
+                    onPress={() => {
+                      setShowSaveModal(false);
+                      setSaveNote('');
+                    }}
+                  >
+                    <Text style={styles.saveModalButtonTextCancel}>Cancel</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity 
+                    style={[styles.saveModalButton, styles.saveModalButtonSave]}
+                    onPress={savePricingCalculation}
+                  >
+                    <Ionicons name="save" size={20} color="#fff" />
+                    <Text style={styles.saveModalButtonText}>Save</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+          </TouchableOpacity>
+        </Modal>
 
         {/* Pricing History Section */}
         {pricingHistory.length > 0 && (
