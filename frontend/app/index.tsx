@@ -562,52 +562,65 @@ export default function HomeScreen() {
     setRefreshing(false);
   }, []);
 
-  const renderArticleItem = ({ item }: { item: Article }) => (
-    <TouchableOpacity
-      style={styles.articleItem}
-      onPress={() => {
-        addToRecent(item.id);
-        router.push(`/article/${encodeURIComponent(item.id)}`);
-      }}
-      activeOpacity={0.7}
-    >
-      <View style={styles.articleHeader}>
-        <View style={styles.articleLeft}>
-          <Text style={styles.articleCode}>{item.articleCode}</Text>
-          {item.colorCode && (
-            <View style={styles.badge}>
-              <Text style={styles.badgeText}>{item.colorCode}</Text>
-            </View>
+  const renderArticleItem = ({ item }: { item: Article }) => {
+    const totalSales = getTotalSalesForArticle(item.articleCode);
+    const hasSales = totalSales > 0;
+    
+    return (
+      <TouchableOpacity
+        style={styles.articleItem}
+        onPress={() => {
+          addToRecent(item.id);
+          router.push(`/article/${encodeURIComponent(item.id)}`);
+        }}
+        activeOpacity={0.7}
+      >
+        <View style={styles.articleHeader}>
+          <View style={styles.articleLeft}>
+            <Text style={styles.articleCode}>{item.articleCode}</Text>
+            {item.colorCode && (
+              <View style={styles.badge}>
+                <Text style={styles.badgeText}>{item.colorCode}</Text>
+              </View>
+            )}
+            {hasSales && (
+              <View style={styles.salesBadgeMain}>
+                <Ionicons name="cart" size={14} color="#10B981" />
+                <Text style={styles.salesBadgeMainText}>
+                  {totalSales.toFixed(1)}
+                </Text>
+              </View>
+            )}
+          </View>
+          <TouchableOpacity
+            onPress={() => toggleFavorite(item.id)}
+            style={styles.favoriteBtn}
+          >
+            <Ionicons
+              name={favorites.includes(item.id) ? 'heart' : 'heart-outline'}
+              size={24}
+              color={favorites.includes(item.id) ? '#FF6B6B' : '#999'}
+            />
+          </TouchableOpacity>
+        </View>
+        <Text style={styles.articleName} numberOfLines={1}>
+          {item.articleName || 'No name'}
+        </Text>
+        <View style={styles.articleDetails}>
+          {item.colorName && (
+            <Text style={styles.detailText} numberOfLines={1}>
+              {item.colorName}
+            </Text>
+          )}
+          {item.season && (
+            <Text style={styles.detailText} numberOfLines={1}>
+              {item.season}
+            </Text>
           )}
         </View>
-        <TouchableOpacity
-          onPress={() => toggleFavorite(item.id)}
-          style={styles.favoriteBtn}
-        >
-          <Ionicons
-            name={favorites.includes(item.id) ? 'heart' : 'heart-outline'}
-            size={24}
-            color={favorites.includes(item.id) ? '#FF6B6B' : '#999'}
-          />
-        </TouchableOpacity>
-      </View>
-      <Text style={styles.articleName} numberOfLines={1}>
-        {item.articleName || 'No name'}
-      </Text>
-      <View style={styles.articleDetails}>
-        {item.colorName && (
-          <Text style={styles.detailText} numberOfLines={1}>
-            {item.colorName}
-          </Text>
-        )}
-        {item.season && (
-          <Text style={styles.detailText} numberOfLines={1}>
-            {item.season}
-          </Text>
-        )}
-      </View>
-    </TouchableOpacity>
-  );
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
