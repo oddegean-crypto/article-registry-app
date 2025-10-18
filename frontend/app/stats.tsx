@@ -636,6 +636,185 @@ const styles = StyleSheet.create({
     height: '100%',
     borderRadius: 4,
   },
+  salesSection: {
+    marginBottom: 24,
+  },
+  salesCardsGrid: {
+    flexDirection: 'row',
+    gap: 12,
+    marginBottom: 16,
+  },
+  salesCard: {
+    flex: 1,
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    padding: 16,
+    alignItems: 'center',
+    gap: 8,
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+      },
+      android: {
+        elevation: 3,
+      },
+    }),
+  },
+  salesCardValue: {
+    fontSize: 28,
+    fontWeight: '700',
+    color: '#333',
+  },
+  salesCardLabel: {
+    fontSize: 13,
+    color: '#666',
+    textAlign: 'center',
+  },
+  revenueSection: {
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 16,
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+      },
+      android: {
+        elevation: 3,
+      },
+    }),
+  },
+  revenueSectionTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#333',
+    marginBottom: 12,
+  },
+  revenueCards: {
+    flexDirection: 'row',
+    gap: 12,
+  },
+  revenueCard: {
+    flex: 1,
+    backgroundColor: '#F0FDF4',
+    borderRadius: 8,
+    padding: 16,
+    alignItems: 'center',
+  },
+  revenueCurrency: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: '#10B981',
+    marginBottom: 4,
+  },
+  revenueAmount: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#10B981',
+  },
+  topSellingSection: {
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 16,
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+      },
+      android: {
+        elevation: 3,
+      },
+    }),
+  },
+  topSellingItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f0f0f0',
+    gap: 12,
+  },
+  topSellingRank: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: '#007AFF',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  topSellingRankText: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#fff',
+  },
+  topSellingInfo: {
+    flex: 1,
+  },
+  topSellingCode: {
+    fontSize: 15,
+    fontWeight: '600',
+    color: '#333',
+    marginBottom: 2,
+  },
+  topSellingDetails: {
+    fontSize: 13,
+    color: '#666',
+  },
+  recentSalesSection: {
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    padding: 16,
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+      },
+      android: {
+        elevation: 3,
+      },
+    }),
+  },
+  recentSaleItem: {
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f0f0f0',
+  },
+  recentSaleHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 4,
+  },
+  recentSaleCustomer: {
+    fontSize: 15,
+    fontWeight: '600',
+    color: '#333',
+  },
+  recentSaleAmount: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: '#10B981',
+  },
+  recentSaleDetails: {
+    fontSize: 13,
+    color: '#666',
+    marginBottom: 2,
+  },
+  recentSaleDate: {
+    fontSize: 12,
+    color: '#999',
+  },
   bottomPadding: {
     height: 32,
   },
