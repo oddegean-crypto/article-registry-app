@@ -760,7 +760,9 @@ ${new Date().toLocaleString()}
               {salesHistory.length === 0 ? (
                 <Text style={styles.noSalesText}>No sales recorded yet</Text>
               ) : (
-                salesHistory.map((sale) => (
+                salesHistory.map((sale) => {
+                  console.log('Rendering sale:', sale);
+                  return (
                   <View key={sale.id} style={styles.saleItem}>
                     <View style={styles.saleItemHeader}>
                       <View style={styles.saleItemHeaderLeft}>
@@ -834,7 +836,8 @@ ${new Date().toLocaleString()}
                       </Text>
                     </View>
                   </View>
-                ))
+                  );
+                })
               )}
             </ScrollView>
           </View>
