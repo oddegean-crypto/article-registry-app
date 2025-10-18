@@ -25,6 +25,7 @@ const FAVORITES_KEY = 'article_favorites';
 const RECENT_KEY = 'article_recent';
 const SAVED_SEARCHES_KEY = 'saved_searches';
 const FILTER_KEY = 'article_filters';
+const SALES_HISTORY_KEY = 'sales_history';
 
 // Platform-specific storage helper
 const storage = {
