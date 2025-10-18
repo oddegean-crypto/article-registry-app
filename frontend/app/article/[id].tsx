@@ -859,8 +859,19 @@ ${new Date().toLocaleString()}
           >
             <View style={styles.addSaleModalContent} onStartShouldSetResponder={() => true}>
               <View style={styles.salesModalHeader}>
-                <Text style={styles.salesModalTitle}>Record Sale</Text>
-                <TouchableOpacity onPress={() => setShowAddSaleModal(false)}>
+                <Text style={styles.salesModalTitle}>
+                  {editingSale ? 'Edit Sale' : 'Record Sale'}
+                </Text>
+                <TouchableOpacity onPress={() => {
+                  setShowAddSaleModal(false);
+                  setEditingSale(null);
+                  setSaleCustomer('');
+                  setSaleColor('');
+                  setSaleQuantity('');
+                  setSalePrice('');
+                  setSaleCurrency('EUR');
+                  setSaleUnit('mt');
+                }}>
                   <Ionicons name="close" size={24} color="#666" />
                 </TouchableOpacity>
               </View>
