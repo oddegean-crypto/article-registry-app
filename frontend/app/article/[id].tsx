@@ -8,6 +8,9 @@ import {
   ActivityIndicator,
   Alert,
   Platform,
+  Modal,
+  TextInput,
+  KeyboardAvoidingView,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router, useLocalSearchParams } from 'expo-router';
@@ -17,6 +20,7 @@ import * as Sharing from 'expo-sharing';
 import { Ionicons } from '@expo/vector-icons';
 
 const STORAGE_KEY = 'article_registry';
+const SALES_HISTORY_KEY = 'sales_history';
 
 // Platform-specific storage helper
 const storage = {
@@ -35,7 +39,35 @@ const storage = {
       return null;
     }
   },
+  async setItem(key: string, value: string): Promise<void> {
+    if (Platform.OS === 'web') {
+      localStorage.setItem(key, value);
+    } else {
+      try {
+        const filePath = `${FileSystemLegacy.documentDirectory}${key}.json`;
+        await FileSystemLegacy.writeAsStringAsync(filePath, value);
+      } catch (error) {
+        console.error('Error writing to storage:', error);
+      }
+    }
+  },
 };
+
+interface Sale {
+  id: string;
+  timestamp: string;
+  articleCode: string;
+  customer: string;
+  color: string;
+  quantity: string;
+  price: string;
+  currency: 'EUR' | 'USD';
+  unit: 'mt' | 'yrd';
+}
+
+interface SalesHistory {
+  [articleCode: string]: Sale[];
+}
 
 interface Article {
   id: string;
