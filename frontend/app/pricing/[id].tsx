@@ -232,6 +232,7 @@ export default function PricingCalculatorScreen() {
       finalPrice,
       basePrice: parseFloat(article.basePriceEUR) || 0,
       commission: parseFloat(customCommission) / 100,
+      note: saveNote.trim() || undefined,
     };
 
     try {
@@ -251,6 +252,10 @@ export default function PricingCalculatorScreen() {
       
       await storage.setItem(PRICING_HISTORY_KEY, JSON.stringify(allHistory));
       setPricingHistory(allHistory[article.id]);
+      
+      // Close modal and reset note
+      setShowSaveModal(false);
+      setSaveNote('');
       
       Alert.alert('Success', 'Pricing calculation saved to history');
     } catch (error) {
