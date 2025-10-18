@@ -169,8 +169,8 @@ export default function ArticleDetailsScreen() {
       const historyStr = await storage.getItem(SALES_HISTORY_KEY);
       let allHistory: SalesHistory = historyStr ? JSON.parse(historyStr) : {};
       
-      if (!allHistory[article.articleCode]) {
-        allHistory[article.articleCode] = [];
+      if (!allHistory[article.id]) {
+        allHistory[article.id] = [];
       }
 
       if (editingSale) {
@@ -185,7 +185,7 @@ export default function ArticleDetailsScreen() {
           unit: saleUnit,
         };
 
-        allHistory[article.articleCode] = allHistory[article.articleCode].map(sale =>
+        allHistory[article.id] = allHistory[article.id].map(sale =>
           sale.id === editingSale.id ? updatedSale : sale
         );
 
@@ -210,7 +210,7 @@ export default function ArticleDetailsScreen() {
       }
       
       await storage.setItem(SALES_HISTORY_KEY, JSON.stringify(allHistory));
-      setSalesHistory(allHistory[article.articleCode]);
+      setSalesHistory(allHistory[article.id]);
       
       // Reset form
       setShowAddSaleModal(false);
