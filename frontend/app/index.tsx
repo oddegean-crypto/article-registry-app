@@ -299,7 +299,7 @@ export default function HomeScreen() {
       if (activeFilters.soldItemsOnly) {
         console.log('Filtering by sold items only');
         filtered = filtered.filter(a => {
-          const sales = salesHistory[a.articleCode] || [];
+          const sales = salesHistory[a.id] || [];
           return sales.length > 0;
         });
       }
