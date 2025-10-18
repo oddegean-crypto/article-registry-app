@@ -164,18 +164,6 @@ export default function ArticleDetailsScreen() {
       return;
     }
 
-    const sale: Sale = {
-      id: Date.now().toString(),
-      timestamp: new Date().toISOString(),
-      articleCode: article.articleCode,
-      customer: saleCustomer.trim(),
-      color: saleColor.trim(),
-      quantity: saleQuantity.trim(),
-      price: salePrice.trim(),
-      currency: saleCurrency,
-      unit: saleUnit,
-    };
-
     try {
       const historyStr = await storage.getItem(SALES_HISTORY_KEY);
       let allHistory: SalesHistory = historyStr ? JSON.parse(historyStr) : {};
@@ -183,26 +171,70 @@ export default function ArticleDetailsScreen() {
       if (!allHistory[article.articleCode]) {
         allHistory[article.articleCode] = [];
       }
-      
-      allHistory[article.articleCode].unshift(sale);
+
+      if (editingSale) {
+        // Update existing sale
+        const updatedSale: Sale = {
+          ...editingSale,
+          customer: saleCustomer.trim(),
+          color: saleColor.trim(),
+          quantity: saleQuantity.trim(),
+          price: salePrice.trim(),
+          currency: saleCurrency,
+          unit: saleUnit,
+        };
+
+        allHistory[article.articleCode] = allHistory[article.articleCode].map(sale =>
+          sale.id === editingSale.id ? updatedSale : sale
+        );
+
+        Alert.alert('Success', 'Sale updated successfully');
+      } else {
+        // Add new sale
+        const sale: Sale = {
+          id: Date.now().toString(),
+          timestamp: new Date().toISOString(),
+          articleCode: article.articleCode,
+          customer: saleCustomer.trim(),
+          color: saleColor.trim(),
+          quantity: saleQuantity.trim(),
+          price: salePrice.trim(),
+          currency: saleCurrency,
+          unit: saleUnit,
+        };
+
+        allHistory[article.articleCode].unshift(sale);
+        Alert.alert('Success', 'Sale recorded successfully');
+      }
       
       await storage.setItem(SALES_HISTORY_KEY, JSON.stringify(allHistory));
       setSalesHistory(allHistory[article.articleCode]);
       
       // Reset form
       setShowAddSaleModal(false);
+      setEditingSale(null);
       setSaleCustomer('');
       setSaleColor('');
       setSaleQuantity('');
       setSalePrice('');
       setSaleCurrency('EUR');
       setSaleUnit('mt');
-      
-      Alert.alert('Success', 'Sale recorded successfully');
     } catch (error) {
       console.error('Error saving sale:', error);
       Alert.alert('Error', 'Failed to save sale');
     }
+  };
+
+  const startEditSale = (sale: Sale) => {
+    setEditingSale(sale);
+    setSaleCustomer(sale.customer);
+    setSaleColor(sale.color);
+    setSaleQuantity(sale.quantity);
+    setSalePrice(sale.price);
+    setSaleCurrency(sale.currency);
+    setSaleUnit(sale.unit);
+    setShowSalesModal(false);
+    setShowAddSaleModal(true);
   };
 
   const deleteSale = async (saleId: string) => {
