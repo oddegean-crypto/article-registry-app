@@ -99,6 +99,17 @@ export default function ArticleDetailsScreen() {
   const [article, setArticle] = useState<Article | null>(null);
   const [loading, setLoading] = useState(true);
   const [exporting, setExporting] = useState(false);
+  
+  // Sales tracking
+  const [salesHistory, setSalesHistory] = useState<Sale[]>([]);
+  const [showSalesModal, setShowSalesModal] = useState(false);
+  const [showAddSaleModal, setShowAddSaleModal] = useState(false);
+  const [saleCustomer, setSaleCustomer] = useState('');
+  const [saleColor, setSaleColor] = useState('');
+  const [saleQuantity, setSaleQuantity] = useState('');
+  const [salePrice, setSalePrice] = useState('');
+  const [saleCurrency, setSaleCurrency] = useState<'EUR' | 'USD'>('EUR');
+  const [saleUnit, setSaleUnit] = useState<'mt' | 'yrd'>('mt');
 
   useEffect(() => {
     loadArticle();
