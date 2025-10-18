@@ -88,18 +88,21 @@ export default function HomeScreen() {
   const [sortModalVisible, setSortModalVisible] = useState(false);
   const [currentSort, setCurrentSort] = useState<SortOption>('name');
   const [activeFilters, setActiveFilters] = useState<any>(null);
+  const [salesHistory, setSalesHistory] = useState<any>({});
 
   useEffect(() => {
     loadLocalArticles();
     loadFavorites();
     loadRecentArticles();
     loadSavedSearches();
+    loadSalesHistory();
   }, []);
 
   // Reload filters when screen comes into focus
   useFocusEffect(
     useCallback(() => {
       loadFilters();
+      loadSalesHistory();
     }, [])
   );
 
