@@ -735,7 +735,8 @@ export default function HomeScreen() {
              activeFilters.sections?.length > 0 || 
              activeFilters.suppliers?.length > 0 || 
              activeFilters.minPrice || 
-             activeFilters.maxPrice) && (
+             activeFilters.maxPrice ||
+             activeFilters.soldItemsOnly) && (
               <View style={styles.filterBadge}>
                 <View style={styles.filterDot} />
               </View>
