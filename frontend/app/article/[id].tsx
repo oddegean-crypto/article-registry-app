@@ -104,6 +104,7 @@ export default function ArticleDetailsScreen() {
   const [salesHistory, setSalesHistory] = useState<Sale[]>([]);
   const [showSalesModal, setShowSalesModal] = useState(false);
   const [showAddSaleModal, setShowAddSaleModal] = useState(false);
+  const [editingSale, setEditingSale] = useState<Sale | null>(null);
   const [saleCustomer, setSaleCustomer] = useState('');
   const [saleColor, setSaleColor] = useState('');
   const [saleQuantity, setSaleQuantity] = useState('');
