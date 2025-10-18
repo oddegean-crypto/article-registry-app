@@ -97,11 +97,13 @@ export default function StatsScreen() {
       const stored = await storage.getItem(STORAGE_KEY);
       const favStored = await storage.getItem(FAVORITES_KEY);
       const recentStored = await storage.getItem(RECENT_KEY);
+      const salesStored = await storage.getItem(SALES_HISTORY_KEY);
 
       if (stored) {
         const articles = JSON.parse(stored);
         const favorites = favStored ? JSON.parse(favStored) : [];
         const recent = recentStored ? JSON.parse(recentStored) : [];
+        const salesHistory = salesStored ? JSON.parse(salesStored) : {};
 
         const total = articles.length;
         const bySeason: { [key: string]: number } = {};
@@ -131,6 +133,69 @@ export default function StatsScreen() {
           }
         });
 
+        // Calculate sales statistics
+        let totalOrders = 0;
+        let totalQuantity = 0;
+        const revenueEUR = { total: 0 };
+        const revenueUSD = { total: 0 };
+        const articleSales: {[key: string]: { code: string; name: string; quantity: number; orders: number }} = {};
+        const allSales: any[] = [];
+
+        Object.entries(salesHistory).forEach(([articleId, sales]: [string, any]) => {
+          sales.forEach((sale: any) => {
+            totalOrders++;
+            const qty = parseFloat(sale.quantity) || 0;
+            const price = parseFloat(sale.price) || 0;
+            totalQuantity += qty;
+
+            // Calculate revenue
+            const revenue = qty * price;
+            if (sale.currency === 'EUR') {
+              revenueEUR.total += revenue;
+            } else if (sale.currency === 'USD') {
+              revenueUSD.total += revenue;
+            }
+
+            // Track by article code
+            if (!articleSales[sale.articleCode]) {
+              articleSales[sale.articleCode] = {
+                code: sale.articleCode,
+                name: sale.articleId,
+                quantity: 0,
+                orders: 0,
+              };
+            }
+            articleSales[sale.articleCode].quantity += qty;
+            articleSales[sale.articleCode].orders++;
+
+            // Add to all sales
+            allSales.push({
+              customer: sale.customer,
+              articleCode: sale.articleCode,
+              quantity: sale.quantity,
+              price: sale.price,
+              currency: sale.currency,
+              timestamp: sale.timestamp,
+            });
+          });
+        });
+
+        // Get top 5 selling articles
+        const topSellingArticles = Object.values(articleSales)
+          .sort((a, b) => b.quantity - a.quantity)
+          .slice(0, 5)
+          .map(item => ({
+            articleCode: item.code,
+            articleName: item.name,
+            quantity: item.quantity,
+            orders: item.orders,
+          }));
+
+        // Get recent 10 sales
+        const recentSales = allSales
+          .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
+          .slice(0, 10);
+
         setStats({
           total,
           bySeason,
@@ -143,6 +208,16 @@ export default function StatsScreen() {
           },
           favoritesCount: favorites.length,
           recentCount: recent.length,
+          sales: {
+            totalOrders,
+            totalQuantity,
+            totalRevenue: {
+              EUR: revenueEUR.total,
+              USD: revenueUSD.total,
+            },
+            topSellingArticles,
+            recentSales,
+          },
         });
       }
     } catch (error) {
