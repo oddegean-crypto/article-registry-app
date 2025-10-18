@@ -195,6 +195,7 @@ export default function ArticleDetailsScreen() {
         const sale: Sale = {
           id: Date.now().toString(),
           timestamp: new Date().toISOString(),
+          articleId: article.id,
           articleCode: article.articleCode,
           customer: saleCustomer.trim(),
           color: saleColor.trim(),
@@ -204,7 +205,7 @@ export default function ArticleDetailsScreen() {
           unit: saleUnit,
         };
 
-        allHistory[article.articleCode].unshift(sale);
+        allHistory[article.id].unshift(sale);
         Alert.alert('Success', 'Sale recorded successfully');
       }
       
