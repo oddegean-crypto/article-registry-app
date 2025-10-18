@@ -203,6 +203,24 @@ export default function HomeScreen() {
     }
   };
 
+  const loadSalesHistory = async () => {
+    try {
+      const stored = await storage.getItem(SALES_HISTORY_KEY);
+      if (stored) {
+        setSalesHistory(JSON.parse(stored));
+      }
+    } catch (error) {
+      console.error('Error loading sales history:', error);
+    }
+  };
+
+  const getTotalSalesForArticle = (articleCode: string) => {
+    const sales = salesHistory[articleCode] || [];
+    return sales.reduce((total: number, sale: any) => {
+      return total + (parseFloat(sale.quantity) || 0);
+    }, 0);
+  };
+
   const addToRecent = async (articleId: string) => {
     try {
       const newRecent = [articleId, ...recentArticles.filter(id => id !== articleId)].slice(0, 10);
