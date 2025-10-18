@@ -79,6 +79,13 @@ export default function StatsScreen() {
     priceRange: { min: 0, max: 0, avg: 0 },
     favoritesCount: 0,
     recentCount: 0,
+    sales: {
+      totalOrders: 0,
+      totalQuantity: 0,
+      totalRevenue: { EUR: 0, USD: 0 },
+      topSellingArticles: [],
+      recentSales: [],
+    },
   });
 
   useEffect(() => {
