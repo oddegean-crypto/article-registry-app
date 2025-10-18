@@ -248,12 +248,12 @@ export default function ArticleDetailsScreen() {
       
       let allHistory: SalesHistory = JSON.parse(historyStr);
       
-      if (allHistory[article.articleCode]) {
-        allHistory[article.articleCode] = allHistory[article.articleCode].filter(
+      if (allHistory[article.id]) {
+        allHistory[article.id] = allHistory[article.id].filter(
           sale => sale.id !== saleId
         );
         await storage.setItem(SALES_HISTORY_KEY, JSON.stringify(allHistory));
-        setSalesHistory(allHistory[article.articleCode]);
+        setSalesHistory(allHistory[article.id]);
         Alert.alert('Success', 'Sale deleted');
       }
     } catch (error) {
