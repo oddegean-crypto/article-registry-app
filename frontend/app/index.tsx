@@ -563,7 +563,7 @@ export default function HomeScreen() {
   }, []);
 
   const renderArticleItem = ({ item }: { item: Article }) => {
-    const totalSales = getTotalSalesForArticle(item.articleCode);
+    const totalSales = getTotalSalesForArticle(item.id);
     const hasSales = totalSales > 0;
     
     return (
