@@ -89,6 +89,7 @@ export default function FilterScreen() {
         setSelectedSuppliers(filters.suppliers || []);
         setMinPrice(filters.minPrice || '');
         setMaxPrice(filters.maxPrice || '');
+        setSoldItemsOnly(filters.soldItemsOnly || false);
       }
     } catch (error) {
       console.error('Error loading filters:', error);
