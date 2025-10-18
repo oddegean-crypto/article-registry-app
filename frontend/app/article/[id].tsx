@@ -1305,6 +1305,7 @@ const styles = StyleSheet.create({
   salesList: {
     flex: 1,
     paddingHorizontal: 16,
+    minHeight: 200,
   },
   noSalesText: {
     textAlign: 'center',
