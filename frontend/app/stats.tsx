@@ -296,6 +296,36 @@ export default function StatsScreen() {
         <View style={styles.placeholder} />
       </View>
 
+      {/* Tabs */}
+      <View style={styles.tabsContainer}>
+        <TouchableOpacity
+          style={[styles.tab, activeTab === 'overview' && styles.tabActive]}
+          onPress={() => setActiveTab('overview')}
+        >
+          <Ionicons
+            name={activeTab === 'overview' ? 'cart' : 'cart-outline'}
+            size={20}
+            color={activeTab === 'overview' ? '#007AFF' : '#666'}
+          />
+          <Text style={[styles.tabText, activeTab === 'overview' && styles.tabTextActive]}>
+            Overview
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.tab, activeTab === 'catalog' && styles.tabActive]}
+          onPress={() => setActiveTab('catalog')}
+        >
+          <Ionicons
+            name={activeTab === 'catalog' ? 'albums' : 'albums-outline'}
+            size={20}
+            color={activeTab === 'catalog' ? '#007AFF' : '#666'}
+          />
+          <Text style={[styles.tabText, activeTab === 'catalog' && styles.tabTextActive]}>
+            Catalog
+          </Text>
+        </TouchableOpacity>
+      </View>
+
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent}
