@@ -348,6 +348,48 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#666',
   },
+  soldItemsToggle: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 16,
+    backgroundColor: '#fff',
+    borderRadius: 12,
+  },
+  soldItemsToggleLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  soldItemsToggleText: {
+    fontSize: 16,
+    color: '#333',
+    fontWeight: '500',
+  },
+  soldItemsToggleTextActive: {
+    color: '#10B981',
+    fontWeight: '600',
+  },
+  toggleSwitch: {
+    width: 51,
+    height: 31,
+    borderRadius: 16,
+    backgroundColor: '#e0e0e0',
+    padding: 2,
+    justifyContent: 'center',
+  },
+  toggleSwitchActive: {
+    backgroundColor: '#10B981',
+  },
+  toggleCircle: {
+    width: 27,
+    height: 27,
+    borderRadius: 14,
+    backgroundColor: '#fff',
+  },
+  toggleCircleActive: {
+    alignSelf: 'flex-end',
+  },
   bottomPadding: {
     height: 100,
   },
