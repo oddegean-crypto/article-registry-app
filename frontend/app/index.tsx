@@ -295,6 +295,15 @@ export default function HomeScreen() {
         );
       }
 
+      // Filter by sold items only
+      if (activeFilters.soldItemsOnly) {
+        console.log('Filtering by sold items only');
+        filtered = filtered.filter(a => {
+          const sales = salesHistory[a.articleCode] || [];
+          return sales.length > 0;
+        });
+      }
+
       // Filter by price range
       if (activeFilters.minPrice || activeFilters.maxPrice) {
         console.log('Filtering by price:', activeFilters.minPrice, '-', activeFilters.maxPrice);
