@@ -298,10 +298,14 @@ export default function HomeScreen() {
       // Filter by sold items only
       if (activeFilters.soldItemsOnly) {
         console.log('Filtering by sold items only');
+        console.log('Sales history keys:', Object.keys(salesHistory));
+        console.log('Sample article IDs:', filtered.slice(0, 3).map(a => a.id));
         filtered = filtered.filter(a => {
           const sales = salesHistory[a.id] || [];
+          console.log(`Article ${a.id} has ${sales.length} sales`);
           return sales.length > 0;
         });
+        console.log('Filtered count after sold items:', filtered.length);
       }
 
       // Filter by price range
