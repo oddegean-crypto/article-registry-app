@@ -763,39 +763,76 @@ ${new Date().toLocaleString()}
                 salesHistory.map((sale) => (
                   <View key={sale.id} style={styles.saleItem}>
                     <View style={styles.saleItemHeader}>
-                      <Text style={styles.saleCustomer}>{sale.customer}</Text>
-                      <Text style={styles.saleDate}>
-                        {new Date(sale.timestamp).toLocaleDateString()}
+                      <View style={styles.saleItemHeaderLeft}>
+                        <Text style={styles.saleCustomer}>{sale.customer}</Text>
+                        <Text style={styles.saleDate}>
+                          {new Date(sale.timestamp).toLocaleDateString()} {new Date(sale.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
+                        </Text>
+                      </View>
+                      <View style={styles.saleItemActions}>
+                        <TouchableOpacity
+                          style={styles.editSaleButton}
+                          onPress={() => startEditSale(sale)}
+                        >
+                          <Ionicons name="pencil" size={18} color="#007AFF" />
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          style={styles.deleteSaleButton}
+                          onPress={() => {
+                            Alert.alert(
+                              'Delete Sale',
+                              'Are you sure you want to delete this sale record?',
+                              [
+                                { text: 'Cancel', style: 'cancel' },
+                                {
+                                  text: 'Delete',
+                                  onPress: () => deleteSale(sale.id),
+                                  style: 'destructive',
+                                },
+                              ]
+                            );
+                          }}
+                        >
+                          <Ionicons name="trash-outline" size={18} color="#FF3B30" />
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+
+                    <View style={styles.saleDetailRow}>
+                      <View style={styles.saleDetailItem}>
+                        <Ionicons name="color-palette" size={16} color="#666" />
+                        <Text style={styles.saleDetailLabel}>Color:</Text>
+                        <Text style={styles.saleDetailValue}>{sale.color}</Text>
+                      </View>
+                    </View>
+
+                    <View style={styles.saleDetailRow}>
+                      <View style={styles.saleDetailItem}>
+                        <Ionicons name="cube" size={16} color="#666" />
+                        <Text style={styles.saleDetailLabel}>Quantity:</Text>
+                        <Text style={styles.saleDetailValue}>
+                          {sale.quantity} {sale.unit}
+                        </Text>
+                      </View>
+                    </View>
+
+                    <View style={styles.saleDetailRow}>
+                      <View style={styles.saleDetailItem}>
+                        <Ionicons name="cash" size={16} color="#666" />
+                        <Text style={styles.saleDetailLabel}>Price:</Text>
+                        <Text style={styles.saleDetailValue}>
+                          {sale.currency === 'EUR' ? '€' : '$'}{sale.price}/{sale.unit}
+                        </Text>
+                      </View>
+                    </View>
+
+                    <View style={styles.saleTotalRow}>
+                      <Text style={styles.saleTotalLabel}>Total Amount:</Text>
+                      <Text style={styles.saleTotalValue}>
+                        {sale.currency === 'EUR' ? '€' : '$'}
+                        {(parseFloat(sale.quantity) * parseFloat(sale.price)).toFixed(2)}
                       </Text>
                     </View>
-                    <Text style={styles.saleColor}>Color: {sale.color}</Text>
-                    <View style={styles.saleDetails}>
-                      <Text style={styles.saleQuantity}>
-                        {sale.quantity} {sale.unit}
-                      </Text>
-                      <Text style={styles.salePrice}>
-                        @ {sale.currency === 'EUR' ? '€' : '$'}{sale.price}/{sale.unit}
-                      </Text>
-                    </View>
-                    <TouchableOpacity
-                      style={styles.deleteSaleButton}
-                      onPress={() => {
-                        Alert.alert(
-                          'Delete Sale',
-                          'Are you sure you want to delete this sale record?',
-                          [
-                            { text: 'Cancel', style: 'cancel' },
-                            {
-                              text: 'Delete',
-                              onPress: () => deleteSale(sale.id),
-                              style: 'destructive',
-                            },
-                          ]
-                        );
-                      }}
-                    >
-                      <Ionicons name="trash-outline" size={18} color="#FF3B30" />
-                    </TouchableOpacity>
                   </View>
                 ))
               )}
