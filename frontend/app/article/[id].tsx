@@ -659,6 +659,19 @@ ${new Date().toLocaleString()}
         </TouchableOpacity>
         
         <TouchableOpacity
+          style={[styles.fab, styles.fabSold]}
+          onPress={() => setShowSalesModal(true)}
+        >
+          <Ionicons name="cart" size={24} color="#10B981" />
+          <Text style={styles.fabTextSold}>SOLD</Text>
+          {salesHistory.length > 0 && (
+            <View style={styles.salesBadge}>
+              <Text style={styles.salesBadgeText}>{salesHistory.length}</Text>
+            </View>
+          )}
+        </TouchableOpacity>
+        
+        <TouchableOpacity
           style={styles.fab}
           onPress={generatePDF}
           disabled={exporting}
@@ -673,6 +686,214 @@ ${new Date().toLocaleString()}
           )}
         </TouchableOpacity>
       </View>
+
+      {/* Sales Modal */}
+      <Modal
+        visible={showSalesModal}
+        transparent={true}
+        animationType="slide"
+        onRequestClose={() => setShowSalesModal(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.salesModalContent}>
+            <View style={styles.salesModalHeader}>
+              <Text style={styles.salesModalTitle}>Sales History</Text>
+              <TouchableOpacity onPress={() => setShowSalesModal(false)}>
+                <Ionicons name="close" size={24} color="#666" />
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.salesSummary}>
+              <Text style={styles.salesSummaryText}>
+                Total Sold: {getTotalQuantitySold().toFixed(2)} units
+              </Text>
+              <Text style={styles.salesSummarySubtext}>
+                {salesHistory.length} {salesHistory.length === 1 ? 'sale' : 'sales'}
+              </Text>
+            </View>
+
+            <TouchableOpacity
+              style={styles.addSaleButton}
+              onPress={() => {
+                setShowSalesModal(false);
+                setShowAddSaleModal(true);
+              }}
+            >
+              <Ionicons name="add-circle" size={20} color="#fff" />
+              <Text style={styles.addSaleButtonText}>Record New Sale</Text>
+            </TouchableOpacity>
+
+            <ScrollView style={styles.salesList}>
+              {salesHistory.length === 0 ? (
+                <Text style={styles.noSalesText}>No sales recorded yet</Text>
+              ) : (
+                salesHistory.map((sale) => (
+                  <View key={sale.id} style={styles.saleItem}>
+                    <View style={styles.saleItemHeader}>
+                      <Text style={styles.saleCustomer}>{sale.customer}</Text>
+                      <Text style={styles.saleDate}>
+                        {new Date(sale.timestamp).toLocaleDateString()}
+                      </Text>
+                    </View>
+                    <Text style={styles.saleColor}>Color: {sale.color}</Text>
+                    <View style={styles.saleDetails}>
+                      <Text style={styles.saleQuantity}>
+                        {sale.quantity} {sale.unit}
+                      </Text>
+                      <Text style={styles.salePrice}>
+                        @ {sale.currency === 'EUR' ? '€' : '$'}{sale.price}/{sale.unit}
+                      </Text>
+                    </View>
+                    <TouchableOpacity
+                      style={styles.deleteSaleButton}
+                      onPress={() => {
+                        Alert.alert(
+                          'Delete Sale',
+                          'Are you sure you want to delete this sale record?',
+                          [
+                            { text: 'Cancel', style: 'cancel' },
+                            {
+                              text: 'Delete',
+                              onPress: () => deleteSale(sale.id),
+                              style: 'destructive',
+                            },
+                          ]
+                        );
+                      }}
+                    >
+                      <Ionicons name="trash-outline" size={18} color="#FF3B30" />
+                    </TouchableOpacity>
+                  </View>
+                ))
+              )}
+            </ScrollView>
+          </View>
+        </View>
+      </Modal>
+
+      {/* Add Sale Modal */}
+      <Modal
+        visible={showAddSaleModal}
+        transparent={true}
+        animationType="slide"
+        onRequestClose={() => setShowAddSaleModal(false)}
+      >
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          style={styles.modalOverlay}
+        >
+          <TouchableOpacity
+            style={styles.modalOverlay}
+            activeOpacity={1}
+            onPress={() => setShowAddSaleModal(false)}
+          >
+            <View style={styles.addSaleModalContent} onStartShouldSetResponder={() => true}>
+              <View style={styles.salesModalHeader}>
+                <Text style={styles.salesModalTitle}>Record Sale</Text>
+                <TouchableOpacity onPress={() => setShowAddSaleModal(false)}>
+                  <Ionicons name="close" size={24} color="#666" />
+                </TouchableOpacity>
+              </View>
+
+              <ScrollView style={styles.addSaleForm}>
+                <Text style={styles.inputLabel}>Customer Name *</Text>
+                <TextInput
+                  style={styles.input}
+                  value={saleCustomer}
+                  onChangeText={setSaleCustomer}
+                  placeholder="Enter customer name"
+                  placeholderTextColor="#999"
+                />
+
+                <Text style={styles.inputLabel}>Color/Variant *</Text>
+                <TextInput
+                  style={styles.input}
+                  value={saleColor}
+                  onChangeText={setSaleColor}
+                  placeholder="Enter color or variant"
+                  placeholderTextColor="#999"
+                />
+
+                <Text style={styles.inputLabel}>Quantity *</Text>
+                <View style={styles.quantityRow}>
+                  <TextInput
+                    style={[styles.input, styles.quantityInput]}
+                    value={saleQuantity}
+                    onChangeText={setSaleQuantity}
+                    placeholder="0"
+                    keyboardType="decimal-pad"
+                    placeholderTextColor="#999"
+                  />
+                  <View style={styles.unitSelector}>
+                    <TouchableOpacity
+                      style={[styles.unitButton, saleUnit === 'mt' && styles.unitButtonActive]}
+                      onPress={() => setSaleUnit('mt')}
+                    >
+                      <Text style={[styles.unitButtonText, saleUnit === 'mt' && styles.unitButtonTextActive]}>
+                        mt
+                      </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={[styles.unitButton, saleUnit === 'yrd' && styles.unitButtonActive]}
+                      onPress={() => setSaleUnit('yrd')}
+                    >
+                      <Text style={[styles.unitButtonText, saleUnit === 'yrd' && styles.unitButtonTextActive]}>
+                        yrd
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+
+                <Text style={styles.inputLabel}>Price *</Text>
+                <View style={styles.quantityRow}>
+                  <TextInput
+                    style={[styles.input, styles.quantityInput]}
+                    value={salePrice}
+                    onChangeText={setSalePrice}
+                    placeholder="0.00"
+                    keyboardType="decimal-pad"
+                    placeholderTextColor="#999"
+                  />
+                  <View style={styles.unitSelector}>
+                    <TouchableOpacity
+                      style={[styles.unitButton, saleCurrency === 'EUR' && styles.unitButtonActive]}
+                      onPress={() => setSaleCurrency('EUR')}
+                    >
+                      <Text style={[styles.unitButtonText, saleCurrency === 'EUR' && styles.unitButtonTextActive]}>
+                        EUR
+                      </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={[styles.unitButton, saleCurrency === 'USD' && styles.unitButtonActive]}
+                      onPress={() => setSaleCurrency('USD')}
+                    >
+                      <Text style={[styles.unitButtonText, saleCurrency === 'USD' && styles.unitButtonTextActive]}>
+                        USD
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+
+                <View style={styles.addSaleButtons}>
+                  <TouchableOpacity
+                    style={[styles.addSaleModalButton, styles.addSaleModalButtonCancel]}
+                    onPress={() => setShowAddSaleModal(false)}
+                  >
+                    <Text style={styles.addSaleModalButtonTextCancel}>Cancel</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[styles.addSaleModalButton, styles.addSaleModalButtonSave]}
+                    onPress={saveSale}
+                  >
+                    <Ionicons name="checkmark" size={20} color="#fff" />
+                    <Text style={styles.addSaleModalButtonText}>Save</Text>
+                  </TouchableOpacity>
+                </View>
+              </ScrollView>
+            </View>
+          </TouchableOpacity>
+        </KeyboardAvoidingView>
+      </Modal>
     </SafeAreaView>
   );
 
