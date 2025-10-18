@@ -16,6 +16,7 @@ import * as FileSystemLegacy from 'expo-file-system/legacy';
 const STORAGE_KEY = 'article_registry';
 const FAVORITES_KEY = 'article_favorites';
 const RECENT_KEY = 'article_recent';
+const SALES_HISTORY_KEY = 'sales_history';
 
 const storage = {
   async getItem(key: string): Promise<string | null> {
@@ -35,6 +36,29 @@ const storage = {
   },
 };
 
+interface SalesStats {
+  totalOrders: number;
+  totalQuantity: number;
+  totalRevenue: {
+    EUR: number;
+    USD: number;
+  };
+  topSellingArticles: Array<{
+    articleCode: string;
+    articleName: string;
+    quantity: number;
+    orders: number;
+  }>;
+  recentSales: Array<{
+    customer: string;
+    articleCode: string;
+    quantity: string;
+    price: string;
+    currency: string;
+    timestamp: string;
+  }>;
+}
+
 interface Stats {
   total: number;
   bySeason: { [key: string]: number };
@@ -43,6 +67,7 @@ interface Stats {
   priceRange: { min: number; max: number; avg: number };
   favoritesCount: number;
   recentCount: number;
+  sales: SalesStats;
 }
 
 export default function StatsScreen() {
