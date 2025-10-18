@@ -107,6 +107,10 @@ export default function PricingCalculatorScreen() {
   const [pricingHistory, setPricingHistory] = useState<PricingCalculation[]>([]);
   const [showHistory, setShowHistory] = useState(false);
   
+  // Save note modal
+  const [showSaveModal, setShowSaveModal] = useState(false);
+  const [saveNote, setSaveNote] = useState('');
+  
   // Market selection
   const [selectedMarket, setSelectedMarket] = useState('italy');
   const [showMarketPicker, setShowMarketPicker] = useState(false);
