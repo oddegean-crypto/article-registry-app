@@ -1062,6 +1062,11 @@ ${new Date().toLocaleString()}
                     </View>
                     
                     <View style={styles.historyItemDetails}>
+                      {item.note && (
+                        <Text style={styles.historyItemNote}>
+                          <Ionicons name="person" size={14} color="#007AFF" /> {item.note}
+                        </Text>
+                      )}
                       <Text style={styles.historyItemDetail}>
                         Base: €{item.basePrice.toFixed(2)} + Profit: €{item.profitMargin}
                       </Text>
