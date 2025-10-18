@@ -214,8 +214,8 @@ export default function HomeScreen() {
     }
   };
 
-  const getTotalSalesForArticle = (articleCode: string) => {
-    const sales = salesHistory[articleCode] || [];
+  const getTotalSalesForArticle = (articleId: string) => {
+    const sales = salesHistory[articleId] || [];
     return sales.reduce((total: number, sale: any) => {
       return total + (parseFloat(sale.quantity) || 0);
     }, 0);
