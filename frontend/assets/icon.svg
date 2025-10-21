@@ -1,0 +1,17 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="1024" height="1024" rx="200" fill="#007AFF"/>
+  
+  <!-- Document Icon -->
+  <path d="M256 192C238.3 192 224 206.3 224 224V800C224 817.7 238.3 832 256 832H768C785.7 832 800 817.7 800 800V352L640 192H256Z" fill="white"/>
+  <path d="M640 192V352H800L640 192Z" fill="#E0E0E0"/>
+  
+  <!-- Lines representing text/articles -->
+  <rect x="320" y="416" width="384" height="32" rx="8" fill="#007AFF"/>
+  <rect x="320" y="496" width="288" height="32" rx="8" fill="#007AFF"/>
+  <rect x="320" y="576" width="352" height="32" rx="8" fill="#007AFF"/>
+  
+  <!-- Sales badge/cart overlay -->
+  <circle cx="704" cy="704" r="128" fill="#10B981"/>
+  <path d="M640 672L672 704L768 608" stroke="white" stroke-width="32" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
