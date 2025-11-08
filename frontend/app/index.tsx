@@ -64,12 +64,17 @@ interface Article {
   articleName: string;
   colorName: string;
   supplier: string;
+  supplierEmail?: string;
+  supplierPhone?: string;
+  supplierNotes?: string;
   section: string;
   season: string;
   composition: string;
   weightGSM: string;
   widthCM: string;
   basePriceEUR: string;
+  imageUrl?: string;
+  images?: string[];
   [key: string]: any;
 }
 
