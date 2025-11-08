@@ -84,6 +84,7 @@ type SortOption = 'name' | 'code' | 'date' | 'price';
 type ViewMode = 'all' | 'favorites' | 'recent' | 'searches';
 
 export default function HomeScreen() {
+  const { theme, isDark, toggleTheme } = useTheme();
   const [articles, setArticles] = useState<Article[]>([]);
   const [filteredArticles, setFilteredArticles] = useState<Article[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
