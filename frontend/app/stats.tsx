@@ -288,41 +288,41 @@ export default function StatsScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container} edges={['top']}>
+    <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]} edges={['top']}>
       {/* Header */}
-      <View style={styles.header}>
+      <View style={[styles.header, { backgroundColor: theme.headerBackground, borderBottomColor: theme.border }]}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
-          <Ionicons name="arrow-back" size={24} color="#007AFF" />
+          <Ionicons name="arrow-back" size={24} color={theme.primary} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Statistics Dashboard</Text>
+        <Text style={[styles.headerTitle, { color: theme.text }]}>Statistics Dashboard</Text>
         <View style={styles.placeholder} />
       </View>
 
       {/* Tabs */}
-      <View style={styles.tabsContainer}>
+      <View style={[styles.tabsContainer, { backgroundColor: theme.headerBackground, borderBottomColor: theme.border }]}>
         <TouchableOpacity
-          style={[styles.tab, activeTab === 'overview' && styles.tabActive]}
+          style={[styles.tab, activeTab === 'overview' && { backgroundColor: theme.primaryLight }]}
           onPress={() => setActiveTab('overview')}
         >
           <Ionicons
             name={activeTab === 'overview' ? 'cart' : 'cart-outline'}
             size={20}
-            color={activeTab === 'overview' ? '#007AFF' : '#666'}
+            color={activeTab === 'overview' ? theme.primary : theme.textSecondary}
           />
-          <Text style={[styles.tabText, activeTab === 'overview' && styles.tabTextActive]}>
+          <Text style={[styles.tabText, { color: theme.textSecondary }, activeTab === 'overview' && { color: theme.primary }]}>
             Overview
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.tab, activeTab === 'catalog' && styles.tabActive]}
+          style={[styles.tab, activeTab === 'catalog' && { backgroundColor: theme.primaryLight }]}
           onPress={() => setActiveTab('catalog')}
         >
           <Ionicons
             name={activeTab === 'catalog' ? 'albums' : 'albums-outline'}
             size={20}
-            color={activeTab === 'catalog' ? '#007AFF' : '#666'}
+            color={activeTab === 'catalog' ? theme.primary : theme.textSecondary}
           />
-          <Text style={[styles.tabText, activeTab === 'catalog' && styles.tabTextActive]}>
+          <Text style={[styles.tabText, { color: theme.textSecondary }, activeTab === 'catalog' && { color: theme.primary }]}>
             Catalog
           </Text>
         </TouchableOpacity>
