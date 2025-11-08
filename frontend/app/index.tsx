@@ -774,24 +774,32 @@ export default function HomeScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container} edges={['top']}>
-      <StatusBar barStyle="dark-content" />
+    <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]} edges={['top']}>
+      <StatusBar barStyle={isDark ? 'light-content' : 'dark-content'} />
       
       {/* Header */}
-      <View style={styles.header}>
+      <View style={[styles.header, { backgroundColor: theme.headerBackground, borderBottomColor: theme.border }]}>
         <View style={styles.headerLeft}>
-          <Text style={styles.headerTitle}>Article Registry</Text>
-          <Text style={styles.headerSubtitle}>{articles.length} articles</Text>
+          <Text style={[styles.headerTitle, { color: theme.text }]}>Article Registry</Text>
+          <Text style={[styles.headerSubtitle, { color: theme.textSecondary }]}>{articles.length} articles</Text>
         </View>
-        {articles.length > 0 && (
+        <View style={styles.headerRight}>
           <TouchableOpacity
-            style={styles.statsButton}
-            onPress={() => router.push('/stats')}
+            style={styles.themeToggle}
+            onPress={toggleTheme}
           >
-            <Ionicons name="stats-chart" size={24} color="#007AFF" />
-            <Text style={styles.statsButtonText}>Stats</Text>
+            <Ionicons name={isDark ? 'sunny' : 'moon'} size={24} color={theme.primary} />
           </TouchableOpacity>
-        )}
+          {articles.length > 0 && (
+            <TouchableOpacity
+              style={[styles.statsButton, { backgroundColor: theme.primaryLight }]}
+              onPress={() => router.push('/stats')}
+            >
+              <Ionicons name="stats-chart" size={24} color={theme.primary} />
+              <Text style={[styles.statsButtonText, { color: theme.primary }]}>Stats</Text>
+            </TouchableOpacity>
+          )}
+        </View>
       </View>
 
       {/* View Mode Tabs */}
