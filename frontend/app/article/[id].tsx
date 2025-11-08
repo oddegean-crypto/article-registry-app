@@ -634,7 +634,12 @@ ${new Date().toLocaleString()}
             <View style={styles.tagsContainer}>
               {article.colorCode && (
                 <View style={styles.tag}>
-                  <Text style={styles.tagText}>Color: {article.colorCode}</Text>
+                  <View style={styles.tagContentRow}>
+                    {article.colorHex && (
+                      <View style={[styles.colorSwatchTag, { backgroundColor: article.colorHex }]} />
+                    )}
+                    <Text style={styles.tagText}>Color: {article.colorCode}</Text>
+                  </View>
                 </View>
               )}
               {article.treatmentName && (
