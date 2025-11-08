@@ -657,6 +657,11 @@ export default function HomeScreen() {
         >
           <View style={styles.articleHeader}>
             <View style={styles.articleLeft}>
+              {mainArticle.imageUrl && (
+                <View style={styles.articleThumbnail}>
+                  <Ionicons name="image" size={16} color={theme.primary} />
+                </View>
+              )}
               <Text style={[styles.articleCode, { color: theme.primary }]}>{mainArticle.articleCode}</Text>
               {mainArticle.colorCode && (
                 <View style={styles.colorCodeContainer}>
