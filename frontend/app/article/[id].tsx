@@ -648,11 +648,11 @@ ${new Date().toLocaleString()}
       {/* Content */}
       <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollContent}>
         {/* Article Header */}
-        <View style={styles.articleHeader}>
+        <View style={[styles.articleHeader, { backgroundColor: theme.cardBackground }]}>
           {/* First Row: Article Name & Season */}
           <View style={styles.headerRow}>
             <View style={styles.headerLeft}>
-              <Text style={styles.articleName}>{article.articleName || 'No name'}</Text>
+              <Text style={[styles.articleName, { color: theme.text }]}>{article.articleName || 'No name'}</Text>
             </View>
             <View style={styles.headerRight}>
               <Text style={styles.seasonValue}>{article.season || '-'}</Text>
@@ -662,7 +662,7 @@ ${new Date().toLocaleString()}
           {/* Second Row: Article Code & Section */}
           <View style={styles.headerRow}>
             <View style={styles.headerLeft}>
-              <Text style={styles.articleCode}>{article.articleCode}</Text>
+              <Text style={[styles.articleCode, { color: theme.primary }]}>{article.articleCode}</Text>
             </View>
             <View style={styles.headerRight}>
               <Text style={styles.sectionValue}>{article.section || '-'}</Text>
@@ -673,18 +673,18 @@ ${new Date().toLocaleString()}
           {(article.colorCode || article.treatmentName) && (
             <View style={styles.tagsContainer}>
               {article.colorCode && (
-                <View style={styles.tag}>
+                <View style={[styles.tag, { backgroundColor: theme.badge }]}>
                   <View style={styles.tagContentRow}>
                     {article.colorHex && (
                       <View style={[styles.colorSwatchTag, { backgroundColor: article.colorHex }]} />
                     )}
-                    <Text style={styles.tagText}>Color: {article.colorCode}</Text>
+                    <Text style={[styles.tagText, { color: theme.badgeText }]}>Color: {article.colorCode}</Text>
                   </View>
                 </View>
               )}
               {article.treatmentName && (
-                <View style={styles.tag}>
-                  <Text style={styles.tagText}>Treatment: {article.treatmentName}</Text>
+                <View style={[styles.tag, { backgroundColor: theme.badge }]}>
+                  <Text style={[styles.tagText, { color: theme.badgeText }]}>Treatment: {article.treatmentName}</Text>
                 </View>
               )}
             </View>
@@ -692,8 +692,8 @@ ${new Date().toLocaleString()}
         </View>
 
         {/* Fabric Specifications */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Fabric Specifications</Text>
+        <View style={[styles.section, { backgroundColor: theme.cardBackground }]}>
+          <Text style={[styles.sectionTitle, { color: theme.primary }]}>Fabric Specifications</Text>
           {renderDetail('Composition', article.composition)}
           {renderDetail('Weight GSM', article.weightGSM)}
           {renderDetail('Width CM', article.widthCM)}
