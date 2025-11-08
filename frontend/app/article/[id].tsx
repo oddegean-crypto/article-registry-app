@@ -459,7 +459,7 @@ export default function ArticleDetailsScreen() {
             </div>
             ${article.colorCode || article.treatmentName ? `
               <div class="tags">
-                ${article.colorCode ? `<span class="tag">Color: ${article.colorCode}</span>` : ''}
+                ${article.colorCode ? `<span class="tag">${article.colorHex ? `<span class="color-swatch" style="background-color: ${article.colorHex};"></span>` : ''}Color: ${article.colorCode}</span>` : ''}
                 ${article.treatmentName ? `<span class="tag">Treatment: ${article.treatmentName}</span>` : ''}
               </div>
             ` : ''}
