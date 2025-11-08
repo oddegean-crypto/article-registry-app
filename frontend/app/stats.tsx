@@ -229,13 +229,13 @@ export default function StatsScreen() {
   };
 
   const renderStatCard = (title: string, value: string | number, icon: string, color: string) => (
-    <View style={[styles.statCard, { borderLeftColor: color, borderLeftWidth: 4 }]}>
+    <View style={[styles.statCard, { borderLeftColor: color, borderLeftWidth: 4, backgroundColor: theme.cardBackground }]}>
       <View style={[styles.iconCircle, { backgroundColor: color + '20' }]}>
         <Ionicons name={icon as any} size={28} color={color} />
       </View>
       <View style={styles.statContent}>
-        <Text style={styles.statValue}>{value}</Text>
-        <Text style={styles.statTitle}>{title}</Text>
+        <Text style={[styles.statValue, { color: theme.text }]}>{value}</Text>
+        <Text style={[styles.statTitle, { color: theme.textSecondary }]}>{title}</Text>
       </View>
     </View>
   );
@@ -252,10 +252,10 @@ export default function StatsScreen() {
     if (entries.length === 0) return null;
 
     return (
-      <View style={styles.categorySection}>
+      <View style={[styles.categorySection, { backgroundColor: theme.cardBackground }]}>
         <View style={styles.categoryHeader}>
           <Ionicons name={icon as any} size={24} color={color} />
-          <Text style={styles.categoryTitle}>{title}</Text>
+          <Text style={[styles.categoryTitle, { color: theme.text }]}>{title}</Text>
         </View>
         <View style={styles.categoryList}>
           {entries.map(([key, value]) => {
@@ -263,12 +263,12 @@ export default function StatsScreen() {
             return (
               <View key={key} style={styles.categoryItem}>
                 <View style={styles.categoryRow}>
-                  <Text style={styles.categoryLabel} numberOfLines={1}>
+                  <Text style={[styles.categoryLabel, { color: theme.text }]} numberOfLines={1}>
                     {key}
                   </Text>
-                  <Text style={styles.categoryValue}>{value}</Text>
+                  <Text style={[styles.categoryValue, { color: theme.primary }]}>{value}</Text>
                 </View>
-                <View style={styles.barContainer}>
+                <View style={[styles.barContainer, { backgroundColor: theme.divider }]}>
                   <View
                     style={[
                       styles.barFill,
