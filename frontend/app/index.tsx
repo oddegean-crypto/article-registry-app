@@ -586,8 +586,13 @@ export default function HomeScreen() {
           <View style={styles.articleLeft}>
             <Text style={styles.articleCode}>{item.articleCode}</Text>
             {item.colorCode && (
-              <View style={styles.badge}>
-                <Text style={styles.badgeText}>{item.colorCode}</Text>
+              <View style={styles.colorCodeContainer}>
+                {item.colorHex && (
+                  <View style={[styles.colorSwatch, { backgroundColor: item.colorHex }]} />
+                )}
+                <View style={styles.badge}>
+                  <Text style={styles.badgeText}>{item.colorCode}</Text>
+                </View>
               </View>
             )}
             {hasSales && (
