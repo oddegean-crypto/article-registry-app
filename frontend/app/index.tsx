@@ -98,6 +98,7 @@ export default function HomeScreen() {
   const [activeFilters, setActiveFilters] = useState<any>(null);
   const [salesHistory, setSalesHistory] = useState<any>({});
   const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set());
+  const [groupedArticles, setGroupedArticles] = useState<ArticleGroup[]>([]);
 
   useEffect(() => {
     loadLocalArticles();
