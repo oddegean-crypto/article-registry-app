@@ -529,6 +529,20 @@ export default function ArticleDetailsScreen() {
   const renderDetailRow = (label: string, value: any) => {
     const displayValue = value || '';
     const isEmpty = !displayValue || displayValue === '';
+    
+    // Special rendering for Color Code with hex swatch
+    if (label === 'Color Code' && article?.colorHex && !isEmpty) {
+      return `
+        <div class="detail-row">
+          <div class="detail-label">${label}:</div>
+          <div class="detail-value detail-value-with-swatch">
+            <span class="color-swatch-detail" style="background-color: ${article.colorHex};"></span>
+            <span>${displayValue}</span>
+          </div>
+        </div>
+      `;
+    }
+    
     return `
       <div class="detail-row">
         <div class="detail-label">${label}:</div>
