@@ -120,6 +120,11 @@ export default function HomeScreen() {
     filterAndSortArticles();
   }, [searchQuery, articles, favorites, recentArticles, viewMode, currentSort, activeFilters]);
 
+  useEffect(() => {
+    const grouped = groupArticles(filteredArticles);
+    setGroupedArticles(grouped);
+  }, [filteredArticles]);
+
   const loadFilters = async () => {
     try {
       const stored = await storage.getItem(FILTER_KEY);
