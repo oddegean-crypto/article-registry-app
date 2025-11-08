@@ -809,6 +809,15 @@ export default function HomeScreen() {
               <Text style={[styles.statsButtonText, { color: theme.primary }]}>Stats</Text>
             </TouchableOpacity>
           )}
+          {articles.length > 0 && (
+            <TouchableOpacity
+              style={[styles.statsButton, { backgroundColor: theme.successLight }]}
+              onPress={() => router.push('/contacts')}
+            >
+              <Ionicons name="people" size={24} color={theme.success} />
+              <Text style={[styles.statsButtonText, { color: theme.success }]}>Contacts</Text>
+            </TouchableOpacity>
+          )}
         </View>
       </View>
 
