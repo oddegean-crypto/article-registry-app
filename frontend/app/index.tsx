@@ -1023,8 +1023,8 @@ export default function HomeScreen() {
           activeOpacity={1}
           onPress={() => setSortModalVisible(false)}
         >
-          <View style={styles.sortModal}>
-            <Text style={styles.modalTitle}>Sort By</Text>
+          <View style={[styles.sortModal, { backgroundColor: theme.modalBackground }]}>
+            <Text style={[styles.modalTitle, { color: theme.text }]}>Sort By</Text>
             {[
               { key: 'name', label: 'Article Name', icon: 'text' },
               { key: 'code', label: 'Article Code', icon: 'barcode' },
@@ -1039,10 +1039,10 @@ export default function HomeScreen() {
                   setSortModalVisible(false);
                 }}
               >
-                <Ionicons name={option.icon as any} size={20} color="#007AFF" />
-                <Text style={styles.sortOptionText}>{option.label}</Text>
+                <Ionicons name={option.icon as any} size={20} color={theme.primary} />
+                <Text style={[styles.sortOptionText, { color: theme.text }]}>{option.label}</Text>
                 {currentSort === option.key && (
-                  <Ionicons name="checkmark" size={20} color="#007AFF" />
+                  <Ionicons name="checkmark" size={20} color={theme.primary} />
                 )}
               </TouchableOpacity>
             ))}
