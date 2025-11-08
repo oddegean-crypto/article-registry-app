@@ -643,9 +643,9 @@ ${new Date().toLocaleString()}
 
   if (loading) {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
         <View style={styles.centerContainer}>
-          <Text>Loading...</Text>
+          <Text style={[{ color: theme.text }]}>Loading...</Text>
         </View>
       </SafeAreaView>
     );
@@ -654,29 +654,29 @@ ${new Date().toLocaleString()}
   if (!article) return null;
 
   return (
-    <SafeAreaView style={styles.container} edges={['top']}>
+    <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]} edges={['top']}>
       {/* Header */}
-      <View style={styles.header}>
+      <View style={[styles.header, { backgroundColor: theme.headerBackground, borderBottomColor: theme.border }]}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
-          <Ionicons name="arrow-back" size={24} color="#007AFF" />
+          <Ionicons name="arrow-back" size={24} color={theme.primary} />
         </TouchableOpacity>
         <View style={styles.headerContent}>
-          <Text style={styles.headerTitle}>Pricing Calculator</Text>
-          <Text style={styles.headerSubtitle}>{article.articleCode}</Text>
+          <Text style={[styles.headerTitle, { color: theme.text }]}>Pricing Calculator</Text>
+          <Text style={[styles.headerSubtitle, { color: theme.textSecondary }]}>{article.articleCode}</Text>
         </View>
       </View>
 
       <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollContent}>
         {/* Market Selection Dropdown */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Select Market</Text>
+        <View style={[styles.section, { backgroundColor: theme.cardBackground }]}>
+          <Text style={[styles.sectionTitle, { color: theme.primary }]}>Select Market</Text>
           
           <TouchableOpacity 
-            style={styles.dropdown}
+            style={[styles.dropdown, { backgroundColor: theme.inputBackground, borderColor: theme.inputBorder }]}
             onPress={() => setShowMarketPicker(true)}
           >
             <View style={styles.dropdownContent}>
-              <Text style={styles.dropdownText}>
+              <Text style={[styles.dropdownText, { color: theme.text }]}>
                 {MARKETS.find(m => m.value === selectedMarket)?.label || 'Select Market'}
               </Text>
               <Ionicons name="chevron-down" size={20} color="#666" />
