@@ -719,6 +719,55 @@ ${new Date().toLocaleString()}
           {renderDetail('Supplier', article.supplier)}
           {renderDetail('Supp. Art. Code', article.suppArtCode)}
           {renderDetail('Base Price EUR', article.basePriceEUR)}
+          
+          {/* Quick Contact Buttons */}
+          {(article.supplierEmail || article.supplierPhone) && (
+            <View style={styles.contactButtonsContainer}>
+              {article.supplierEmail && (
+                <TouchableOpacity
+                  style={[styles.contactButton, { backgroundColor: theme.primaryLight, borderColor: theme.primary }]}
+                  onPress={() => {
+                    const mailto = `mailto:${article.supplierEmail}?subject=Inquiry about ${article.articleCode}`;
+                    if (Platform.OS === 'web') {
+                      window.open(mailto, '_blank');
+                    } else {
+                      // Mobile: use Linking API
+                      Alert.alert('Email', `Send email to ${article.supplierEmail}?`);
+                    }
+                  }}
+                >
+                  <Ionicons name="mail" size={20} color={theme.primary} />
+                  <Text style={[styles.contactButtonText, { color: theme.primary }]}>Email</Text>
+                </TouchableOpacity>
+              )}
+              {article.supplierPhone && (
+                <TouchableOpacity
+                  style={[styles.contactButton, { backgroundColor: theme.successLight, borderColor: theme.success }]}
+                  onPress={() => {
+                    const tel = `tel:${article.supplierPhone}`;
+                    if (Platform.OS === 'web') {
+                      window.open(tel);
+                    } else {
+                      Alert.alert('Call', `Call ${article.supplierPhone}?`);
+                    }
+                  }}
+                >
+                  <Ionicons name="call" size={20} color={theme.success} />
+                  <Text style={[styles.contactButtonText, { color: theme.success }]}>Call</Text>
+                </TouchableOpacity>
+              )}
+            </View>
+          )}
+          
+          {article.supplierNotes && (
+            <View style={[styles.notesContainer, { backgroundColor: theme.inputBackground, borderColor: theme.border }]}>
+              <View style={styles.notesHeader}>
+                <Ionicons name="document-text" size={16} color={theme.textSecondary} />
+                <Text style={[styles.notesLabel, { color: theme.textSecondary }]}>Notes:</Text>
+              </View>
+              <Text style={[styles.notesText, { color: theme.text }]}>{article.supplierNotes}</Text>
+            </View>
+          )}
         </View>
 
         {/* Additional Information */}
