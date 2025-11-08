@@ -44,6 +44,7 @@ const storage = {
 };
 
 export default function FilterScreen() {
+  const { theme, isDark } = useTheme();
   const [seasons, setSeasons] = useState<string[]>([]);
   const [sections, setSections] = useState<string[]>([]);
   const [suppliers, setSuppliers] = useState<string[]>([]);
