@@ -169,40 +169,42 @@ export default function FilterScreen() {
   );
 
   return (
-    <SafeAreaView style={styles.container} edges={['top']}>
+    <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]} edges={['top']}>
       {/* Header */}
-      <View style={styles.header}>
+      <View style={[styles.header, { backgroundColor: theme.headerBackground, borderBottomColor: theme.border }]}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
-          <Ionicons name="arrow-back" size={24} color="#007AFF" />
+          <Ionicons name="arrow-back" size={24} color={theme.primary} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Advanced Filters</Text>
+        <Text style={[styles.headerTitle, { color: theme.text }]}>Advanced Filters</Text>
         <TouchableOpacity onPress={clearFilters}>
-          <Text style={styles.clearText}>Clear</Text>
+          <Text style={[styles.clearText, { color: theme.primary }]}>Clear</Text>
         </TouchableOpacity>
       </View>
 
       <ScrollView style={styles.content} contentContainerStyle={styles.scrollContent}>
         {/* Sold Items Filter - First */}
-        <View style={styles.filterSection}>
-          <Text style={styles.filterTitle}>Sales Filter</Text>
+        <View style={[styles.filterSection, { backgroundColor: theme.cardBackground }]}>
+          <Text style={[styles.filterTitle, { color: theme.primary }]}>Sales Filter</Text>
           <View style={styles.filterOptions}>
             <TouchableOpacity
               style={[
                 styles.filterChip,
-                soldItemsOnly && styles.filterChipSelected,
+                { backgroundColor: theme.inputBackground, borderColor: theme.inputBorder },
+                soldItemsOnly && { backgroundColor: theme.primary, borderColor: theme.primary },
               ]}
               onPress={() => setSoldItemsOnly(!soldItemsOnly)}
             >
               <Ionicons 
                 name={soldItemsOnly ? "cart" : "cart-outline"} 
                 size={16} 
-                color={soldItemsOnly ? "#fff" : "#007AFF"} 
+                color={soldItemsOnly ? "#fff" : theme.primary} 
                 style={{marginRight: 6}}
               />
               <Text
                 style={[
                   styles.filterChipText,
-                  soldItemsOnly && styles.filterChipTextSelected,
+                  { color: theme.text },
+                  soldItemsOnly && { color: '#fff' },
                 ]}
               >
                 Show Only Sold Items
