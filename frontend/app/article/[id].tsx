@@ -705,8 +705,8 @@ ${new Date().toLocaleString()}
         </View>
 
         {/* Color & Treatment */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Color & Treatment</Text>
+        <View style={[styles.section, { backgroundColor: theme.cardBackground }]}>
+          <Text style={[styles.sectionTitle, { color: theme.primary }]}>Color & Treatment</Text>
           {renderDetail('Color Code', article.colorCode)}
           {renderDetail('Color Name', article.colorName)}
           {renderDetail('Treatment Code', article.treatmentCode)}
