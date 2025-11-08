@@ -240,25 +240,25 @@ export default function FilterScreen() {
         )}
 
         {/* Price Range */}
-        <View style={styles.filterSection}>
-          <Text style={styles.filterTitle}>Price Range (EUR)</Text>
+        <View style={[styles.filterSection, { backgroundColor: theme.cardBackground }]}>
+          <Text style={[styles.filterTitle, { color: theme.primary }]}>Price Range (EUR)</Text>
           <View style={styles.priceInputs}>
             <TextInput
-              style={styles.priceInput}
+              style={[styles.priceInput, { backgroundColor: theme.inputBackground, borderColor: theme.inputBorder, color: theme.text }]}
               placeholder="Min"
               value={minPrice}
               onChangeText={setMinPrice}
               keyboardType="decimal-pad"
-              placeholderTextColor="#999"
+              placeholderTextColor={theme.placeholder}
             />
-            <Text style={styles.priceSeparator}>-</Text>
+            <Text style={[styles.priceSeparator, { color: theme.textSecondary }]}>-</Text>
             <TextInput
-              style={styles.priceInput}
+              style={[styles.priceInput, { backgroundColor: theme.inputBackground, borderColor: theme.inputBorder, color: theme.text }]}
               placeholder="Max"
               value={maxPrice}
               onChangeText={setMaxPrice}
               keyboardType="decimal-pad"
-              placeholderTextColor="#999"
+              placeholderTextColor={theme.placeholder}
             />
           </View>
         </View>
