@@ -340,34 +340,34 @@ export default function StatsScreen() {
               <>
                 {/* Sales Overview Cards */}
                 <View style={styles.salesCardsGrid}>
-                  <View style={styles.salesCard}>
-                    <Ionicons name="receipt" size={24} color="#10B981" />
-                    <Text style={styles.salesCardValue}>{stats.sales.totalOrders}</Text>
-                    <Text style={styles.salesCardLabel}>Total Orders</Text>
+                  <View style={[styles.salesCard, { backgroundColor: theme.cardBackground }]}>
+                    <Ionicons name="receipt" size={24} color={theme.success} />
+                    <Text style={[styles.salesCardValue, { color: theme.text }]}>{stats.sales.totalOrders}</Text>
+                    <Text style={[styles.salesCardLabel, { color: theme.textSecondary }]}>Total Orders</Text>
                   </View>
-                  <View style={styles.salesCard}>
-                    <Ionicons name="cube" size={24} color="#007AFF" />
-                    <Text style={styles.salesCardValue}>{stats.sales.totalQuantity.toFixed(1)}</Text>
-                    <Text style={styles.salesCardLabel}>Units Sold</Text>
+                  <View style={[styles.salesCard, { backgroundColor: theme.cardBackground }]}>
+                    <Ionicons name="cube" size={24} color={theme.primary} />
+                    <Text style={[styles.salesCardValue, { color: theme.text }]}>{stats.sales.totalQuantity.toFixed(1)}</Text>
+                    <Text style={[styles.salesCardLabel, { color: theme.textSecondary }]}>Units Sold</Text>
                   </View>
                 </View>
 
                 {/* Revenue Cards */}
-                <View style={styles.revenueSection}>
-                  <Text style={styles.revenueSectionTitle}>Total Revenue</Text>
+                <View style={[styles.revenueSection, { backgroundColor: theme.cardBackground }]}>
+                  <Text style={[styles.revenueSectionTitle, { color: theme.text }]}>Total Revenue</Text>
                   <View style={styles.revenueCards}>
                     {stats.sales.totalRevenue.EUR > 0 && (
-                      <View style={styles.revenueCard}>
-                        <Text style={styles.revenueCurrency}>EUR</Text>
-                        <Text style={styles.revenueAmount}>
+                      <View style={[styles.revenueCard, { backgroundColor: theme.primaryLight }]}>
+                        <Text style={[styles.revenueCurrency, { color: theme.primary }]}>EUR</Text>
+                        <Text style={[styles.revenueAmount, { color: theme.text }]}>
                           €{stats.sales.totalRevenue.EUR.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                         </Text>
                       </View>
                     )}
                     {stats.sales.totalRevenue.USD > 0 && (
-                      <View style={styles.revenueCard}>
-                        <Text style={styles.revenueCurrency}>USD</Text>
-                        <Text style={styles.revenueAmount}>
+                      <View style={[styles.revenueCard, { backgroundColor: theme.successLight }]}>
+                        <Text style={[styles.revenueCurrency, { color: theme.success }]}>USD</Text>
+                        <Text style={[styles.revenueAmount, { color: theme.text }]}>
                           ${stats.sales.totalRevenue.USD.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                         </Text>
                       </View>
