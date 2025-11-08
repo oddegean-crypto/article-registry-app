@@ -12,6 +12,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import * as FileSystemLegacy from 'expo-file-system/legacy';
+import { useTheme } from './ThemeContext';
 
 const STORAGE_KEY = 'article_registry';
 const FILTER_KEY = 'article_filters';
