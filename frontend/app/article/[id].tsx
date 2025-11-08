@@ -1037,10 +1037,10 @@ ${new Date().toLocaleString()}
     if (label === 'Color Code' && article?.colorHex) {
       return (
         <View style={styles.detailRow}>
-          <Text style={styles.detailLabel}>{label}</Text>
+          <Text style={[styles.detailLabel, { color: theme.textSecondary }]}>{label}</Text>
           <View style={styles.detailValueWithSwatch}>
             <View style={[styles.colorSwatchDetail, { backgroundColor: article.colorHex }]} />
-            <Text style={styles.detailValue}>{value}</Text>
+            <Text style={[styles.detailValue, { color: theme.text }]}>{value}</Text>
           </View>
         </View>
       );
@@ -1048,8 +1048,8 @@ ${new Date().toLocaleString()}
     
     return (
       <View style={styles.detailRow}>
-        <Text style={styles.detailLabel}>{label}</Text>
-        <Text style={styles.detailValue}>{value}</Text>
+        <Text style={[styles.detailLabel, { color: theme.textSecondary }]}>{label}</Text>
+        <Text style={[styles.detailValue, { color: theme.text }]}>{value}</Text>
       </View>
     );
   }
