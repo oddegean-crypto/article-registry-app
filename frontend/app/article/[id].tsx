@@ -910,9 +910,9 @@ ${new Date().toLocaleString()}
             activeOpacity={1}
             onPress={() => setShowAddSaleModal(false)}
           >
-            <View style={styles.addSaleModalContent} onStartShouldSetResponder={() => true}>
-              <View style={styles.salesModalHeader}>
-                <Text style={styles.salesModalTitle}>
+            <View style={[styles.addSaleModalContent, { backgroundColor: theme.modalBackground }]} onStartShouldSetResponder={() => true}>
+              <View style={[styles.salesModalHeader, { borderBottomColor: theme.border }]}>
+                <Text style={[styles.salesModalTitle, { color: theme.text }]}>
                   {editingSale ? 'Edit Sale' : 'Record Sale'}
                 </Text>
                 <TouchableOpacity onPress={() => {
@@ -925,27 +925,27 @@ ${new Date().toLocaleString()}
                   setSaleCurrency('EUR');
                   setSaleUnit('mt');
                 }}>
-                  <Ionicons name="close" size={24} color="#666" />
+                  <Ionicons name="close" size={24} color={theme.textSecondary} />
                 </TouchableOpacity>
               </View>
 
               <ScrollView style={styles.addSaleForm}>
-                <Text style={styles.inputLabel}>Customer Name *</Text>
+                <Text style={[styles.inputLabel, { color: theme.text }]}>Customer Name *</Text>
                 <TextInput
-                  style={styles.input}
+                  style={[styles.input, { backgroundColor: theme.inputBackground, borderColor: theme.inputBorder, color: theme.text }]}
                   value={saleCustomer}
                   onChangeText={setSaleCustomer}
                   placeholder="Enter customer name"
-                  placeholderTextColor="#999"
+                  placeholderTextColor={theme.placeholder}
                 />
 
-                <Text style={styles.inputLabel}>Color/Variant *</Text>
+                <Text style={[styles.inputLabel, { color: theme.text }]}>Color/Variant *</Text>
                 <TextInput
-                  style={styles.input}
+                  style={[styles.input, { backgroundColor: theme.inputBackground, borderColor: theme.inputBorder, color: theme.text }]}
                   value={saleColor}
                   onChangeText={setSaleColor}
                   placeholder="Enter color or variant"
-                  placeholderTextColor="#999"
+                  placeholderTextColor={theme.placeholder}
                 />
 
                 <Text style={styles.inputLabel}>Quantity *</Text>
