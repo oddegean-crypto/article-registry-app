@@ -638,7 +638,7 @@ export default function HomeScreen() {
       <View style={styles.articleGroupContainer}>
         {/* Main Group Header */}
         <TouchableOpacity
-          style={styles.articleItem}
+          style={[styles.articleItem, { backgroundColor: theme.cardBackground, borderColor: theme.border }]}
           onPress={() => {
             if (group.variantCount > 1) {
               toggleGroup(group.groupKey);
@@ -652,27 +652,27 @@ export default function HomeScreen() {
         >
           <View style={styles.articleHeader}>
             <View style={styles.articleLeft}>
-              <Text style={styles.articleCode}>{mainArticle.articleCode}</Text>
+              <Text style={[styles.articleCode, { color: theme.primary }]}>{mainArticle.articleCode}</Text>
               {mainArticle.colorCode && (
                 <View style={styles.colorCodeContainer}>
                   {mainArticle.colorHex && (
                     <View style={[styles.colorSwatch, { backgroundColor: mainArticle.colorHex }]} />
                   )}
-                  <View style={styles.badge}>
-                    <Text style={styles.badgeText}>{mainArticle.colorCode}</Text>
+                  <View style={[styles.badge, { backgroundColor: theme.badge }]}>
+                    <Text style={[styles.badgeText, { color: theme.badgeText }]}>{mainArticle.colorCode}</Text>
                   </View>
                 </View>
               )}
               {group.variantCount > 1 && (
-                <View style={styles.variantBadge}>
-                  <Ionicons name="layers" size={12} color="#007AFF" />
-                  <Text style={styles.variantBadgeText}>{group.variantCount}</Text>
+                <View style={[styles.variantBadge, { backgroundColor: theme.primaryLight }]}>
+                  <Ionicons name="layers" size={12} color={theme.primary} />
+                  <Text style={[styles.variantBadgeText, { color: theme.primary }]}>{group.variantCount}</Text>
                 </View>
               )}
               {hasGroupSales && (
-                <View style={styles.salesBadgeMain}>
-                  <Ionicons name="cart" size={14} color="#10B981" />
-                  <Text style={styles.salesBadgeMainText}>
+                <View style={[styles.salesBadgeMain, { backgroundColor: theme.successLight }]}>
+                  <Ionicons name="cart" size={14} color={theme.success} />
+                  <Text style={[styles.salesBadgeMainText, { color: theme.success }]}>
                     {totalGroupSales.toFixed(1)}
                   </Text>
                 </View>
@@ -683,7 +683,7 @@ export default function HomeScreen() {
                 <Ionicons
                   name={isExpanded ? 'chevron-up' : 'chevron-down'}
                   size={20}
-                  color="#666"
+                  color={theme.textSecondary}
                   style={{ marginRight: 8 }}
                 />
               )}
@@ -694,22 +694,22 @@ export default function HomeScreen() {
                 <Ionicons
                   name={favorites.includes(mainArticle.id) ? 'heart' : 'heart-outline'}
                   size={24}
-                  color={favorites.includes(mainArticle.id) ? '#FF6B6B' : '#999'}
+                  color={favorites.includes(mainArticle.id) ? theme.error : theme.textTertiary}
                 />
               </TouchableOpacity>
             </View>
           </View>
-          <Text style={styles.articleName} numberOfLines={1}>
+          <Text style={[styles.articleName, { color: theme.text }]} numberOfLines={1}>
             {mainArticle.articleName || 'No name'}
           </Text>
           <View style={styles.articleDetails}>
             {mainArticle.colorName && (
-              <Text style={styles.detailText} numberOfLines={1}>
+              <Text style={[styles.detailText, { color: theme.textSecondary }]} numberOfLines={1}>
                 {mainArticle.colorName}
               </Text>
             )}
             {mainArticle.season && (
-              <Text style={styles.detailText} numberOfLines={1}>
+              <Text style={[styles.detailText, { color: theme.textSecondary }]} numberOfLines={1}>
                 {mainArticle.season}
               </Text>
             )}
