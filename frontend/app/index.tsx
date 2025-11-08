@@ -870,7 +870,7 @@ export default function HomeScreen() {
       {/* Action Buttons */}
       <View style={styles.actionButtons}>
         <TouchableOpacity
-          style={[styles.actionButton, styles.primaryButton]}
+          style={[styles.actionButton, styles.primaryButton, { backgroundColor: theme.primary }]}
           onPress={handleImportCSV}
           disabled={loading}
         >
@@ -879,11 +879,11 @@ export default function HomeScreen() {
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={[styles.actionButton, styles.secondaryButton]}
+          style={[styles.actionButton, styles.secondaryButton, { backgroundColor: theme.cardBackground, borderColor: theme.primary }]}
           onPress={() => router.push('/filter')}
         >
-          <Ionicons name="filter" size={20} color="#007AFF" />
-          <Text style={styles.secondaryButtonText}>Filter</Text>
+          <Ionicons name="filter" size={20} color={theme.primary} />
+          <Text style={[styles.secondaryButtonText, { color: theme.primary }]}>Filter</Text>
           {activeFilters && (
             (activeFilters.seasons?.length > 0 || 
              activeFilters.sections?.length > 0 || 
@@ -891,7 +891,7 @@ export default function HomeScreen() {
              activeFilters.minPrice || 
              activeFilters.maxPrice ||
              activeFilters.soldItemsOnly) && (
-              <View style={styles.filterBadge}>
+              <View style={[styles.filterBadge, { backgroundColor: theme.error }]}>
                 <View style={styles.filterDot} />
               </View>
             )
@@ -906,7 +906,7 @@ export default function HomeScreen() {
            activeFilters.maxPrice ||
            activeFilters.soldItemsOnly) && (
             <TouchableOpacity
-              style={[styles.actionButton, styles.clearButton]}
+              style={[styles.actionButton, styles.clearButton, { backgroundColor: theme.cardBackground, borderColor: theme.error }]}
               onPress={async () => {
                 console.log('Clearing all filters...');
                 await storage.setItem(FILTER_KEY, JSON.stringify({}));
@@ -914,7 +914,7 @@ export default function HomeScreen() {
                 console.log('Filters cleared, activeFilters set to null');
               }}
             >
-              <Ionicons name="refresh" size={20} color="#FF6B6B" />
+              <Ionicons name="refresh" size={20} color={theme.error} />
             </TouchableOpacity>
           )
         )}
