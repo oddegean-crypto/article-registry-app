@@ -366,6 +366,7 @@ export default function ArticleDetailsScreen() {
               margin-top: 15px;
               display: flex;
               gap: 10px;
+              align-items: center;
             }
             .tag {
               background: #e0e0e0;
@@ -373,6 +374,28 @@ export default function ArticleDetailsScreen() {
               border-radius: 6px;
               font-size: 11px;
               color: #666;
+              display: flex;
+              align-items: center;
+              gap: 6px;
+            }
+            .color-swatch {
+              width: 14px;
+              height: 14px;
+              border-radius: 3px;
+              border: 1px solid #999;
+              display: inline-block;
+            }
+            .detail-value-with-swatch {
+              display: flex;
+              align-items: center;
+              gap: 8px;
+            }
+            .color-swatch-detail {
+              width: 20px;
+              height: 20px;
+              border-radius: 4px;
+              border: 1px solid #999;
+              display: inline-block;
             }
             .section-box {
               margin-bottom: 25px;
