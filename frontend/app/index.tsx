@@ -395,6 +395,7 @@ export default function HomeScreen() {
       'Article Name': 'articleName',
       'Color Code': 'colorCode',
       'Color Name': 'colorName',
+      'Color Hex': 'colorHex',
       'Treatment Name': 'treatmentName',
       'Treatment Code': 'treatmentCode',
       'Supplier': 'supplier',
