@@ -17,6 +17,7 @@ import * as Print from 'expo-print';
 import * as Sharing from 'expo-sharing';
 import * as MailComposer from 'expo-mail-composer';
 import { Ionicons } from '@expo/vector-icons';
+import { useTheme } from '../ThemeContext';
 
 const STORAGE_KEY = 'article_registry';
 const PRICING_HISTORY_KEY = 'pricing_history';
