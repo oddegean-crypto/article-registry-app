@@ -803,57 +803,57 @@ export default function HomeScreen() {
       </View>
 
       {/* View Mode Tabs */}
-      <View style={styles.tabs}>
+      <View style={[styles.tabs, { backgroundColor: theme.headerBackground, borderBottomColor: theme.border }]}>
         <TouchableOpacity
-          style={[styles.tab, viewMode === 'all' && styles.activeTab]}
+          style={[styles.tab, viewMode === 'all' && { backgroundColor: theme.primaryLight }]}
           onPress={() => setViewMode('all')}
         >
-          <Text style={[styles.tabText, viewMode === 'all' && styles.activeTabText]}>All</Text>
+          <Text style={[styles.tabText, { color: theme.textSecondary }, viewMode === 'all' && { color: theme.primary }]}>All</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.tab, viewMode === 'favorites' && styles.activeTab]}
+          style={[styles.tab, viewMode === 'favorites' && { backgroundColor: theme.primaryLight }]}
           onPress={() => setViewMode('favorites')}
         >
           <Ionicons
             name="heart"
             size={16}
-            color={viewMode === 'favorites' ? '#007AFF' : '#666'}
+            color={viewMode === 'favorites' ? theme.primary : theme.textSecondary}
           />
-          <Text style={[styles.tabText, viewMode === 'favorites' && styles.activeTabText]}>Favorites</Text>
+          <Text style={[styles.tabText, { color: theme.textSecondary }, viewMode === 'favorites' && { color: theme.primary }]}>Favorites</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.tab, viewMode === 'recent' && styles.activeTab]}
+          style={[styles.tab, viewMode === 'recent' && { backgroundColor: theme.primaryLight }]}
           onPress={() => setViewMode('recent')}
         >
           <Ionicons
             name="time"
             size={16}
-            color={viewMode === 'recent' ? '#007AFF' : '#666'}
+            color={viewMode === 'recent' ? theme.primary : theme.textSecondary}
           />
-          <Text style={[styles.tabText, viewMode === 'recent' && styles.activeTabText]}>Recent</Text>
+          <Text style={[styles.tabText, { color: theme.textSecondary }, viewMode === 'recent' && { color: theme.primary }]}>Recent</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.tab, viewMode === 'searches' && styles.activeTab]}
+          style={[styles.tab, viewMode === 'searches' && { backgroundColor: theme.primaryLight }]}
           onPress={() => setViewMode('searches')}
         >
           <Ionicons
             name="bookmark"
             size={16}
-            color={viewMode === 'searches' ? '#007AFF' : '#666'}
+            color={viewMode === 'searches' ? theme.primary : theme.textSecondary}
           />
-          <Text style={[styles.tabText, viewMode === 'searches' && styles.activeTabText]}>Saved</Text>
+          <Text style={[styles.tabText, { color: theme.textSecondary }, viewMode === 'searches' && { color: theme.primary }]}>Saved</Text>
         </TouchableOpacity>
       </View>
 
       {/* Search Bar */}
-      <View style={styles.searchContainer}>
-        <Ionicons name="search" size={20} color="#666" style={styles.searchIcon} />
+      <View style={[styles.searchContainer, { backgroundColor: theme.inputBackground, borderColor: theme.inputBorder }]}>
+        <Ionicons name="search" size={20} color={theme.textSecondary} style={styles.searchIcon} />
         <TextInput
-          style={styles.searchInput}
+          style={[styles.searchInput, { color: theme.text }]}
           placeholder="Search articles..."
           value={searchQuery}
           onChangeText={setSearchQuery}
-          placeholderTextColor="#999"
+          placeholderTextColor={theme.placeholder}
         />
         {searchQuery.length > 0 && (
           <>
