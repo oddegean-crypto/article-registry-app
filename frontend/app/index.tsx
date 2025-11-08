@@ -621,68 +621,153 @@ export default function HomeScreen() {
     setRefreshing(false);
   }, []);
 
-  const renderArticleItem = ({ item }: { item: Article }) => {
-    const totalSales = getTotalSalesForArticle(item.id);
-    const hasSales = totalSales > 0;
+  const renderArticleItem = ({ item }: { item: ArticleGroup }) => {
+    const group = item;
+    const isExpanded = expandedGroups.has(group.groupKey);
+    const mainArticle = group.mainArticle;
+    
+    // Calculate total sales for all variants in the group
+    const totalGroupSales = group.variants.reduce((sum, variant) => {
+      return sum + getTotalSalesForArticle(variant.id);
+    }, 0);
+    const hasGroupSales = totalGroupSales > 0;
     
     return (
-      <TouchableOpacity
-        style={styles.articleItem}
-        onPress={() => {
-          addToRecent(item.id);
-          router.push(`/article/${encodeURIComponent(item.id)}`);
-        }}
-        activeOpacity={0.7}
-      >
-        <View style={styles.articleHeader}>
-          <View style={styles.articleLeft}>
-            <Text style={styles.articleCode}>{item.articleCode}</Text>
-            {item.colorCode && (
-              <View style={styles.colorCodeContainer}>
-                {item.colorHex && (
-                  <View style={[styles.colorSwatch, { backgroundColor: item.colorHex }]} />
-                )}
-                <View style={styles.badge}>
-                  <Text style={styles.badgeText}>{item.colorCode}</Text>
+      <View style={styles.articleGroupContainer}>
+        {/* Main Group Header */}
+        <TouchableOpacity
+          style={styles.articleItem}
+          onPress={() => {
+            if (group.variantCount > 1) {
+              toggleGroup(group.groupKey);
+            } else {
+              // If only one variant, navigate directly
+              addToRecent(mainArticle.id);
+              router.push(`/article/${encodeURIComponent(mainArticle.id)}`);
+            }
+          }}
+          activeOpacity={0.7}
+        >
+          <View style={styles.articleHeader}>
+            <View style={styles.articleLeft}>
+              <Text style={styles.articleCode}>{mainArticle.articleCode}</Text>
+              {mainArticle.colorCode && (
+                <View style={styles.colorCodeContainer}>
+                  {mainArticle.colorHex && (
+                    <View style={[styles.colorSwatch, { backgroundColor: mainArticle.colorHex }]} />
+                  )}
+                  <View style={styles.badge}>
+                    <Text style={styles.badgeText}>{mainArticle.colorCode}</Text>
+                  </View>
                 </View>
-              </View>
+              )}
+              {group.variantCount > 1 && (
+                <View style={styles.variantBadge}>
+                  <Ionicons name="layers" size={12} color="#007AFF" />
+                  <Text style={styles.variantBadgeText}>{group.variantCount}</Text>
+                </View>
+              )}
+              {hasGroupSales && (
+                <View style={styles.salesBadgeMain}>
+                  <Ionicons name="cart" size={14} color="#10B981" />
+                  <Text style={styles.salesBadgeMainText}>
+                    {totalGroupSales.toFixed(1)}
+                  </Text>
+                </View>
+              )}
+            </View>
+            <View style={styles.headerRightActions}>
+              {group.variantCount > 1 && (
+                <Ionicons
+                  name={isExpanded ? 'chevron-up' : 'chevron-down'}
+                  size={20}
+                  color="#666"
+                  style={{ marginRight: 8 }}
+                />
+              )}
+              <TouchableOpacity
+                onPress={() => toggleFavorite(mainArticle.id)}
+                style={styles.favoriteBtn}
+              >
+                <Ionicons
+                  name={favorites.includes(mainArticle.id) ? 'heart' : 'heart-outline'}
+                  size={24}
+                  color={favorites.includes(mainArticle.id) ? '#FF6B6B' : '#999'}
+                />
+              </TouchableOpacity>
+            </View>
+          </View>
+          <Text style={styles.articleName} numberOfLines={1}>
+            {mainArticle.articleName || 'No name'}
+          </Text>
+          <View style={styles.articleDetails}>
+            {mainArticle.colorName && (
+              <Text style={styles.detailText} numberOfLines={1}>
+                {mainArticle.colorName}
+              </Text>
             )}
-            {hasSales && (
-              <View style={styles.salesBadgeMain}>
-                <Ionicons name="cart" size={14} color="#10B981" />
-                <Text style={styles.salesBadgeMainText}>
-                  {totalSales.toFixed(1)}
-                </Text>
-              </View>
+            {mainArticle.season && (
+              <Text style={styles.detailText} numberOfLines={1}>
+                {mainArticle.season}
+              </Text>
             )}
           </View>
-          <TouchableOpacity
-            onPress={() => toggleFavorite(item.id)}
-            style={styles.favoriteBtn}
-          >
-            <Ionicons
-              name={favorites.includes(item.id) ? 'heart' : 'heart-outline'}
-              size={24}
-              color={favorites.includes(item.id) ? '#FF6B6B' : '#999'}
-            />
-          </TouchableOpacity>
-        </View>
-        <Text style={styles.articleName} numberOfLines={1}>
-          {item.articleName || 'No name'}
-        </Text>
-        <View style={styles.articleDetails}>
-          {item.colorName && (
-            <Text style={styles.detailText} numberOfLines={1}>
-              {item.colorName}
-            </Text>
-          )}
-          {item.season && (
-            <Text style={styles.detailText} numberOfLines={1}>
-              {item.season}
-            </Text>
-          )}
-        </View>
-      </TouchableOpacity>
+        </TouchableOpacity>
+
+        {/* Expanded Variants List */}
+        {isExpanded && group.variantCount > 1 && (
+          <View style={styles.variantsContainer}>
+            {group.variants.map((variant, index) => {
+              const variantSales = getTotalSalesForArticle(variant.id);
+              const hasVariantSales = variantSales > 0;
+              
+              return (
+                <TouchableOpacity
+                  key={variant.id}
+                  style={styles.variantItem}
+                  onPress={() => {
+                    addToRecent(variant.id);
+                    router.push(`/article/${encodeURIComponent(variant.id)}`);
+                  }}
+                  activeOpacity={0.7}
+                >
+                  <View style={styles.variantRow}>
+                    <View style={styles.variantLeft}>
+                      {variant.colorHex && (
+                        <View style={[styles.colorSwatchVariant, { backgroundColor: variant.colorHex }]} />
+                      )}
+                      <View style={styles.variantInfo}>
+                        <Text style={styles.variantColorCode}>{variant.colorCode || '-'}</Text>
+                        <Text style={styles.variantColorName} numberOfLines={1}>
+                          {variant.colorName || 'No color name'}
+                        </Text>
+                      </View>
+                    </View>
+                    <View style={styles.variantRight}>
+                      {variant.treatmentName && (
+                        <View style={styles.treatmentBadge}>
+                          <Text style={styles.treatmentBadgeText} numberOfLines={1}>
+                            {variant.treatmentName}
+                          </Text>
+                        </View>
+                      )}
+                      {hasVariantSales && (
+                        <View style={styles.salesBadgeVariant}>
+                          <Ionicons name="cart" size={12} color="#10B981" />
+                          <Text style={styles.salesBadgeVariantText}>
+                            {variantSales.toFixed(1)}
+                          </Text>
+                        </View>
+                      )}
+                      <Ionicons name="chevron-forward" size={16} color="#999" />
+                    </View>
+                  </View>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+        )}
+      </View>
     );
   };
 
