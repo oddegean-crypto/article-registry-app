@@ -371,6 +371,44 @@ export default function HomeScreen() {
     setFilteredArticles(filtered);
   };
 
+  const groupArticles = (articlesToGroup: Article[]): ArticleGroup[] => {
+    const groups = new Map<string, Article[]>();
+    
+    // Group articles by articleName + articleCode
+    articlesToGroup.forEach(article => {
+      const groupKey = `${article.articleName || 'Unknown'}_${article.articleCode || 'NoCode'}`;
+      if (!groups.has(groupKey)) {
+        groups.set(groupKey, []);
+      }
+      groups.get(groupKey)!.push(article);
+    });
+
+    // Convert to ArticleGroup array
+    const grouped: ArticleGroup[] = [];
+    groups.forEach((variants, groupKey) => {
+      grouped.push({
+        groupKey,
+        mainArticle: variants[0], // First variant is the main one
+        variants,
+        variantCount: variants.length,
+      });
+    });
+
+    return grouped;
+  };
+
+  const toggleGroup = (groupKey: string) => {
+    setExpandedGroups(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(groupKey)) {
+        newSet.delete(groupKey);
+      } else {
+        newSet.add(groupKey);
+      }
+      return newSet;
+    });
+  };
+
   const parseCSV = (text: string): any[] => {
     const lines = text.split(/\r?\n/);
     if (lines.length < 2) return [];
