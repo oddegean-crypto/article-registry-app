@@ -1202,6 +1202,19 @@ const styles = StyleSheet.create({
     color: '#333',
     flex: 1,
   },
+  detailValueWithSwatch: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  colorSwatchDetail: {
+    width: 20,
+    height: 20,
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: '#ddd',
+  },
   bottomPadding: {
     height: 80,
   },
