@@ -72,6 +72,7 @@ interface Stats {
 }
 
 export default function StatsScreen() {
+  const { theme, isDark } = useTheme();
   const [activeTab, setActiveTab] = useState<'overview' | 'catalog'>('overview');
   const [stats, setStats] = useState<Stats>({
     total: 0,
