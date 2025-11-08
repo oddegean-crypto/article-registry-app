@@ -755,7 +755,7 @@ ${new Date().toLocaleString()}
         </TouchableOpacity>
         
         <TouchableOpacity
-          style={styles.fab}
+          style={[styles.fab, { backgroundColor: theme.primary }]}
           onPress={generatePDF}
           disabled={exporting}
         >
@@ -778,25 +778,25 @@ ${new Date().toLocaleString()}
         onRequestClose={() => setShowSalesModal(false)}
       >
         <View style={styles.modalOverlay}>
-          <View style={styles.salesModalContent}>
-            <View style={styles.salesModalHeader}>
-              <Text style={styles.salesModalTitle}>Sales History</Text>
+          <View style={[styles.salesModalContent, { backgroundColor: theme.modalBackground }]}>
+            <View style={[styles.salesModalHeader, { borderBottomColor: theme.border }]}>
+              <Text style={[styles.salesModalTitle, { color: theme.text }]}>Sales History</Text>
               <TouchableOpacity onPress={() => setShowSalesModal(false)}>
-                <Ionicons name="close" size={24} color="#666" />
+                <Ionicons name="close" size={24} color={theme.textSecondary} />
               </TouchableOpacity>
             </View>
 
-            <View style={styles.salesSummary}>
-              <Text style={styles.salesSummaryText}>
+            <View style={[styles.salesSummary, { backgroundColor: theme.primaryLight }]}>
+              <Text style={[styles.salesSummaryText, { color: theme.text }]}>
                 Total Sold: {getTotalQuantitySold().toFixed(2)} units
               </Text>
-              <Text style={styles.salesSummarySubtext}>
+              <Text style={[styles.salesSummarySubtext, { color: theme.textSecondary }]}>
                 {salesHistory.length} {salesHistory.length === 1 ? 'sale' : 'sales'}
               </Text>
             </View>
 
             <TouchableOpacity
-              style={styles.addSaleButton}
+              style={[styles.addSaleButton, { backgroundColor: theme.success }]}
               onPress={() => {
                 setShowSalesModal(false);
                 setShowAddSaleModal(true);
