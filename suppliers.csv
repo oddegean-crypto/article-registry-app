@@ -1,0 +1,15 @@
+Supplier,Supplier Code,Country,Payment Terms,Currency,Product Type,Address,Contact Person,Email,Phone,Notes
+SUZER TEKSTIL,DOS-0001,Turkey,120 Days,EUR,Cotton,Bozburun Mah. 7068 Sok. No: 1 20000 Merkezefendi / Denizli,Mr. Bulent Oget,info@suzerteksil.com.tr,+90 258 371 91 41,
+ARSOR TEKSTIL,DOS-0002,Turkey,90 Days,USD,Pes/Vis,Demirtaş OSB Zambak Sok. No: 2/4 Osmangazi / Bursa,Mr. Gokhan,muhasebe@arsortekstil.com,+90 224 261 60 17,
+SECEN TEKSTIL,DOS-0003,Turkey,90 Days,EUR,Fancy Mixtures,Demirtas OSB Mah. Papatya Sok. No: 8 Osmangazi / Bursa,Mrs. Hilal Secen,info@secentekstil.com,+90 224 261 05 01,
+BEZ TEKSTIL,DOS-0004,Turkey,90 Days,EUR,Cotton,"Bozburun, 7068 Sokak No:7, 20085 Denizli Merkezefendi / Denizli",Mrs. Güliz,info@beztekstil.com.tr,+90 ,
+KUKRER TEKSTIL,DOS-0005,Turkey,90 Days, EUR,Fancy Mixtures,"Kestel Org. San. Bolg No:3, Ahmet Vefik Paşa OSB, Doğan Sk. 16450 Kestel / Bursa",Mr. Atakan Kukrer,info@kukrerteksil.com,+90  224 261 30 14,
+TAN TEKSTIL,DOS-0006, Turkey,90 Days,EUR,Cotton,"Organize Sanayi Bölgesi 1. Kısım, Denizli OSB, Turan Bahadır Cd. No:6 20330 Honaz / Denizli",Mrs. Ceyda,info@tantekstil.com.tr,+90 258 269 19 31,
+NATUREL TEKSTIL,DOS-0007,Turkey,90 Days,EUR,Pes/Vis,"Acıdere OSB, 01350 Sarıçam / Adana",info@naturelkumas.com.tr,Mr.Hakan Olug,+90 536 323 11 81,
+SERIKO GROUP TEKSTIL,DOS-0008,Turkey,90 days,EUR,Fancy Mixtures,"Demirtaş Dumlupınar, 1.Yeniköy Sokak No:18 16245 Osmangazi̇ / Bursa",info@serikogroup.com,Mr.Toros,+90 224 211 35 45,
+DAYLIGHT TEKSTIL,DOS-0009,Turkey,90 Days,EUR,Fancy Mixtures,ORUCREIS GIYIMKENT SITESI 16.SOK NO:116 34235 Esenler / Istanbul,info@daylight.com,Mr. Atakan,+90 212 931 37 05,
+KNITED FABRICS,DOS-0010,Turkey,90 Days,EUR,Fancy Mixtures,Demirtaş Cumhuriyet Müjdat Köstendil Cd. No:93 16245 Osmangazi̇ / Bursa,Mr. Aykut,info@knitedfabrics.com,+90 532 253 77 31,
+ALTO TEKSTIL,DOS-0011,Turkey,90 Days,EUR,Cotton,"Vakiflar Mahallesi,İstanbul Edirne Yolu No:6 59930 Vakıflar Köyü / Çorlu / Tekirdağ,Mr. Cem,info@altoteksil.com.tr,+90 212 637 34 36
+ARASAN TEKSTIL,DOS-0012,Turkey,90 Days,EUR,Fancy Mixtures,Demirtaş Osb Yıldız Sk. No:30 16245 Osmangazi̇/Bursa,Mr.Levent Bocan,+90 224 261 58 71,
+BARUTCU TEKSTIL,DOS-0013,Turkey,90 Days,EUR,Fancy Mixtures,Demirtaş Dumlupınar OSB Çiğdem 1. Sk. No:18 16110 Demirtaş OSB / Osmangazi̇ / Bursa,Mr.Mert,info@bartucu.com.tr,+90 224 261 31 01,
+MSS DOKUMA,DOS-0014,Turkey,90 Days,EUR,Fancy Mixtures,Demirtaş Dumlupınar OSB Hanımeli Sk. NO:30/A D:1 BLOK-1 16245 Osmangazi̇ / Bursa,Mrs. Merve,info@mssdokuma.com,+90 224 236 34 34,",,,,
