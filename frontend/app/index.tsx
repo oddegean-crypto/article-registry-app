@@ -1126,6 +1126,19 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#666',
   },
+  colorCodeContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    marginRight: 8,
+  },
+  colorSwatch: {
+    width: 20,
+    height: 20,
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: '#ddd',
+  },
   salesBadgeMain: {
     flexDirection: 'row',
     alignItems: 'center',
