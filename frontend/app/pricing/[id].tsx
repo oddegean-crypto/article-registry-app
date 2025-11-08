@@ -102,6 +102,7 @@ const MARKETS = [
 ];
 
 export default function PricingCalculatorScreen() {
+  const { theme, isDark } = useTheme();
   const { id } = useLocalSearchParams();
   const [article, setArticle] = useState<Article | null>(null);
   const [loading, setLoading] = useState(true);
