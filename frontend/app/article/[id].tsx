@@ -1146,6 +1146,18 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color: '#666',
   },
+  tagContentRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
+  colorSwatchTag: {
+    width: 12,
+    height: 12,
+    borderRadius: 2,
+    borderWidth: 1,
+    borderColor: '#ccc',
+  },
   section: {
     backgroundColor: '#fff',
     padding: 16,
