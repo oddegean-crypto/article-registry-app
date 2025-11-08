@@ -98,6 +98,7 @@ interface Article {
 }
 
 export default function ArticleDetailsScreen() {
+  const { theme, isDark } = useTheme();
   const { id } = useLocalSearchParams();
   const [article, setArticle] = useState<Article | null>(null);
   const [loading, setLoading] = useState(true);
