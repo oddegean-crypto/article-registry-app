@@ -472,6 +472,7 @@ export default function ArticleDetailsScreen() {
             ${renderDetailRow('Width CM', article.widthCM)}
             ${renderDetailRow('Stretch', article.stretch)}
             ${renderDetailRow('Weave', article.weave)}
+            ${renderDetailRow('Construction', article.construction)}
             ${renderDetailRow('Dye Type', article.dyeType)}
             ${renderDetailRow('Care Label', article.careLabel)}
           </div>
