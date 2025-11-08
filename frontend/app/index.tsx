@@ -718,7 +718,7 @@ export default function HomeScreen() {
 
         {/* Expanded Variants List */}
         {isExpanded && group.variantCount > 1 && (
-          <View style={styles.variantsContainer}>
+          <View style={[styles.variantsContainer, { backgroundColor: theme.divider }]}>
             {group.variants.map((variant, index) => {
               const variantSales = getTotalSalesForArticle(variant.id);
               const hasVariantSales = variantSales > 0;
@@ -726,7 +726,7 @@ export default function HomeScreen() {
               return (
                 <TouchableOpacity
                   key={variant.id}
-                  style={styles.variantItem}
+                  style={[styles.variantItem, { backgroundColor: theme.cardBackground, borderColor: theme.border }]}
                   onPress={() => {
                     addToRecent(variant.id);
                     router.push(`/article/${encodeURIComponent(variant.id)}`);
@@ -739,29 +739,29 @@ export default function HomeScreen() {
                         <View style={[styles.colorSwatchVariant, { backgroundColor: variant.colorHex }]} />
                       )}
                       <View style={styles.variantInfo}>
-                        <Text style={styles.variantColorCode}>{variant.colorCode || '-'}</Text>
-                        <Text style={styles.variantColorName} numberOfLines={1}>
+                        <Text style={[styles.variantColorCode, { color: theme.primary }]}>{variant.colorCode || '-'}</Text>
+                        <Text style={[styles.variantColorName, { color: theme.textSecondary }]} numberOfLines={1}>
                           {variant.colorName || 'No color name'}
                         </Text>
                       </View>
                     </View>
                     <View style={styles.variantRight}>
                       {variant.treatmentName && (
-                        <View style={styles.treatmentBadge}>
-                          <Text style={styles.treatmentBadgeText} numberOfLines={1}>
+                        <View style={[styles.treatmentBadge, { backgroundColor: theme.badge }]}>
+                          <Text style={[styles.treatmentBadgeText, { color: theme.badgeText }]} numberOfLines={1}>
                             {variant.treatmentName}
                           </Text>
                         </View>
                       )}
                       {hasVariantSales && (
-                        <View style={styles.salesBadgeVariant}>
-                          <Ionicons name="cart" size={12} color="#10B981" />
-                          <Text style={styles.salesBadgeVariantText}>
+                        <View style={[styles.salesBadgeVariant, { backgroundColor: theme.successLight }]}>
+                          <Ionicons name="cart" size={12} color={theme.success} />
+                          <Text style={[styles.salesBadgeVariantText, { color: theme.success }]}>
                             {variantSales.toFixed(1)}
                           </Text>
                         </View>
                       )}
-                      <Ionicons name="chevron-forward" size={16} color="#999" />
+                      <Ionicons name="chevron-forward" size={16} color={theme.textTertiary} />
                     </View>
                   </View>
                 </TouchableOpacity>
