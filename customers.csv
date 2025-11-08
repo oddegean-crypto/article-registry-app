@@ -1,0 +1,52 @@
+Customer Code,Customer Name,Country,Payment Terms,Currency,Contact Person,Email,Phone,Address,Notes
+INT-0001,FALCONERI,Italy,60 Days,EUR,Mrs. Samantha Cechi,info@falconeri.it,+39 0554 68831,Via del Lavoro 18 38063 Avio,
+INT-0002,FREE PEOPLE,USA,LC - At Sight,USD,Mrs. Kelsey,info@freepeople.com,+1 773 263 6916,"5000 S. Broad St. Bldg 15
+19112 Philadelphia",
+INT-0003,PAOLO BLOWER,USA,30 Days,USD,Mr. Gianpaolo Blower,gianpaolo@itw-ny.com,+1 305 401 5447,"102 West 38th Street,
+9th Floor 10018 New York", 
+DOC-0001,BARTATEKS TEKSTIL KONFEKSIYON INSAAT SAN VE TIC LTD STI,Turkey,90 Days,EUR,MRS. BARBAROS DURMAZ,info@bartateks.com.tr,+90 484 99 45,"Fatih 1209 Cad. no:4
+35140 Gaziemir / Izmir",
+INT-0004,GA OPERATIONS,Italy,90 Days,EUR,Mrs Bianca Maria,info@gaoperations.it,+39 059 584 411,"VIA P. GIARDINI 1324
+41126 BAGGIOVARA (MO)",
+INT-0005,LOLA CHAM,France,60 Days,EUR,Mr. Yael,info@lolacham.fr,+33 ,"5 RUE SAINT-SAUVEUR
+75200 Paris",
+DOC-0002,AISA DANISMANLIK DIS TIC AS,Turkey,30 Days,EUR,Erkan Gunes,info@aisatrade.com,+90 212 803 8999,"Yakuplu Mah. 59. Sok No: 40/31
+34524 Beylikduzu / Istanbul",
+INT-0006,THEORY,USA,LC - At Sight,USD,,,+1 ,"Meatpacking District, at 2 Gansevoort Street, 10014 New Yokrk",
+INT-0007,BIRDDOGS,USA,LC - At Sight,EUR,,,+1 ,"15 W 18th St.
+10011 New York",
+INT-0008,NORTH SAILS APPAREL SPA ,Italy,60 Days,EUR,MRS. FRANCESCA,info@northsails.com,+39 0185 200273 ,"Via Camperio 14
+20123 Milano ",
+INT-0009,MASSIMO DUTTI,Spain,120 Days,EUR,MRS. PAOLA ,info@massimodutti.com,+34 937 66 76 99,Polígono Inditex Av. Verge de Montserrat 08490 Tordera / Barcelona,
+INT-0010,BIMBA & LOLA,Spain,60 Days,EUR,MRS. LETIZIA EXPOSITO,info@lolaybimba.es,+34 986 288 401,"Av. de Madrid, 133 Lavadores
+36214 Vigo / Pontevedra
+",
+INT-0011,RICCIARINI TESSILE SPA,Italy,90 Days,EUR,MRS. Sabrina Baiella,info@ricciarini.com,+39 ,"Via Tommaso Edison 19
+52100 Arezzo",
+INT-0012,ALTUZARRA,USA,LC - At Sight,USD,Mrs. Latania,info@altuzarra.com,+1  212 966 0638,"233 Broadway, 14th Floor
+10279 New York",
+INT-0013,AG ADRIANO GOLDSCHMIED INC,USA,LC - At Sight,USD,Adrian,info@ag.com,+1 ,"2741 Seminole Ave, South Gate
+90280 California",
+INT-0014,HEVRON LLC,USA,LC - At Sight,USD,JACYLYN,,+1 ,"530 NW 29th St
+33127 Miami FL",
+INT-0015,PILOSOULE LLC,USA,LC - At Sight,USD,KIT,,+1 ,Newark,
+INT-0016,APIECE APART,USA,LC - At Sight,USD,NOGOYE,,+1 ,"187 Lafayette St FL 2
+10013 New York",
+INT-0017,SAINT ART,USA,LC - At Sight,USD,DONALD & GABBY,,+1 ,"420 W 14th St #2SE
+10014 New York",
+INT-0018,ONIA,USA,LC - At Sight,USD,KIRSTEN & ANGEL,,+1 ,"666 Broadway FL 3
+10012 Ney York",
+INT-0019,DEREK LAM,USA,LC - At Sight,USD,ROSLYN,,+1 ,"601 W 26th St
+10001 New York",
+INT-0020,NEPENTHES,USA,LC - At Sight,USD,KUNI,,+1 ,"307 W 38th St
+10018 New York",
+INT-0021,UNTUCKIT,USA,30 Days,USD,BJORN,,+1 ,"103 5th Ave 
+10003 New York",
+INT-0022,SASU DAVID III,France,60 Days,EUR,,,+33 ,"3 RUE FORGES
+75002 PARIS",
+DOC-0003,SEYFELI TEKSTIL,Turkey,90 Days,EUR,,,+90 ,"Buca Osb Mah. 2/ 20. Sk. No: 59 Begos 3. Bölge
+35400 BUCA / IZMIR",
+INT-0023,CAFISSI SPA,Italy,90 Days,EUR,MR. FRANCESCO,,+39 ,"via della Fattoria 4
+59100 TAVOLA (PRATO)",
+INT-0024,OYSHO,Spain,120 Days,EUR,,,+34 937 667 500,Ctra. Tordera a Palafolls P.K. 0.6 08490 Tordera / Barcelona,
+INT-0009,HELMUT LANG,USA,LC - At Sight,USD,Josh,,+1 , 821 Washington St. 10014 New York NY,
