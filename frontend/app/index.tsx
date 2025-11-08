@@ -974,19 +974,19 @@ export default function HomeScreen() {
       {/* Articles List */}
       {loading ? (
         <View style={styles.centerContainer}>
-          <ActivityIndicator size="large" color="#007AFF" />
-          <Text style={styles.loadingText}>Loading articles...</Text>
+          <ActivityIndicator size="large" color={theme.primary} />
+          <Text style={[styles.loadingText, { color: theme.textSecondary }]}>Loading articles...</Text>
         </View>
       ) : viewMode === 'searches' && savedSearches.length === 0 ? (
         <View style={styles.centerContainer}>
-          <Ionicons name="bookmark-outline" size={64} color="#ccc" />
-          <Text style={styles.emptyText}>No saved searches yet</Text>
-          <Text style={styles.emptySubtext}>Tap bookmark icon while searching to save</Text>
+          <Ionicons name="bookmark-outline" size={64} color={theme.textTertiary} />
+          <Text style={[styles.emptyText, { color: theme.textTertiary }]}>No saved searches yet</Text>
+          <Text style={[styles.emptySubtext, { color: theme.textTertiary }]}>Tap bookmark icon while searching to save</Text>
         </View>
       ) : filteredArticles.length === 0 ? (
         <View style={styles.centerContainer}>
-          <Ionicons name="document-text-outline" size={64} color="#ccc" />
-          <Text style={styles.emptyText}>
+          <Ionicons name="document-text-outline" size={64} color={theme.textTertiary} />
+          <Text style={[styles.emptyText, { color: theme.textTertiary }]}>
             {articles.length === 0
               ? 'No articles yet'
               : viewMode === 'favorites'
@@ -996,7 +996,7 @@ export default function HomeScreen() {
               : 'No articles match your search'}
           </Text>
           {articles.length === 0 && (
-            <Text style={styles.emptySubtext}>Tap "Import" to get started</Text>
+            <Text style={[styles.emptySubtext, { color: theme.textTertiary }]}>Tap "Import" to get started</Text>
           )}
         </View>
       ) : (
