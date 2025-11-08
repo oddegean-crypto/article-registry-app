@@ -74,6 +74,7 @@ interface Article {
   id: string;
   articleCode: string;
   colorCode: string;
+  colorHex?: string;
   treatmentName: string;
   articleName: string;
   colorName: string;
