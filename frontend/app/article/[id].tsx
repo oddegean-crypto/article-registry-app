@@ -714,16 +714,16 @@ ${new Date().toLocaleString()}
         </View>
 
         {/* Supplier Information */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Supplier Information</Text>
+        <View style={[styles.section, { backgroundColor: theme.cardBackground }]}>
+          <Text style={[styles.sectionTitle, { color: theme.primary }]}>Supplier Information</Text>
           {renderDetail('Supplier', article.supplier)}
           {renderDetail('Supp. Art. Code', article.suppArtCode)}
           {renderDetail('Base Price EUR', article.basePriceEUR)}
         </View>
 
         {/* Additional Information */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Additional Information</Text>
+        <View style={[styles.section, { backgroundColor: theme.cardBackground }]}>
+          <Text style={[styles.sectionTitle, { color: theme.primary }]}>Additional Information</Text>
           {renderDetail('Barcode/QR', article.barcodeQR)}
         </View>
 
@@ -733,21 +733,22 @@ ${new Date().toLocaleString()}
       {/* Floating Action Buttons */}
       <View style={styles.fabContainer}>
         <TouchableOpacity
-          style={[styles.fab, styles.fabSecondary]}
+          style={[styles.fab, styles.fabSecondary, { backgroundColor: theme.cardBackground, borderColor: theme.primary }]}
           onPress={() => router.push(`/pricing/${encodeURIComponent(article.id)}`)}
         >
-          <Ionicons name="calculator" size={24} color="#007AFF" />
-          <Text style={styles.fabTextSecondary}>PRICING</Text>
+          <Ionicons name="calculator" size={24} color={theme.primary} />
+          <Text style={[styles.fabTextSecondary, { color: theme.primary }]}>PRICING</Text>
         </TouchableOpacity>
         
         <TouchableOpacity
-          style={[styles.fab, styles.fabSold]}
+          style={[styles.fab, styles.fabSold, { backgroundColor: theme.cardBackground, borderColor: theme.success }]}
           onPress={() => setShowSalesModal(true)}
         >
-          <Ionicons name="cart" size={24} color="#10B981" />
-          <Text style={styles.fabTextSold}>SOLD</Text>
+          <Ionicons name="cart" size={24} color={theme.success} />
+          <Text style={[styles.fabTextSold, { color: theme.success }]}>SOLD</Text>
           {salesHistory.length > 0 && (
-            <View style={styles.salesBadge}>
+            <View style={[styles.salesBadge, { backgroundColor: theme.success }]}>
+
               <Text style={styles.salesBadgeText}>{salesHistory.length}</Text>
             </View>
           )}
