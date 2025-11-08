@@ -696,6 +696,7 @@ ${new Date().toLocaleString()}
           {renderDetail('Width CM', article.widthCM)}
           {renderDetail('Stretch', article.stretch)}
           {renderDetail('Weave', article.weave)}
+          {renderDetail('Construction', article.construction)}
           {renderDetail('Dye Type', article.dyeType)}
           {renderDetail('Care Label', article.careLabel)}
         </View>
