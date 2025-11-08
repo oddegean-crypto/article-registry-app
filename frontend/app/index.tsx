@@ -920,23 +920,23 @@ export default function HomeScreen() {
         )}
 
         <TouchableOpacity
-          style={[styles.actionButton, styles.secondaryButton]}
+          style={[styles.actionButton, styles.secondaryButton, { backgroundColor: theme.cardBackground, borderColor: theme.primary }]}
           onPress={() => setSortModalVisible(true)}
         >
-          <Ionicons name="swap-vertical" size={20} color="#007AFF" />
-          <Text style={styles.secondaryButtonText}>Sort</Text>
+          <Ionicons name="swap-vertical" size={20} color={theme.primary} />
+          <Text style={[styles.secondaryButtonText, { color: theme.primary }]}>Sort</Text>
         </TouchableOpacity>
 
         {articles.length > 0 && (
           <TouchableOpacity
-            style={[styles.actionButton, styles.secondaryButton]}
+            style={[styles.actionButton, styles.secondaryButton, { backgroundColor: theme.cardBackground, borderColor: theme.primary }]}
             onPress={syncToBackend}
             disabled={syncing}
           >
             {syncing ? (
-              <ActivityIndicator size="small" color="#007AFF" />
+              <ActivityIndicator size="small" color={theme.primary} />
             ) : (
-              <Ionicons name="sync" size={20} color="#007AFF" />
+              <Ionicons name="sync" size={20} color={theme.primary} />
             )}
           </TouchableOpacity>
         )}
@@ -945,18 +945,18 @@ export default function HomeScreen() {
       {/* Saved Searches View */}
       {viewMode === 'searches' && savedSearches.length > 0 && (
         <View style={styles.savedSearchesContainer}>
-          <Text style={styles.sectionTitle}>Saved Searches</Text>
+          <Text style={[styles.sectionTitle, { color: theme.text }]}>Saved Searches</Text>
           {savedSearches.map((search, index) => (
             <TouchableOpacity
               key={index}
-              style={styles.savedSearchItem}
+              style={[styles.savedSearchItem, { backgroundColor: theme.cardBackground }]}
               onPress={() => {
                 setSearchQuery(search);
                 setViewMode('all');
               }}
             >
-              <Ionicons name="search" size={16} color="#666" />
-              <Text style={styles.savedSearchText}>{search}</Text>
+              <Ionicons name="search" size={16} color={theme.textSecondary} />
+              <Text style={[styles.savedSearchText, { color: theme.text }]}>{search}</Text>
               <TouchableOpacity
                 onPress={() => {
                   const newSearches = savedSearches.filter((_, i) => i !== index);
