@@ -142,22 +142,24 @@ export default function FilterScreen() {
     selected: string[],
     onToggle: (item: string) => void
   ) => (
-    <View style={styles.filterSection}>
-      <Text style={styles.filterTitle}>{title}</Text>
+    <View style={[styles.filterSection, { backgroundColor: theme.cardBackground }]}>
+      <Text style={[styles.filterTitle, { color: theme.primary }]}>{title}</Text>
       <View style={styles.filterOptions}>
         {items.map(item => (
           <TouchableOpacity
             key={item}
             style={[
               styles.filterChip,
-              selected.includes(item) && styles.filterChipSelected,
+              { backgroundColor: theme.inputBackground, borderColor: theme.inputBorder },
+              selected.includes(item) && { backgroundColor: theme.primary, borderColor: theme.primary },
             ]}
             onPress={() => onToggle(item)}
           >
             <Text
               style={[
                 styles.filterChipText,
-                selected.includes(item) && styles.filterChipTextSelected,
+                { color: theme.text },
+                selected.includes(item) && { color: '#fff' },
               ]}
             >
               {item}
