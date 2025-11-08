@@ -1071,6 +1071,15 @@ const styles = StyleSheet.create({
   headerLeft: {
     flex: 1,
   },
+  headerRight: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  themeToggle: {
+    padding: 8,
+    borderRadius: 8,
+  },
   headerTitle: {
     fontSize: 28,
     fontWeight: '700',
