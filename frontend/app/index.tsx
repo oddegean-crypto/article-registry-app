@@ -1512,4 +1512,13 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#10B981',
   },
+  articleThumbnail: {
+    width: 24,
+    height: 24,
+    borderRadius: 4,
+    backgroundColor: '#E3F2FD',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 8,
+  },
 });
