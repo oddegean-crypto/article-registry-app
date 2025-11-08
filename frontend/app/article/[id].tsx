@@ -617,10 +617,10 @@ ${new Date().toLocaleString()}
 
   if (!article) {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
         <View style={styles.centerContainer}>
-          <Text style={styles.errorText}>Article not found</Text>
-          <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+          <Text style={[styles.errorText, { color: theme.textTertiary }]}>Article not found</Text>
+          <TouchableOpacity style={[styles.backButton, { backgroundColor: theme.primary }]} onPress={() => router.back()}>
             <Text style={styles.backButtonText}>Go Back</Text>
           </TouchableOpacity>
         </View>
@@ -629,18 +629,18 @@ ${new Date().toLocaleString()}
   }
 
   return (
-    <SafeAreaView style={styles.container} edges={['top']}>
+    <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]} edges={['top']}>
       {/* Header */}
-      <View style={styles.header}>
+      <View style={[styles.header, { backgroundColor: theme.headerBackground, borderBottomColor: theme.border }]}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
-          <Ionicons name="arrow-back" size={24} color="#007AFF" />
+          <Ionicons name="arrow-back" size={24} color={theme.primary} />
         </TouchableOpacity>
         <View style={styles.headerContent}>
-          <Text style={styles.headerTitle}>Article Details</Text>
+          <Text style={[styles.headerTitle, { color: theme.text }]}>Article Details</Text>
         </View>
         <View style={styles.headerActions}>
           <TouchableOpacity onPress={shareAsText} style={styles.iconButton}>
-            <Ionicons name="share-outline" size={24} color="#007AFF" />
+            <Ionicons name="share-outline" size={24} color={theme.primary} />
           </TouchableOpacity>
         </View>
       </View>
