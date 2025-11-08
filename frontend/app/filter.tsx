@@ -267,8 +267,8 @@ export default function FilterScreen() {
       </ScrollView>
 
       {/* Apply Button */}
-      <View style={styles.footer}>
-        <TouchableOpacity style={styles.applyButton} onPress={applyFilters}>
+      <View style={[styles.footer, { backgroundColor: theme.headerBackground, borderTopColor: theme.border }]}>
+        <TouchableOpacity style={[styles.applyButton, { backgroundColor: theme.primary }]} onPress={applyFilters}>
           <Text style={styles.applyButtonText}>Apply Filters</Text>
         </TouchableOpacity>
       </View>
