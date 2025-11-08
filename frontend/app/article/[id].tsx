@@ -991,6 +991,20 @@ ${new Date().toLocaleString()}
 
   function renderDetail(label: string, value: any) {
     if (!value) return null;
+    
+    // Special rendering for Color Code with hex swatch
+    if (label === 'Color Code' && article?.colorHex) {
+      return (
+        <View style={styles.detailRow}>
+          <Text style={styles.detailLabel}>{label}</Text>
+          <View style={styles.detailValueWithSwatch}>
+            <View style={[styles.colorSwatchDetail, { backgroundColor: article.colorHex }]} />
+            <Text style={styles.detailValue}>{value}</Text>
+          </View>
+        </View>
+      );
+    }
+    
     return (
       <View style={styles.detailRow}>
         <Text style={styles.detailLabel}>{label}</Text>
