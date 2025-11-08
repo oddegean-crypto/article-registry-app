@@ -422,7 +422,7 @@ export default function StatsScreen() {
               <View style={styles.emptyState}>
                 <Ionicons name="cart-outline" size={64} color="#ccc" />
                 <Text style={styles.emptyStateTitle}>No Sales Yet</Text>
-                <Text style={styles.emptyStateText}>
+                <Text style={[styles.emptyStateText, { color: theme.textSecondary }]}>
                   Start recording sales to see your overview here
                 </Text>
               </View>
@@ -433,7 +433,7 @@ export default function StatsScreen() {
           <>
             {/* Overview Cards */}
             <View style={styles.overviewSection}>
-              <Text style={styles.sectionTitle}>Overview</Text>
+              <Text style={[styles.sectionTitle, { color: theme.text }]}>Overview</Text>
               <View style={styles.cardsGrid}>
                 {renderStatCard('Total Articles', stats.total, 'albums', '#007AFF')}
                 {renderStatCard('Favorites', stats.favoritesCount, 'heart', '#FF6B6B')}
@@ -449,21 +449,21 @@ export default function StatsScreen() {
 
             {/* Price Range */}
             {stats.priceRange.max > 0 && (
-              <View style={styles.priceSection}>
+              <View style={[styles.priceSection, { backgroundColor: theme.cardBackground }]}>
                 <View style={styles.categoryHeader}>
                   <Ionicons name="pricetag" size={24} color="#4CAF50" />
-                  <Text style={styles.categoryTitle}>Price Range</Text>
+                  <Text style={[styles.categoryTitle, { color: theme.text }]}>Price Range</Text>
                 </View>
                 <View style={styles.priceCard}>
                   <View style={styles.priceItem}>
-                    <Text style={styles.priceLabel}>Minimum</Text>
+                    <Text style={[styles.priceLabel, { color: theme.textSecondary }]}>Minimum</Text>
                     <Text style={[styles.priceValue, { color: '#4CAF50' }]}>
                       €{stats.priceRange.min.toFixed(2)}
                     </Text>
                   </View>
-                  <View style={styles.priceDivider} />
+                  <View style={[styles.priceDivider, { backgroundColor: theme.border }]} />
                   <View style={styles.priceItem}>
-                    <Text style={styles.priceLabel}>Maximum</Text>
+                    <Text style={[styles.priceLabel, { color: theme.textSecondary }]}>Maximum</Text>
                     <Text style={[styles.priceValue, { color: '#FF6B6B' }]}>
                       €{stats.priceRange.max.toFixed(2)}
                     </Text>
