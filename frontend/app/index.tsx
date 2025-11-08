@@ -72,6 +72,13 @@ interface Article {
   [key: string]: any;
 }
 
+interface ArticleGroup {
+  groupKey: string;
+  mainArticle: Article;
+  variants: Article[];
+  variantCount: number;
+}
+
 type SortOption = 'name' | 'code' | 'date' | 'price';
 type ViewMode = 'all' | 'favorites' | 'recent' | 'searches';
 
