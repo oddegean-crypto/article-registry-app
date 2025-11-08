@@ -991,9 +991,9 @@ export default function HomeScreen() {
         </View>
       ) : (
         <FlatList
-          data={filteredArticles}
+          data={groupedArticles}
           renderItem={renderArticleItem}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item.groupKey}
           contentContainerStyle={styles.listContent}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
