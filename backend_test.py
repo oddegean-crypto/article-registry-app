@@ -10,7 +10,7 @@ import sys
 from datetime import datetime
 
 # Get backend URL from environment
-BACKEND_URL = "https://aisa-articles.preview.emergentagent.com/api"
+BACKEND_URL = "https://fabric-finder-5.preview.emergentagent.com/api"
 
 class ArticleRegistryTester:
     def __init__(self):
