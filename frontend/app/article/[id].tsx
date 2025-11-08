@@ -808,16 +808,16 @@ ${new Date().toLocaleString()}
 
             <ScrollView style={styles.salesList}>
               {salesHistory.length === 0 ? (
-                <Text style={styles.noSalesText}>No sales recorded yet</Text>
+                <Text style={[styles.noSalesText, { color: theme.textSecondary }]}>No sales recorded yet</Text>
               ) : (
                 salesHistory.map((sale) => {
                   console.log('Rendering sale:', sale);
                   return (
-                  <View key={sale.id} style={styles.saleItem}>
+                  <View key={sale.id} style={[styles.saleItem, { backgroundColor: theme.cardBackground, borderColor: theme.border }]}>
                     <View style={styles.saleItemHeader}>
                       <View style={styles.saleItemHeaderLeft}>
-                        <Text style={styles.saleCustomer}>{sale.customer}</Text>
-                        <Text style={styles.saleDate}>
+                        <Text style={[styles.saleCustomer, { color: theme.text }]}>{sale.customer}</Text>
+                        <Text style={[styles.saleDate, { color: theme.textSecondary }]}>
                           {new Date(sale.timestamp).toLocaleDateString()} {new Date(sale.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
                         </Text>
                       </View>
@@ -826,7 +826,7 @@ ${new Date().toLocaleString()}
                           style={styles.editSaleButton}
                           onPress={() => startEditSale(sale)}
                         >
-                          <Ionicons name="pencil" size={18} color="#007AFF" />
+                          <Ionicons name="pencil" size={18} color={theme.primary} />
                         </TouchableOpacity>
                         <TouchableOpacity
                           style={styles.deleteSaleButton}
@@ -845,24 +845,24 @@ ${new Date().toLocaleString()}
                             );
                           }}
                         >
-                          <Ionicons name="trash-outline" size={18} color="#FF3B30" />
+                          <Ionicons name="trash-outline" size={18} color={theme.error} />
                         </TouchableOpacity>
                       </View>
                     </View>
 
                     <View style={styles.saleDetailRow}>
                       <View style={styles.saleDetailItem}>
-                        <Ionicons name="color-palette" size={16} color="#666" />
-                        <Text style={styles.saleDetailLabel}>Color:</Text>
-                        <Text style={styles.saleDetailValue}>{sale.color}</Text>
+                        <Ionicons name="color-palette" size={16} color={theme.textSecondary} />
+                        <Text style={[styles.saleDetailLabel, { color: theme.textSecondary }]}>Color:</Text>
+                        <Text style={[styles.saleDetailValue, { color: theme.text }]}>{sale.color}</Text>
                       </View>
                     </View>
 
                     <View style={styles.saleDetailRow}>
                       <View style={styles.saleDetailItem}>
-                        <Ionicons name="cube" size={16} color="#666" />
-                        <Text style={styles.saleDetailLabel}>Quantity:</Text>
-                        <Text style={styles.saleDetailValue}>
+                        <Ionicons name="cube" size={16} color={theme.textSecondary} />
+                        <Text style={[styles.saleDetailLabel, { color: theme.textSecondary }]}>Quantity:</Text>
+                        <Text style={[styles.saleDetailValue, { color: theme.text }]}>
                           {sale.quantity} {sale.unit}
                         </Text>
                       </View>
