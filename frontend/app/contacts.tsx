@@ -13,7 +13,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import * as DocumentPicker from 'expo-document-picker';
-import * as FileSystemLegacy from 'expo-file-system/legacy';
+import * as FileSystem from 'expo-file-system';
 import { useTheme } from './ThemeContext';
 
 const SUPPLIERS_KEY = 'suppliers_data';
@@ -26,10 +26,10 @@ const storage = {
       return localStorage.getItem(key);
     }
     try {
-      const filePath = `${FileSystemLegacy.documentDirectory}${key}.json`;
-      const fileInfo = await FileSystemLegacy.getInfoAsync(filePath);
+      const filePath = `${FileSystem.documentDirectory}${key}.json`;
+      const fileInfo = await FileSystem.getInfoAsync(filePath);
       if (fileInfo.exists) {
-        return await FileSystemLegacy.readAsStringAsync(filePath);
+        return await FileSystem.readAsStringAsync(filePath);
       }
       return null;
     } catch {
@@ -41,8 +41,8 @@ const storage = {
       localStorage.setItem(key, value);
       return;
     }
-    const filePath = `${FileSystemLegacy.documentDirectory}${key}.json`;
-    await FileSystemLegacy.writeAsStringAsync(filePath, value);
+    const filePath = `${FileSystem.documentDirectory}${key}.json`;
+    await FileSystem.writeAsStringAsync(filePath, value);
   },
 };
 
@@ -135,7 +135,7 @@ export default function ContactsScreen() {
       }
 
       const fileUri = result.assets[0].uri;
-      const fileContent = await FileSystemLegacy.readAsStringAsync(fileUri);
+      const fileContent = await FileSystem.readAsStringAsync(fileUri);
       const parsed = parseCSV(fileContent, 'supplier');
       
       const formattedSuppliers: Supplier[] = parsed.map(item => ({
@@ -178,7 +178,7 @@ export default function ContactsScreen() {
       }
 
       const fileUri = result.assets[0].uri;
-      const fileContent = await FileSystemLegacy.readAsStringAsync(fileUri);
+      const fileContent = await FileSystem.readAsStringAsync(fileUri);
       const parsed = parseCSV(fileContent, 'customer');
       
       const formattedCustomers: Customer[] = parsed.map(item => ({

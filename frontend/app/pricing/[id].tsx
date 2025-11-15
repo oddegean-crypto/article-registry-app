@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router, useLocalSearchParams } from 'expo-router';
-import * as FileSystemLegacy from 'expo-file-system/legacy';
+import * as FileSystem from 'expo-file-system';
 import * as Print from 'expo-print';
 import * as Sharing from 'expo-sharing';
 import * as MailComposer from 'expo-mail-composer';
@@ -28,10 +28,10 @@ const storage = {
       return localStorage.getItem(key);
     }
     try {
-      const filePath = `${FileSystemLegacy.documentDirectory}${key}.json`;
-      const fileInfo = await FileSystemLegacy.getInfoAsync(filePath);
+      const filePath = `${FileSystem.documentDirectory}${key}.json`;
+      const fileInfo = await FileSystem.getInfoAsync(filePath);
       if (fileInfo.exists) {
-        return await FileSystemLegacy.readAsStringAsync(filePath);
+        return await FileSystem.readAsStringAsync(filePath);
       }
       return null;
     } catch {
@@ -43,8 +43,8 @@ const storage = {
       localStorage.setItem(key, value);
     } else {
       try {
-        const filePath = `${FileSystemLegacy.documentDirectory}${key}.json`;
-        await FileSystemLegacy.writeAsStringAsync(filePath, value);
+        const filePath = `${FileSystem.documentDirectory}${key}.json`;
+        await FileSystem.writeAsStringAsync(filePath, value);
       } catch (error) {
         console.error('Error writing to storage:', error);
       }
