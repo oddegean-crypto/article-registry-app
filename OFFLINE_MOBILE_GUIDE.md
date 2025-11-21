@@ -97,7 +97,7 @@ If you prefer not to build an APK, you can use the web version offline:
 
 ### On Android Chrome/Samsung Internet:
 
-1. Open: https://fabric-finder-5.preview.emergentagent.com
+1. Open: https://textile-manager-4.preview.emergentagent.com
 2. Tap **Menu (⋮)** → **"Add to Home Screen"**
 3. Name it "Article Registry"
 4. An app icon appears on your home screen

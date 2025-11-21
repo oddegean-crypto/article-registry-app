@@ -91,7 +91,7 @@ While waiting for the APK, you can use the Progressive Web App:
 
 ### On your Android phone:
 
-1. Open Chrome: https://fabric-finder-5.preview.emergentagent.com
+1. Open Chrome: https://textile-manager-4.preview.emergentagent.com
 2. Tap ⋮ (menu) → "Add to Home screen"
 3. Name it "Article Registry"
 4. Opens like native app, works offline!
