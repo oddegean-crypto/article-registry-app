@@ -1182,21 +1182,6 @@ ${new Date().toLocaleString()}
       );
     }
     
-    // Special rendering for Care Label with symbols
-    if (label === 'Care Label') {
-      const careCodes = value.split(',').map((code: string) => code.trim()).filter(Boolean);
-      return (
-        <View style={styles.detailRow}>
-          <Text style={[styles.detailLabel, { color: theme.textSecondary }]}>{label}</Text>
-          <View style={styles.careSymbolsContainer}>
-            {careCodes.map((code: string, index: number) => (
-              <CareSymbol key={index} code={code} size={50} showLabel={true} />
-            ))}
-          </View>
-        </View>
-      );
-    }
-    
     return (
       <View style={styles.detailRow}>
         <Text style={[styles.detailLabel, { color: theme.textSecondary }]}>{label}</Text>
