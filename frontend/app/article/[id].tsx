@@ -546,6 +546,29 @@ export default function ArticleDetailsScreen() {
       `;
     }
     
+    // Special rendering for Care Label with symbols
+    if (label === 'Care Label' && !isEmpty) {
+      const careCodes = displayValue.split(',').map((code: string) => code.trim()).filter(Boolean);
+      const careSymbolsHTML = careCodes.map((code: string) => {
+        const { symbol, name } = getCareSymbolInfo(code);
+        return `
+          <div class="care-symbol-badge">
+            <div class="care-symbol-text">${symbol}</div>
+            <div class="care-symbol-name">${name}</div>
+          </div>
+        `;
+      }).join('');
+      
+      return `
+        <div class="detail-row">
+          <div class="detail-label">${label}:</div>
+          <div class="care-symbols-container">
+            ${careSymbolsHTML}
+          </div>
+        </div>
+      `;
+    }
+    
     return `
       <div class="detail-row">
         <div class="detail-label">${label}:</div>
