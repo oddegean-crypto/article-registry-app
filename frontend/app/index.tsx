@@ -789,36 +789,36 @@ export default function HomeScreen() {
       
       {/* Header */}
       <View style={[styles.header, { backgroundColor: theme.headerBackground, borderBottomColor: theme.border }]}>
-        <View style={styles.headerLeft}>
-          <Text style={[styles.headerTitle, { color: theme.text }]}>Article Registry</Text>
-          <Text style={[styles.headerSubtitle, { color: theme.textSecondary }]}>{articles.length} articles</Text>
-        </View>
-        <View style={styles.headerRight}>
+        <View style={styles.headerTop}>
+          <View style={styles.headerLeft}>
+            <Text style={[styles.headerTitle, { color: theme.text }]}>Article Registry</Text>
+            <Text style={[styles.headerSubtitle, { color: theme.textSecondary }]}>{articles.length} articles</Text>
+          </View>
           <TouchableOpacity
             style={styles.themeToggle}
             onPress={toggleTheme}
           >
             <Ionicons name={isDark ? 'sunny' : 'moon'} size={24} color={theme.primary} />
           </TouchableOpacity>
-          {articles.length > 0 && (
+        </View>
+        {articles.length > 0 && (
+          <View style={styles.headerButtons}>
             <TouchableOpacity
               style={[styles.statsButton, { backgroundColor: theme.primaryLight }]}
               onPress={() => router.push('/stats')}
             >
-              <Ionicons name="stats-chart" size={24} color={theme.primary} />
+              <Ionicons name="stats-chart" size={20} color={theme.primary} />
               <Text style={[styles.statsButtonText, { color: theme.primary }]}>Stats</Text>
             </TouchableOpacity>
-          )}
-          {articles.length > 0 && (
             <TouchableOpacity
               style={[styles.statsButton, { backgroundColor: theme.successLight }]}
               onPress={() => router.push('/contacts')}
             >
-              <Ionicons name="people" size={24} color={theme.success} />
+              <Ionicons name="people" size={20} color={theme.success} />
               <Text style={[styles.statsButtonText, { color: theme.success }]}>Contacts</Text>
             </TouchableOpacity>
-          )}
-        </View>
+          </View>
+        )}
       </View>
 
       {/* View Mode Tabs */}
