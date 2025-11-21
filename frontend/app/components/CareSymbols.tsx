@@ -279,15 +279,9 @@ const CareSymbolSVG: React.FC<{ code: string; size: number }> = ({ code, size })
       return (
         <Svg width={size} height={size} viewBox={viewBox}>
           <Rect x="10" y="10" width="80" height="80" stroke={stroke} strokeWidth={strokeWidth} fill="none" />
-          <Text
-            x="50"
-            y="58"
-            fontSize="16"
-            textAnchor="middle"
-            fill={stroke}
-          >
-            {code}
-          </Text>
+          {/* Unknown symbol - question mark shape */}
+          <Circle cx="50" cy="45" r="5" fill={stroke} />
+          <Circle cx="50" cy="65" r="3" fill={stroke} />
         </Svg>
       );
   }
