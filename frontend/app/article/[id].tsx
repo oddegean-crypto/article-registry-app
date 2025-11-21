@@ -1190,15 +1190,9 @@ ${new Date().toLocaleString()}
         <View style={styles.detailRow}>
           <Text style={[styles.detailLabel, { color: theme.textSecondary }]}>{label}</Text>
           <View style={styles.careSymbolsContainer}>
-            {careCodes.map((code: string, index: number) => {
-              const { symbol, name } = getCareSymbolInfo(code);
-              return (
-                <View key={index} style={[styles.careSymbolBadge, { backgroundColor: theme.primaryLight }]}>
-                  <Text style={styles.careSymbolText}>{symbol}</Text>
-                  <Text style={[styles.careSymbolName, { color: theme.textSecondary }]}>{name}</Text>
-                </View>
-              );
-            })}
+            {careCodes.map((code: string, index: number) => (
+              <CareSymbol key={index} code={code} size={50} showLabel={true} />
+            ))}
           </View>
         </View>
       );
