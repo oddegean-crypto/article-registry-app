@@ -1365,6 +1365,30 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ddd',
   },
+  careSymbolsContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+  },
+  careSymbolBadge: {
+    backgroundColor: '#E3F2FD',
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    alignItems: 'center',
+    minWidth: 60,
+  },
+  careSymbolText: {
+    fontSize: 18,
+    fontWeight: '600',
+    marginBottom: 2,
+  },
+  careSymbolName: {
+    fontSize: 10,
+    color: '#666',
+    textAlign: 'center',
+  },
   bottomPadding: {
     height: 80,
   },
