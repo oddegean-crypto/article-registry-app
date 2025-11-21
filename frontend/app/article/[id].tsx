@@ -1166,44 +1166,6 @@ ${new Date().toLocaleString()}
     </SafeAreaView>
   );
 
-  // Map care label codes to symbols and names
-  const getCareSymbolInfo = (code: string): { symbol: string; name: string } => {
-    const careSymbols: { [key: string]: { symbol: string; name: string } } = {
-      // Washing
-      'A1': { symbol: '🌡️30°', name: 'Wash at 30°C' },
-      'A2': { symbol: '🌡️40°', name: 'Wash at 40°C' },
-      'A3': { symbol: '🌡️60°', name: 'Wash at 60°C' },
-      'A4': { symbol: '🌡️95°', name: 'Wash at 95°C' },
-      'A5': { symbol: '✋', name: 'Hand wash only' },
-      'A6': { symbol: '🚫💧', name: 'Do not wash' },
-      
-      // Bleaching
-      'B1': { symbol: '△', name: 'Any bleach allowed' },
-      'B2': { symbol: '△⚠️', name: 'Non-chlorine bleach only' },
-      'B3': { symbol: '🚫△', name: 'Do not bleach' },
-      
-      // Ironing
-      'C1': { symbol: '🔥●', name: 'Iron at low temp (110°C)' },
-      'C2': { symbol: '🔥●●', name: 'Iron at medium temp (150°C)' },
-      'C3': { symbol: '🔥●●●', name: 'Iron at high temp (200°C)' },
-      'C4': { symbol: '🚫🔥', name: 'Do not iron' },
-      
-      // Dry Cleaning
-      'D1': { symbol: 'Ⓐ', name: 'Dry clean - any solvent' },
-      'D2': { symbol: 'Ⓟ', name: 'Dry clean - perchloroethylene' },
-      'D3': { symbol: 'Ⓕ', name: 'Dry clean - petroleum solvent' },
-      'D4': { symbol: '🚫⭕', name: 'Do not dry clean' },
-      
-      // Tumble Drying
-      'E1': { symbol: '⬚●', name: 'Tumble dry low heat' },
-      'E2': { symbol: '⬚●●', name: 'Tumble dry medium heat' },
-      'E3': { symbol: '⬚●●●', name: 'Tumble dry high heat' },
-      'E4': { symbol: '🚫⬚', name: 'Do not tumble dry' },
-    };
-    
-    return careSymbols[code.toUpperCase()] || { symbol: code, name: code };
-  };
-
   function renderDetail(label: string, value: any) {
     if (!value) return null;
     
