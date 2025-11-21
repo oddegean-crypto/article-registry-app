@@ -429,6 +429,31 @@ export default function ArticleDetailsScreen() {
               color: #999;
               font-style: italic;
             }
+            .care-symbols-container {
+              display: flex;
+              flex-wrap: wrap;
+              gap: 8px;
+              flex: 1;
+            }
+            .care-symbol-badge {
+              background: #E3F2FD;
+              border-radius: 6px;
+              padding: 6px 10px;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              min-width: 60px;
+            }
+            .care-symbol-text {
+              font-size: 16px;
+              font-weight: 600;
+              margin-bottom: 2px;
+            }
+            .care-symbol-name {
+              font-size: 9px;
+              color: #666;
+              text-align: center;
+            }
             .footer {
               margin-top: 40px;
               text-align: center;
