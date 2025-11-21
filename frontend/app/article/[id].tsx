@@ -1392,12 +1392,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ddd',
   },
-  careSymbolsContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 12,
-  },
   bottomPadding: {
     height: 80,
   },
