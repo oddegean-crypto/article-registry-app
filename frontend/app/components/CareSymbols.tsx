@@ -26,17 +26,8 @@ const CareSymbolSVG: React.FC<{ code: string; size: number }> = ({ code, size })
             strokeWidth={strokeWidth}
             fill="none"
           />
-          {/* Temperature: 30 */}
-          <Text
-            x="50"
-            y="58"
-            fontSize="20"
-            fontWeight="bold"
-            textAnchor="middle"
-            fill={stroke}
-          >
-            30°
-          </Text>
+          {/* One dot for 30°C */}
+          <Circle cx="50" cy="52" r="4" fill={stroke} />
         </Svg>
       );
     
