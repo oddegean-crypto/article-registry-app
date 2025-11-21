@@ -202,16 +202,6 @@ const CareSymbolSVG: React.FC<{ code: string; size: number }> = ({ code, size })
       return (
         <Svg width={size} height={size} viewBox={viewBox}>
           <Circle cx="50" cy="50" r="30" stroke={stroke} strokeWidth={strokeWidth} fill="none" />
-          <Text
-            x="50"
-            y="62"
-            fontSize="28"
-            fontWeight="bold"
-            textAnchor="middle"
-            fill={stroke}
-          >
-            A
-          </Text>
         </Svg>
       );
     
@@ -219,16 +209,8 @@ const CareSymbolSVG: React.FC<{ code: string; size: number }> = ({ code, size })
       return (
         <Svg width={size} height={size} viewBox={viewBox}>
           <Circle cx="50" cy="50" r="30" stroke={stroke} strokeWidth={strokeWidth} fill="none" />
-          <Text
-            x="50"
-            y="62"
-            fontSize="28"
-            fontWeight="bold"
-            textAnchor="middle"
-            fill={stroke}
-          >
-            P
-          </Text>
+          {/* P indicator - small dot at top */}
+          <Circle cx="50" cy="35" r="3" fill={stroke} />
         </Svg>
       );
     
@@ -236,16 +218,8 @@ const CareSymbolSVG: React.FC<{ code: string; size: number }> = ({ code, size })
       return (
         <Svg width={size} height={size} viewBox={viewBox}>
           <Circle cx="50" cy="50" r="30" stroke={stroke} strokeWidth={strokeWidth} fill="none" />
-          <Text
-            x="50"
-            y="62"
-            fontSize="28"
-            fontWeight="bold"
-            textAnchor="middle"
-            fill={stroke}
-          >
-            F
-          </Text>
+          {/* F indicator - line at bottom */}
+          <Line x1="35" y1="70" x2="65" y2="70" stroke={stroke} strokeWidth={strokeWidth} />
         </Svg>
       );
     
