@@ -40,16 +40,9 @@ const CareSymbolSVG: React.FC<{ code: string; size: number }> = ({ code, size })
             strokeWidth={strokeWidth}
             fill="none"
           />
-          <Text
-            x="50"
-            y="58"
-            fontSize="20"
-            fontWeight="bold"
-            textAnchor="middle"
-            fill={stroke}
-          >
-            40°
-          </Text>
+          {/* Two dots for 40°C */}
+          <Circle cx="44" cy="52" r="4" fill={stroke} />
+          <Circle cx="56" cy="52" r="4" fill={stroke} />
         </Svg>
       );
     
@@ -62,16 +55,10 @@ const CareSymbolSVG: React.FC<{ code: string; size: number }> = ({ code, size })
             strokeWidth={strokeWidth}
             fill="none"
           />
-          <Text
-            x="50"
-            y="58"
-            fontSize="20"
-            fontWeight="bold"
-            textAnchor="middle"
-            fill={stroke}
-          >
-            60°
-          </Text>
+          {/* Three dots for 60°C */}
+          <Circle cx="40" cy="52" r="4" fill={stroke} />
+          <Circle cx="50" cy="52" r="4" fill={stroke} />
+          <Circle cx="60" cy="52" r="4" fill={stroke} />
         </Svg>
       );
       
