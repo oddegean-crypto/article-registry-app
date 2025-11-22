@@ -980,7 +980,15 @@ export default function HomeScreen() {
           disabled={loading}
         >
           <Ionicons name="cloud-upload" size={20} color="#fff" />
-          <Text style={styles.primaryButtonText}>Import</Text>
+          <Text style={styles.primaryButtonText}>Import File</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[styles.actionButton, styles.secondaryButton, { backgroundColor: theme.cardBackground, borderColor: theme.primary }]}
+          onPress={() => setShowPasteModal(true)}
+        >
+          <Ionicons name="clipboard" size={20} color={theme.primary} />
+          <Text style={[styles.secondaryButtonText, { color: theme.primary }]}>Paste CSV</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
