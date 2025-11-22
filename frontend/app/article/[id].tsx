@@ -871,7 +871,7 @@ ${new Date().toLocaleString()}
           style={[styles.fab, styles.fabSecondary, { backgroundColor: theme.cardBackground, borderColor: theme.primary }]}
           onPress={() => router.push(`/pricing/${encodeURIComponent(article.id)}`)}
         >
-          <Ionicons name="calculator" size={24} color={theme.primary} />
+          <Ionicons name="calculator" size={18} color={theme.primary} />
           <Text style={[styles.fabTextSecondary, { color: theme.primary }]}>PRICING</Text>
         </TouchableOpacity>
         
@@ -879,7 +879,7 @@ ${new Date().toLocaleString()}
           style={[styles.fab, styles.fabSold, { backgroundColor: theme.cardBackground, borderColor: theme.success }]}
           onPress={() => setShowSalesModal(true)}
         >
-          <Ionicons name="cart" size={24} color={theme.success} />
+          <Ionicons name="cart" size={18} color={theme.success} />
           <Text style={[styles.fabTextSold, { color: theme.success }]}>SOLD</Text>
           {salesHistory.length > 0 && (
             <View style={[styles.salesBadge, { backgroundColor: theme.success }]}>
@@ -898,7 +898,7 @@ ${new Date().toLocaleString()}
             <ActivityIndicator size="small" color="#fff" />
           ) : (
             <>
-              <Ionicons name="document-text" size={24} color="#fff" />
+              <Ionicons name="document-text" size={18} color="#fff" />
               <Text style={styles.fabText}>Export PDF</Text>
             </>
           )}
