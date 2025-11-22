@@ -1200,6 +1200,61 @@ export default function HomeScreen() {
           </View>
         </TouchableOpacity>
       </Modal>
+
+      {/* Paste CSV Modal */}
+      <Modal
+        visible={showPasteModal}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => setShowPasteModal(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={[styles.pasteModalContent, { backgroundColor: theme.cardBackground }]}>
+            <View style={[styles.pasteModalHeader, { borderBottomColor: theme.border }]}>
+              <Text style={[styles.pasteModalTitle, { color: theme.text }]}>Paste CSV Content</Text>
+              <TouchableOpacity onPress={() => { setShowPasteModal(false); setPasteText(''); }}>
+                <Ionicons name="close" size={24} color={theme.text} />
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.pasteModalBody}>
+              <Text style={[styles.pasteInstructions, { color: theme.textSecondary }]}>
+                1. Open your CSV file on computer{'\n'}
+                2. Select all (Ctrl+A) and copy (Ctrl+C){'\n'}
+                3. Paste the content below{'\n'}
+                4. Tap Import
+              </Text>
+              
+              <TextInput
+                style={[styles.pasteTextInput, { backgroundColor: theme.background, color: theme.text, borderColor: theme.border }]}
+                placeholder="Paste CSV content here..."
+                placeholderTextColor={theme.textSecondary}
+                multiline
+                numberOfLines={10}
+                value={pasteText}
+                onChangeText={setPasteText}
+                textAlignVertical="top"
+              />
+            </View>
+
+            <View style={styles.pasteModalFooter}>
+              <TouchableOpacity
+                style={[styles.pasteModalBtn, { backgroundColor: theme.cardBackground, borderColor: theme.border }]}
+                onPress={() => { setShowPasteModal(false); setPasteText(''); }}
+              >
+                <Text style={[styles.pasteModalBtnText, { color: theme.text }]}>Cancel</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.pasteModalBtn, { backgroundColor: theme.primary }]}
+                onPress={handlePasteCSV}
+                disabled={loading || !pasteText.trim()}
+              >
+                <Text style={[styles.pasteModalBtnText, { color: '#fff' }]}>Import</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 }
