@@ -531,15 +531,28 @@ export default function HomeScreen() {
       } else {
         console.log('Using mobile DocumentPicker method');
         const result = await DocumentPicker.getDocumentAsync({
-          type: 'text/comma-separated-values',
-          copyToCacheDirectory: true,
+          type: ['text/comma-separated-values', 'text/csv', 'application/csv', 'text/plain', '*/*'],
+          copyToCacheDirectory: false,
         });
 
         if (result.canceled) return;
 
         setLoading(true);
         const fileUri = result.assets[0].uri;
-        const fileContent = await FileSystem.readAsStringAsync(fileUri);
+        console.log('File URI:', fileUri);
+        
+        // Read file content - Android 15 compatible
+        let fileContent;
+        try {
+          fileContent = await FileSystem.readAsStringAsync(fileUri, {
+            encoding: FileSystem.EncodingType.UTF8,
+          });
+        } catch (error) {
+          console.error('Read error:', error);
+          Alert.alert('Error', 'Failed to read CSV file. Please try again.');
+          setLoading(false);
+          return;
+        }
         const parsedArticles = parseCSV(fileContent);
 
         if (parsedArticles.length === 0) {
