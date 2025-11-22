@@ -10,8 +10,8 @@
     "newArchEnabled": true,
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/icon.svg",
-        "backgroundColor": "#007AFF"
+        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "backgroundColor": "#FFFFFF"
       },
       "package": "com.aisaco.articleregistry",
       "versionCode": 1,
