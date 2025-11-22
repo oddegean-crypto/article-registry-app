@@ -109,6 +109,42 @@ export default function HomeScreen() {
   const [showPasteModal, setShowPasteModal] = useState(false);
   const [pasteText, setPasteText] = useState('');
 
+  const handlePasteCSV = async () => {
+    if (!pasteText.trim()) {
+      Alert.alert('Error', 'Please paste CSV content first');
+      return;
+    }
+
+    try {
+      setLoading(true);
+      console.log('Processing pasted CSV, length:', pasteText.length);
+      
+      const parsedArticles = parseCSV(pasteText);
+      
+      if (parsedArticles.length === 0) {
+        Alert.alert('Error', 'No valid articles found in the pasted content');
+        setLoading(false);
+        return;
+      }
+
+      // Merge with existing articles
+      const existingIds = articles.map(a => a.id);
+      const newArticles = parsedArticles.filter(a => !existingIds.includes(a.id));
+      const merged = [...articles, ...newArticles];
+
+      await saveLocalArticles(merged);
+      setArticles(merged);
+      setShowPasteModal(false);
+      setPasteText('');
+      Alert.alert('Success', `Imported ${parsedArticles.length} articles (${newArticles.length} new)`);
+    } catch (error) {
+      console.error('Paste import error:', error);
+      Alert.alert('Error', 'Failed to import pasted CSV. Please check the format.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     loadLocalArticles();
     loadFavorites();
