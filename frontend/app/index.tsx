@@ -106,6 +106,8 @@ export default function HomeScreen() {
   const [salesHistory, setSalesHistory] = useState<any>({});
   const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set());
   const [groupedArticles, setGroupedArticles] = useState<ArticleGroup[]>([]);
+  const [showPasteModal, setShowPasteModal] = useState(false);
+  const [pasteText, setPasteText] = useState('');
 
   useEffect(() => {
     loadLocalArticles();
