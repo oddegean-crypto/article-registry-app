@@ -1,0 +1,40 @@
+╔══════════════════════════════════════════════════════════════╗
+║                  ARTICLE REGISTRY APP                        ║
+║               Quick Build Guide (5 Steps)                    ║
+╚══════════════════════════════════════════════════════════════╝
+
+Step 1: Install EAS CLI
+→ npm install -g eas-cli
+
+Step 2: Go to frontend folder
+→ cd frontend
+
+Step 3: Login to Expo
+→ eas login
+   (Create account at https://expo.dev/signup if needed)
+
+Step 4: Configure (first time only)
+→ eas build:configure
+
+Step 5: Build APK
+→ eas build --platform android --profile preview
+
+⏱️  Wait 10-15 minutes → Download APK → Install on Android
+
+═══════════════════════════════════════════════════════════════
+
+📱 App Info:
+   Name: Article Registry
+   Package: com.aisaco.articleregistry
+   Version: 1.0.0
+   Icon: AISA & CO logo
+
+✨ Features:
+   ✓ Offline CSV import/export
+   ✓ Article management with color swatches
+   ✓ Sales tracking & pricing calculator
+   ✓ PDF export & dark mode
+
+📖 Full instructions: See BUILD_INSTRUCTIONS.md
+
+═══════════════════════════════════════════════════════════════
