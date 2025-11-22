@@ -872,7 +872,7 @@ ${new Date().toLocaleString()}
           onPress={() => router.push(`/pricing/${encodeURIComponent(article.id)}`)}
         >
           <Ionicons name="calculator" size={18} color={theme.primary} />
-          <Text style={[styles.fabTextSecondary, { color: theme.primary }]}>PRICING</Text>
+          <Text style={[styles.fabTextSecondary, { color: theme.primary }]}>PRICE</Text>
         </TouchableOpacity>
         
         <TouchableOpacity
@@ -899,7 +899,7 @@ ${new Date().toLocaleString()}
           ) : (
             <>
               <Ionicons name="document-text" size={18} color="#fff" />
-              <Text style={styles.fabText}>Export PDF</Text>
+              <Text style={styles.fabText}>PDF</Text>
             </>
           )}
         </TouchableOpacity>
