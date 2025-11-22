@@ -422,30 +422,65 @@ export default function HomeScreen() {
   };
 
   const parseCSV = (text: string): any[] => {
-    const lines = text.split(/\r?\n/);
-    if (lines.length < 2) return [];
-
-    const headers = lines[0].split(',').map(h => h.trim());
-    const articles: any[] = [];
-
-    for (let i = 1; i < lines.length; i++) {
-      const line = lines[i].trim();
-      if (!line) continue;
-
-      const values = line.split(',').map(v => v.trim());
-      const article: any = {};
-
-      headers.forEach((header, index) => {
-        const key = convertHeaderToKey(header);
-        article[key] = values[index] || '';
-      });
-
-      if (article.articleCode) {
-        articles.push(article);
+    try {
+      // Remove BOM if present
+      const cleanText = text.replace(/^\uFEFF/, '');
+      
+      const lines = cleanText.split(/\r?\n/);
+      if (lines.length < 2) {
+        console.log('CSV has less than 2 lines');
+        return [];
       }
-    }
 
-    return articles;
+      // Parse headers - handle quoted values
+      const headerLine = lines[0];
+      const headers = headerLine.split(',').map(h => h.trim().replace(/^"|"$/g, ''));
+      console.log('CSV Headers:', headers);
+
+      const articles: any[] = [];
+
+      for (let i = 1; i < lines.length; i++) {
+        const line = lines[i].trim();
+        if (!line) continue;
+
+        // Split by comma, handling quoted values
+        const values: string[] = [];
+        let currentValue = '';
+        let insideQuotes = false;
+
+        for (let j = 0; j < line.length; j++) {
+          const char = line[j];
+          
+          if (char === '"') {
+            insideQuotes = !insideQuotes;
+          } else if (char === ',' && !insideQuotes) {
+            values.push(currentValue.trim());
+            currentValue = '';
+          } else {
+            currentValue += char;
+          }
+        }
+        values.push(currentValue.trim());
+
+        const article: any = {};
+
+        headers.forEach((header, index) => {
+          const key = convertHeaderToKey(header);
+          article[key] = values[index] || '';
+        });
+
+        // Only add if we have an article code
+        if (article.articleCode && article.articleCode.trim()) {
+          articles.push(article);
+        }
+      }
+
+      console.log(`Parsed ${articles.length} articles`);
+      return articles;
+    } catch (error) {
+      console.error('CSV Parse Error:', error);
+      return [];
+    }
   };
 
   const convertHeaderToKey = (header: string): string => {
