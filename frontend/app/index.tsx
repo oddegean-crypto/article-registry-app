@@ -588,23 +588,41 @@ export default function HomeScreen() {
         const result = await DocumentPicker.getDocumentAsync({
           type: ['text/comma-separated-values', 'text/csv', 'application/csv', 'text/plain', '*/*'],
           copyToCacheDirectory: false,
+          multiple: false,
         });
 
-        if (result.canceled) return;
+        console.log('DocumentPicker result:', result);
+
+        if (result.canceled) {
+          console.log('User canceled file selection');
+          return;
+        }
+
+        if (!result.assets || result.assets.length === 0) {
+          console.error('No assets in result');
+          Alert.alert('Error', 'No file selected. Please try again.');
+          return;
+        }
 
         setLoading(true);
         const fileUri = result.assets[0].uri;
-        console.log('File URI:', fileUri);
+        const fileName = result.assets[0].name;
+        console.log('File selected:', fileName, 'URI:', fileUri);
         
         // Read file content - Android 15 compatible
         let fileContent;
         try {
+          console.log('Reading file content...');
           fileContent = await FileSystem.readAsStringAsync(fileUri, {
             encoding: FileSystem.EncodingType.UTF8,
           });
+          console.log('File read successfully, length:', fileContent.length);
         } catch (error) {
-          console.error('Read error:', error);
-          Alert.alert('Error', 'Failed to read CSV file. Please try again.');
+          console.error('Read error details:', error);
+          Alert.alert(
+            'File Read Error', 
+            `Could not read the file. Error: ${error.message || 'Unknown error'}\n\nPlease ensure the file is accessible and try again.`
+          );
           setLoading(false);
           return;
         }
