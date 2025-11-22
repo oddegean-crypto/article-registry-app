@@ -586,8 +586,8 @@ export default function HomeScreen() {
       } else {
         console.log('Using mobile DocumentPicker method');
         const result = await DocumentPicker.getDocumentAsync({
-          type: ['text/comma-separated-values', 'text/csv', 'application/csv', 'text/plain', '*/*'],
-          copyToCacheDirectory: false,
+          type: '*/*',
+          copyToCacheDirectory: true,
           multiple: false,
         });
 
