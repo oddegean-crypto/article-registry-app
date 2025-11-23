@@ -965,7 +965,6 @@ export default function HomeScreen() {
           onPress={handleImportCSV}
           disabled={loading}
         >
-          <Ionicons name="cloud-upload" size={20} color="#fff" />
           <Text style={styles.primaryButtonText}>Import File</Text>
         </TouchableOpacity>
 
@@ -973,7 +972,6 @@ export default function HomeScreen() {
           style={[styles.actionButton, styles.secondaryButton, { backgroundColor: theme.cardBackground, borderColor: theme.primary }]}
           onPress={() => setShowPasteModal(true)}
         >
-          <Ionicons name="clipboard" size={20} color={theme.primary} />
           <Text style={[styles.secondaryButtonText, { color: theme.primary }]}>Paste CSV</Text>
         </TouchableOpacity>
 
