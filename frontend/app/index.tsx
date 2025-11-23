@@ -603,7 +603,7 @@ export default function HomeScreen() {
         input.click();
       } else {
         const result = await DocumentPicker.getDocumentAsync({
-          type: 'text/comma-separated-values',
+          type: ['text/csv', 'text/comma-separated-values', 'application/csv'],
           copyToCacheDirectory: true,
         });
 
