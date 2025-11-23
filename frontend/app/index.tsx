@@ -552,26 +552,6 @@ export default function HomeScreen() {
 
   const handleImportCSV = async () => {
     try {
-      // For Android, show a helpful message about file access
-      if (Platform.OS === 'android') {
-        Alert.alert(
-          'Select CSV File',
-          'Please select your article registry CSV file from your device.',
-          [{ text: 'OK', onPress: () => proceedWithImport() }]
-        );
-        return;
-      }
-      
-      await proceedWithImport();
-    } catch (error) {
-      console.error('Import error:', error);
-      Alert.alert('Error', 'Failed to import CSV file. Please try again.');
-      setLoading(false);
-    }
-  };
-
-  const proceedWithImport = async () => {
-    try {
       if (Platform.OS === 'web') {
         console.log('Using web file input method');
         const input = document.createElement('input');
