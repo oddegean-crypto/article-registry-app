@@ -1353,11 +1353,15 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 14,
     fontWeight: '600',
+    textAlign: 'center',
+    width: '100%',
   },
   secondaryButtonText: {
     color: '#007AFF',
     fontSize: 14,
     fontWeight: '600',
+    textAlign: 'center',
+    width: '100%',
   },
   savedSearchesContainer: {
     backgroundColor: '#fff',
