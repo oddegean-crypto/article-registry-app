@@ -106,6 +106,44 @@ export default function HomeScreen() {
   const [salesHistory, setSalesHistory] = useState<any>({});
   const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set());
   const [groupedArticles, setGroupedArticles] = useState<ArticleGroup[]>([]);
+  const [showPasteModal, setShowPasteModal] = useState(false);
+  const [pasteText, setPasteText] = useState('');
+
+  const handlePasteCSV = async () => {
+    if (!pasteText.trim()) {
+      Alert.alert('Error', 'Please paste CSV content first');
+      return;
+    }
+
+    try {
+      setLoading(true);
+      console.log('Processing pasted CSV, length:', pasteText.length);
+      
+      const parsedArticles = parseCSV(pasteText);
+      
+      if (parsedArticles.length === 0) {
+        Alert.alert('Error', 'No valid articles found in the pasted content');
+        setLoading(false);
+        return;
+      }
+
+      // Merge with existing articles
+      const existingIds = articles.map(a => a.id);
+      const newArticles = parsedArticles.filter(a => !existingIds.includes(a.id));
+      const merged = [...articles, ...newArticles];
+
+      await saveLocalArticles(merged);
+      setArticles(merged);
+      setShowPasteModal(false);
+      setPasteText('');
+      Alert.alert('Success', `Imported ${parsedArticles.length} articles (${newArticles.length} new)`);
+    } catch (error) {
+      console.error('Paste import error:', error);
+      Alert.alert('Error', 'Failed to import pasted CSV. Please check the format.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     loadLocalArticles();
@@ -422,30 +460,65 @@ export default function HomeScreen() {
   };
 
   const parseCSV = (text: string): any[] => {
-    const lines = text.split(/\r?\n/);
-    if (lines.length < 2) return [];
-
-    const headers = lines[0].split(',').map(h => h.trim());
-    const articles: any[] = [];
-
-    for (let i = 1; i < lines.length; i++) {
-      const line = lines[i].trim();
-      if (!line) continue;
-
-      const values = line.split(',').map(v => v.trim());
-      const article: any = {};
-
-      headers.forEach((header, index) => {
-        const key = convertHeaderToKey(header);
-        article[key] = values[index] || '';
-      });
-
-      if (article.articleCode) {
-        articles.push(article);
+    try {
+      // Remove BOM if present
+      const cleanText = text.replace(/^\uFEFF/, '');
+      
+      const lines = cleanText.split(/\r?\n/);
+      if (lines.length < 2) {
+        console.log('CSV has less than 2 lines');
+        return [];
       }
-    }
 
-    return articles;
+      // Parse headers - handle quoted values
+      const headerLine = lines[0];
+      const headers = headerLine.split(',').map(h => h.trim().replace(/^"|"$/g, ''));
+      console.log('CSV Headers:', headers);
+
+      const articles: any[] = [];
+
+      for (let i = 1; i < lines.length; i++) {
+        const line = lines[i].trim();
+        if (!line) continue;
+
+        // Split by comma, handling quoted values
+        const values: string[] = [];
+        let currentValue = '';
+        let insideQuotes = false;
+
+        for (let j = 0; j < line.length; j++) {
+          const char = line[j];
+          
+          if (char === '"') {
+            insideQuotes = !insideQuotes;
+          } else if (char === ',' && !insideQuotes) {
+            values.push(currentValue.trim());
+            currentValue = '';
+          } else {
+            currentValue += char;
+          }
+        }
+        values.push(currentValue.trim());
+
+        const article: any = {};
+
+        headers.forEach((header, index) => {
+          const key = convertHeaderToKey(header);
+          article[key] = values[index] || '';
+        });
+
+        // Only add if we have an article code
+        if (article.articleCode && article.articleCode.trim()) {
+          articles.push(article);
+        }
+      }
+
+      console.log(`Parsed ${articles.length} articles`);
+      return articles;
+    } catch (error) {
+      console.error('CSV Parse Error:', error);
+      return [];
+    }
   };
 
   const convertHeaderToKey = (header: string): string => {
@@ -529,9 +602,8 @@ export default function HomeScreen() {
         };
         input.click();
       } else {
-        console.log('Using mobile DocumentPicker method');
         const result = await DocumentPicker.getDocumentAsync({
-          type: 'text/comma-separated-values',
+          type: ['text/csv', 'text/comma-separated-values', 'application/csv'],
           copyToCacheDirectory: true,
         });
 
@@ -893,8 +965,14 @@ export default function HomeScreen() {
           onPress={handleImportCSV}
           disabled={loading}
         >
-          <Ionicons name="cloud-upload" size={20} color="#fff" />
-          <Text style={styles.primaryButtonText}>Import</Text>
+          <Text style={styles.primaryButtonText}>Import File</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[styles.actionButton, styles.secondaryButton, { backgroundColor: theme.cardBackground, borderColor: theme.primary }]}
+          onPress={() => setShowPasteModal(true)}
+        >
+          <Text style={[styles.secondaryButtonText, { color: theme.primary }]}>Paste CSV</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -1068,6 +1146,61 @@ export default function HomeScreen() {
           </View>
         </TouchableOpacity>
       </Modal>
+
+      {/* Paste CSV Modal */}
+      <Modal
+        visible={showPasteModal}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => setShowPasteModal(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={[styles.pasteModalContent, { backgroundColor: theme.cardBackground }]}>
+            <View style={[styles.pasteModalHeader, { borderBottomColor: theme.border }]}>
+              <Text style={[styles.pasteModalTitle, { color: theme.text }]}>Paste CSV Content</Text>
+              <TouchableOpacity onPress={() => { setShowPasteModal(false); setPasteText(''); }}>
+                <Ionicons name="close" size={24} color={theme.text} />
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.pasteModalBody}>
+              <Text style={[styles.pasteInstructions, { color: theme.textSecondary }]}>
+                1. Open your CSV file on computer{'\n'}
+                2. Select all (Ctrl+A) and copy (Ctrl+C){'\n'}
+                3. Paste the content below{'\n'}
+                4. Tap Import
+              </Text>
+              
+              <TextInput
+                style={[styles.pasteTextInput, { backgroundColor: theme.background, color: theme.text, borderColor: theme.border }]}
+                placeholder="Paste CSV content here..."
+                placeholderTextColor={theme.textSecondary}
+                multiline
+                numberOfLines={10}
+                value={pasteText}
+                onChangeText={setPasteText}
+                textAlignVertical="top"
+              />
+            </View>
+
+            <View style={styles.pasteModalFooter}>
+              <TouchableOpacity
+                style={[styles.pasteModalBtn, { backgroundColor: theme.cardBackground, borderColor: theme.border }]}
+                onPress={() => { setShowPasteModal(false); setPasteText(''); }}
+              >
+                <Text style={[styles.pasteModalBtnText, { color: theme.text }]}>Cancel</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.pasteModalBtn, { backgroundColor: theme.primary }]}
+                onPress={handlePasteCSV}
+                disabled={loading || !pasteText.trim()}
+              >
+                <Text style={[styles.pasteModalBtnText, { color: '#fff' }]}>Import</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 }
@@ -1220,11 +1353,15 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 14,
     fontWeight: '600',
+    textAlign: 'center',
+    width: '100%',
   },
   secondaryButtonText: {
     color: '#007AFF',
     fontSize: 14,
     fontWeight: '600',
+    textAlign: 'center',
+    width: '100%',
   },
   savedSearchesContainer: {
     backgroundColor: '#fff',
@@ -1535,5 +1672,65 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 8,
+  },
+  pasteModalContent: {
+    backgroundColor: '#fff',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    height: '80%',
+    marginTop: 'auto',
+  },
+  pasteModalHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: '#e0e0e0',
+  },
+  pasteModalTitle: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#333',
+  },
+  pasteModalBody: {
+    flex: 1,
+    padding: 20,
+  },
+  pasteInstructions: {
+    fontSize: 14,
+    color: '#666',
+    marginBottom: 16,
+    lineHeight: 20,
+  },
+  pasteTextInput: {
+    flex: 1,
+    backgroundColor: '#f5f5f5',
+    borderWidth: 1,
+    borderColor: '#e0e0e0',
+    borderRadius: 8,
+    padding: 12,
+    fontSize: 12,
+    fontFamily: Platform.OS === 'ios' ? 'Courier' : 'monospace',
+    color: '#333',
+  },
+  pasteModalFooter: {
+    flexDirection: 'row',
+    padding: 16,
+    gap: 12,
+    borderTopWidth: 1,
+    borderTopColor: '#e0e0e0',
+  },
+  pasteModalBtn: {
+    flex: 1,
+    paddingVertical: 14,
+    borderRadius: 10,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#e0e0e0',
+  },
+  pasteModalBtnText: {
+    fontSize: 16,
+    fontWeight: '600',
   },
 });
