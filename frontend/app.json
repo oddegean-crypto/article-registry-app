@@ -31,7 +31,10 @@
               "scheme": "article-registry"
             }
           ],
-          "category": ["BROWSABLE", "DEFAULT"]
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
         }
       ]
     },
@@ -62,9 +65,11 @@
       "typedRoutes": true
     },
     "extra": {
+      "router": {},
       "eas": {
-        "projectId": "article-registry-aisa"
+        "projectId": "f21030a5-43d0-497b-8ce6-0a8e89099a17"
       }
-    }
+    },
+    "owner": "aisacon"
   }
 }

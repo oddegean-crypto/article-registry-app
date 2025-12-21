@@ -603,15 +603,43 @@ export default function HomeScreen() {
         input.click();
       } else {
         const result = await DocumentPicker.getDocumentAsync({
-          type: ['text/csv', 'text/comma-separated-values', 'application/csv'],
+          type: '*/*',  // Accept all files, filter by extension
           copyToCacheDirectory: true,
         });
 
         if (result.canceled) return;
 
+        // Check if file is CSV by extension
+        const fileName = result.assets[0].name || '';
+        if (!fileName.toLowerCase().endsWith('.csv')) {
+          Alert.alert('Error', 'Please select a CSV file');
+          return;
+        }
+
         setLoading(true);
         const fileUri = result.assets[0].uri;
-        const fileContent = await FileSystem.readAsStringAsync(fileUri);
+        
+        let fileContent: string;
+        try {
+          // First try direct read
+          fileContent = await FileSystem.readAsStringAsync(fileUri, {
+            encoding: FileSystem.EncodingType.UTF8,
+          });
+        } catch (readError) {
+          console.log('Direct read failed, trying copy method:', readError);
+          // If direct read fails, copy to cache first then read
+          const cacheUri = `${FileSystem.cacheDirectory}temp_import_${Date.now()}.csv`;
+          await FileSystem.copyAsync({
+            from: fileUri,
+            to: cacheUri,
+          });
+          fileContent = await FileSystem.readAsStringAsync(cacheUri, {
+            encoding: FileSystem.EncodingType.UTF8,
+          });
+          // Clean up temp file
+          await FileSystem.deleteAsync(cacheUri, { idempotent: true });
+        }
+        
         const parsedArticles = parseCSV(fileContent);
 
         if (parsedArticles.length === 0) {
@@ -659,10 +687,11 @@ export default function HomeScreen() {
       }
     } catch (error) {
       console.error('Error importing CSV:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
       if (Platform.OS === 'web') {
-        window.alert('Failed to import CSV file');
+        window.alert(`Failed to import CSV file: ${errorMessage}`);
       } else {
-        Alert.alert('Error', 'Failed to import CSV file');
+        Alert.alert('Error', `Failed to import CSV file: ${errorMessage}`);
       }
       setLoading(false);
     }
