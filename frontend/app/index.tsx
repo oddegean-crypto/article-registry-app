@@ -604,7 +604,7 @@ export default function HomeScreen() {
       } else {
         const result = await DocumentPicker.getDocumentAsync({
           type: '*/*',  // Accept all files, filter by extension
-          copyToCacheDirectory: true,
+          copyToCacheDirectory: true,  // This copies to cache automatically
         });
 
         if (result.canceled) return;
@@ -617,28 +617,14 @@ export default function HomeScreen() {
         }
 
         setLoading(true);
+        
+        // The file is already copied to cache by copyToCacheDirectory: true
+        // Use the URI directly - it should be a file:// URI in the cache
         const fileUri = result.assets[0].uri;
         
-        let fileContent: string;
-        try {
-          // First try direct read
-          fileContent = await FileSystem.readAsStringAsync(fileUri, {
-            encoding: FileSystem.EncodingType.UTF8,
-          });
-        } catch (readError) {
-          console.log('Direct read failed, trying copy method:', readError);
-          // If direct read fails, copy to cache first then read
-          const cacheUri = `${FileSystem.cacheDirectory}temp_import_${Date.now()}.csv`;
-          await FileSystem.copyAsync({
-            from: fileUri,
-            to: cacheUri,
-          });
-          fileContent = await FileSystem.readAsStringAsync(cacheUri, {
-            encoding: FileSystem.EncodingType.UTF8,
-          });
-          // Clean up temp file
-          await FileSystem.deleteAsync(cacheUri, { idempotent: true });
-        }
+        // Read the file content using fetch API (works with content:// and file:// URIs)
+        const response = await fetch(fileUri);
+        const fileContent = await response.text();
         
         const parsedArticles = parseCSV(fileContent);
 
