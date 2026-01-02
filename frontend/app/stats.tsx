@@ -11,7 +11,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import * as FileSystem from 'expo-file-system';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTheme } from './ThemeContext';
 
 const STORAGE_KEY = 'article_registry';
@@ -25,12 +25,7 @@ const storage = {
       return localStorage.getItem(key);
     }
     try {
-      const filePath = `${FileSystem.documentDirectory}${key}.json`;
-      const fileInfo = await FileSystem.getInfoAsync(filePath);
-      if (fileInfo.exists) {
-        return await FileSystem.readAsStringAsync(filePath);
-      }
-      return null;
+      return await AsyncStorage.getItem(key);
     } catch {
       return null;
     }

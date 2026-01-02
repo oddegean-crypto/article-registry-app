@@ -17,18 +17,14 @@ import { useTheme } from './ThemeContext';
 const STORAGE_KEY = 'article_registry';
 const FILTER_KEY = 'article_filters';
 
+// Platform-specific storage helper using AsyncStorage
 const storage = {
   async getItem(key: string): Promise<string | null> {
     if (Platform.OS === 'web') {
       return localStorage.getItem(key);
     }
     try {
-      const filePath = `${FileSystem.documentDirectory}${key}.json`;
-      const fileInfo = await FileSystem.getInfoAsync(filePath);
-      if (fileInfo.exists) {
-        return await FileSystem.readAsStringAsync(filePath);
-      }
-      return null;
+      return await AsyncStorage.getItem(key);
     } catch {
       return null;
     }
@@ -36,10 +32,13 @@ const storage = {
   async setItem(key: string, value: string): Promise<void> {
     if (Platform.OS === 'web') {
       localStorage.setItem(key, value);
-      return;
+    } else {
+      try {
+        await AsyncStorage.setItem(key, value);
+      } catch (error) {
+        console.error('Error writing to storage:', error);
+      }
     }
-    const filePath = `${FileSystem.documentDirectory}${key}.json`;
-    await FileSystem.writeAsStringAsync(filePath, value);
   },
 };
 

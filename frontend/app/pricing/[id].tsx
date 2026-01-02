@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router, useLocalSearchParams } from 'expo-router';
-import * as FileSystem from 'expo-file-system';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Print from 'expo-print';
 import * as Sharing from 'expo-sharing';
 import * as MailComposer from 'expo-mail-composer';
@@ -22,18 +22,14 @@ import { useTheme } from '../ThemeContext';
 const STORAGE_KEY = 'article_registry';
 const PRICING_HISTORY_KEY = 'pricing_history';
 
+// Platform-specific storage helper using AsyncStorage
 const storage = {
   async getItem(key: string): Promise<string | null> {
     if (Platform.OS === 'web') {
       return localStorage.getItem(key);
     }
     try {
-      const filePath = `${FileSystem.documentDirectory}${key}.json`;
-      const fileInfo = await FileSystem.getInfoAsync(filePath);
-      if (fileInfo.exists) {
-        return await FileSystem.readAsStringAsync(filePath);
-      }
-      return null;
+      return await AsyncStorage.getItem(key);
     } catch {
       return null;
     }
@@ -43,8 +39,7 @@ const storage = {
       localStorage.setItem(key, value);
     } else {
       try {
-        const filePath = `${FileSystem.documentDirectory}${key}.json`;
-        await FileSystem.writeAsStringAsync(filePath, value);
+        await AsyncStorage.setItem(key, value);
       } catch (error) {
         console.error('Error writing to storage:', error);
       }
