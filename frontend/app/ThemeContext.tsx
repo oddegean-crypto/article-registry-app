@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { Platform } from 'react-native';
-import * as FileSystem from 'expo-file-system';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Platform-specific storage helper
 const storage = {
@@ -9,12 +9,7 @@ const storage = {
       return localStorage.getItem(key);
     }
     try {
-      const filePath = `${FileSystem.documentDirectory}${key}.json`;
-      const fileInfo = await FileSystem.getInfoAsync(filePath);
-      if (fileInfo.exists) {
-        return await FileSystem.readAsStringAsync(filePath);
-      }
-      return null;
+      return await AsyncStorage.getItem(key);
     } catch {
       return null;
     }
@@ -24,8 +19,11 @@ const storage = {
       localStorage.setItem(key, value);
       return;
     }
-    const filePath = `${FileSystem.documentDirectory}${key}.json`;
-    await FileSystem.writeAsStringAsync(filePath, value);
+    try {
+      await AsyncStorage.setItem(key, value);
+    } catch (error) {
+      console.error('Error writing to storage:', error);
+    }
   },
 };
 

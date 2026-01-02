@@ -15,7 +15,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import * as DocumentPicker from 'expo-document-picker';
-import * as FileSystem from 'expo-file-system';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router, useFocusEffect } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from './ThemeContext';
@@ -28,19 +28,14 @@ const SAVED_SEARCHES_KEY = 'saved_searches';
 const FILTER_KEY = 'article_filters';
 const SALES_HISTORY_KEY = 'sales_history';
 
-// Platform-specific storage helper
+// Platform-specific storage helper using AsyncStorage
 const storage = {
   async getItem(key: string): Promise<string | null> {
     if (Platform.OS === 'web') {
       return localStorage.getItem(key);
     }
     try {
-      const filePath = `${FileSystem.documentDirectory}${key}.json`;
-      const fileInfo = await FileSystem.getInfoAsync(filePath);
-      if (fileInfo.exists) {
-        return await FileSystem.readAsStringAsync(filePath);
-      }
-      return null;
+      return await AsyncStorage.getItem(key);
     } catch {
       return null;
     }
@@ -50,8 +45,11 @@ const storage = {
       localStorage.setItem(key, value);
       return;
     }
-    const filePath = `${FileSystem.documentDirectory}${key}.json`;
-    await FileSystem.writeAsStringAsync(filePath, value);
+    try {
+      await AsyncStorage.setItem(key, value);
+    } catch (error) {
+      console.error('Error writing to storage:', error);
+    }
   },
 };
 
