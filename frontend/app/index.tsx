@@ -154,9 +154,10 @@ export default function HomeScreen() {
   // Reload filters when screen comes into focus
   useFocusEffect(
     useCallback(() => {
+      console.log('Screen focused - reloading filters and sales');
       loadFilters();
       loadSalesHistory();
-    }, [])
+    }, [articles])
   );
 
   useEffect(() => {
