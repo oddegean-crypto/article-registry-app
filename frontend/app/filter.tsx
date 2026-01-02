@@ -11,7 +11,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import * as FileSystem from 'expo-file-system';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTheme } from './ThemeContext';
 
 const STORAGE_KEY = 'article_registry';
@@ -32,12 +32,12 @@ const storage = {
   async setItem(key: string, value: string): Promise<void> {
     if (Platform.OS === 'web') {
       localStorage.setItem(key, value);
-    } else {
-      try {
-        await AsyncStorage.setItem(key, value);
-      } catch (error) {
-        console.error('Error writing to storage:', error);
-      }
+      return;
+    }
+    try {
+      await AsyncStorage.setItem(key, value);
+    } catch (error) {
+      console.error('Error writing to storage:', error);
     }
   },
 };
