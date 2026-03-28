@@ -1146,47 +1146,6 @@ export default function HomeScreen() {
           </View>
         </TouchableOpacity>
       </Modal>
-
-      
-
-            <View style={styles.pasteModalBody}>
-              <Text style={[styles.pasteInstructions, { color: theme.textSecondary }]}>
-                1. Open your CSV file on computer{'\n'}
-                2. Select all (Ctrl+A) and copy (Ctrl+C){'\n'}
-                3. Paste the content below{'\n'}
-                4. Tap Import
-              </Text>
-              
-              <TextInput
-                style={[styles.pasteTextInput, { backgroundColor: theme.background, color: theme.text, borderColor: theme.border }]}
-                placeholder="Paste CSV content here..."
-                placeholderTextColor={theme.textSecondary}
-                multiline
-                numberOfLines={10}
-                value={pasteText}
-                onChangeText={setPasteText}
-                textAlignVertical="top"
-              />
-            </View>
-
-            <View style={styles.pasteModalFooter}>
-              {false &&<TouchableOpacity
-                style={[styles.pasteModalBtn, { backgroundColor: theme.cardBackground, borderColor: theme.border }]}
-                onPress={() => { setShowPasteModal(false); setPasteText(''); }}}
-              >
-                <Text style={[styles.pasteModalBtnText, { color: theme.text }]}>Cancel</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[styles.pasteModalBtn, { backgroundColor: theme.primary }]}
-                onPress={handlePasteCSV}
-                disabled={loading || !pasteText.trim()}
-              >
-                <Text style={[styles.pasteModalBtnText, { color: '#fff' }]}>Import</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </Modal>
     </SafeAreaView>
   );
 }
