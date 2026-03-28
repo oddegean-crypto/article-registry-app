@@ -104,14 +104,7 @@ export default function HomeScreen() {
   const [salesHistory, setSalesHistory] = useState<any>({});
   const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set());
   const [groupedArticles, setGroupedArticles] = useState<ArticleGroup[]>([]);
-  const [showPasteModal, setShowPasteModal] = useState(false);
-  const [pasteText, setPasteText] = useState('');
 
-  const handlePasteCSV = async () => {
-    if (!pasteText.trim()) {
-      Alert.alert('Error', 'Please paste CSV content first');
-      return;
-    }
 
     try {
       setLoading(true);
@@ -924,7 +917,7 @@ export default function HomeScreen() {
             size={16}
             color={viewMode === 'favorites' ? theme.primary : theme.textSecondary}
           />
-          <Text style={[styles.tabText, { color: theme.textSecondary }, viewMode === 'favorites' && { color: theme.primary }]}>Favorites</Text>
+          <Text style={[styles.tabText, { color: theme.textSecondary }, viewMode === 'favorites' && { color: theme.primary }]}>Favorit</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={[styles.tab, viewMode === 'recent' && { backgroundColor: theme.primaryLight }]}
@@ -980,13 +973,6 @@ export default function HomeScreen() {
           disabled={loading}
         >
           <Text style={styles.primaryButtonText}>Import File</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={[styles.actionButton, styles.secondaryButton, { backgroundColor: theme.cardBackground, borderColor: theme.primary }]}
-          onPress={() => setShowPasteModal(true)}
-        >
-          <Text style={[styles.secondaryButtonText, { color: theme.primary }]}>Paste CSV</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -1161,21 +1147,7 @@ export default function HomeScreen() {
         </TouchableOpacity>
       </Modal>
 
-      {/* Paste CSV Modal */}
-      <Modal
-        visible={showPasteModal}
-        animationType="slide"
-        transparent={true}
-        onRequestClose={() => setShowPasteModal(false)}
-      >
-        <View style={styles.modalOverlay}>
-          <View style={[styles.pasteModalContent, { backgroundColor: theme.cardBackground }]}>
-            <View style={[styles.pasteModalHeader, { borderBottomColor: theme.border }]}>
-              <Text style={[styles.pasteModalTitle, { color: theme.text }]}>Paste CSV Content</Text>
-              <TouchableOpacity onPress={() => { setShowPasteModal(false); setPasteText(''); }}>
-                <Ionicons name="close" size={24} color={theme.text} />
-              </TouchableOpacity>
-            </View>
+      
 
             <View style={styles.pasteModalBody}>
               <Text style={[styles.pasteInstructions, { color: theme.textSecondary }]}>
