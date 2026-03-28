@@ -942,15 +942,15 @@ export default function HomeScreen() {
           onPress={handleImportCSV}
           disabled={loading}
         >
-          <Text style={styles.primaryButtonText}>Import File</Text>
+          <Text style={styles.primaryButtonText}>IMPORT</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={[styles.actionButton, styles.secondaryButton, { backgroundColor: theme.cardBackground, borderColor: theme.primary }]}
           onPress={() => router.push('/filter')}
         >
-          <Ionicons name="filter" size={20} color={theme.primary} />
-          <Text style={[styles.secondaryButtonText, { color: theme.primary }]}>Filter</Text>
+          
+          <Text style={[styles.secondaryButtonText, { color: theme.primary }]}>FILTER</Text>
           {activeFilters && (
             (activeFilters.seasons?.length > 0 || 
              activeFilters.sections?.length > 0 || 
@@ -990,8 +990,8 @@ export default function HomeScreen() {
           style={[styles.actionButton, styles.secondaryButton, { backgroundColor: theme.cardBackground, borderColor: theme.primary }]}
           onPress={() => setSortModalVisible(true)}
         >
-          <Ionicons name="swap-vertical" size={20} color={theme.primary} />
-          <Text style={[styles.secondaryButtonText, { color: theme.primary }]}>Sort</Text>
+          
+          <Text style={[styles.secondaryButtonText, { color: theme.primary }]}>SORT</Text>
         </TouchableOpacity>
 
         {articles.length > 0 && (
