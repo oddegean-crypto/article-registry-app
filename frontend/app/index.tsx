@@ -917,7 +917,7 @@ export default function HomeScreen() {
             size={16}
             color={viewMode === 'favorites' ? theme.primary : theme.textSecondary}
           />
-          <Text style={[styles.tabText, { color: theme.textSecondary }, viewMode === 'favorites' && { color: theme.primary }]}>Favorit</Text>
+          <Text style={[styles.tabText, { color: theme.textSecondary }, viewMode === 'favorites' && { color: theme.primary }]}>Favorite</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={[styles.tab, viewMode === 'recent' && { backgroundColor: theme.primaryLight }]}
@@ -1170,9 +1170,9 @@ export default function HomeScreen() {
             </View>
 
             <View style={styles.pasteModalFooter}>
-              <TouchableOpacity
+              {false &&<TouchableOpacity
                 style={[styles.pasteModalBtn, { backgroundColor: theme.cardBackground, borderColor: theme.border }]}
-                onPress={() => { setShowPasteModal(false); setPasteText(''); }}
+                onPress={() => { setShowPasteModal(false); setPasteText(''); }}}
               >
                 <Text style={[styles.pasteModalBtnText, { color: theme.text }]}>Cancel</Text>
               </TouchableOpacity>
