@@ -266,26 +266,22 @@ export default function HomeScreen() {
       }
 
       const result = await ImagePicker.launchCameraAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
-        aspect: [4, 3],
-        quality: 0.8,
+        quality: 0.7,
       });
 
-      if (!result.canceled && result.assets[0]) {
+      if (!result.canceled && result.assets && result.assets.length > 0) {
         const photoUri = result.assets[0].uri;
         
-        // Save photo URI directly (it's already in app's cache)
-        // Update photos state and storage
         const newPhotos = { ...articlePhotos, [article.id]: photoUri };
         setArticlePhotos(newPhotos);
         await storage.setItem(PHOTOS_KEY, JSON.stringify(newPhotos));
         
-        Alert.alert('Success', 'Photo saved successfully!');
+        Alert.alert('Success', 'Photo saved!');
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error taking photo:', error);
-      Alert.alert('Error', 'Failed to take photo');
+      Alert.alert('Error', error.message || 'Failed to take photo');
     }
   };
 
