@@ -275,17 +275,9 @@ export default function HomeScreen() {
       if (!result.canceled && result.assets[0]) {
         const photoUri = result.assets[0].uri;
         
-        // Save photo to permanent storage
-        const fileName = `article_photo_${article.id}_${Date.now()}.jpg`;
-        const permanentUri = `${FileSystem.documentDirectory}${fileName}`;
-        
-        await FileSystem.copyAsync({
-          from: photoUri,
-          to: permanentUri,
-        });
-
+        // Save photo URI directly (it's already in app's cache)
         // Update photos state and storage
-        const newPhotos = { ...articlePhotos, [article.id]: permanentUri };
+        const newPhotos = { ...articlePhotos, [article.id]: photoUri };
         setArticlePhotos(newPhotos);
         await storage.setItem(PHOTOS_KEY, JSON.stringify(newPhotos));
         
@@ -348,10 +340,6 @@ export default function HomeScreen() {
           style: 'destructive',
           onPress: async () => {
             try {
-              const photoUri = articlePhotos[articleId];
-              if (photoUri) {
-                await FileSystem.deleteAsync(photoUri, { idempotent: true });
-              }
               const newPhotos = { ...articlePhotos };
               delete newPhotos[articleId];
               setArticlePhotos(newPhotos);
