@@ -12,14 +12,9 @@ import {
   Platform,
   StatusBar,
   Modal,
-  Image,
-  Dimensions,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import * as DocumentPicker from 'expo-document-picker';
-import * as ImagePicker from 'expo-image-picker';
-import * as Sharing from 'expo-sharing';
-import * as FileSystem from 'expo-file-system/legacy';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router, useFocusEffect } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
@@ -32,7 +27,6 @@ const RECENT_KEY = 'article_recent';
 const SAVED_SEARCHES_KEY = 'saved_searches';
 const FILTER_KEY = 'article_filters';
 const SALES_HISTORY_KEY = 'sales_history';
-const PHOTOS_KEY = 'article_photos';
 
 // Platform-specific storage helper using AsyncStorage
 const storage = {
@@ -110,9 +104,7 @@ export default function HomeScreen() {
   const [salesHistory, setSalesHistory] = useState<any>({});
   const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set());
   const [groupedArticles, setGroupedArticles] = useState<ArticleGroup[]>([]);
-  const [articlePhotos, setArticlePhotos] = useState<{[key: string]: string}>({});
-  const [photoModalVisible, setPhotoModalVisible] = useState(false);
-  const [selectedPhotoArticle, setSelectedPhotoArticle] = useState<Article | null>(null);
+
 
   useEffect(() => {
     loadLocalArticles();
@@ -120,7 +112,6 @@ export default function HomeScreen() {
     loadRecentArticles();
     loadSavedSearches();
     loadSalesHistory();
-    loadArticlePhotos();
   }, []);
 
   // Reload filters when screen comes into focus
@@ -244,127 +235,6 @@ export default function HomeScreen() {
     } catch (error) {
       console.error('Error loading sales history:', error);
     }
-  };
-
-  const loadArticlePhotos = async () => {
-    try {
-      const stored = await storage.getItem(PHOTOS_KEY);
-      if (stored) {
-        setArticlePhotos(JSON.parse(stored));
-      }
-    } catch (error) {
-      console.error('Error loading article photos:', error);
-    }
-  };
-
-  const takePhoto = async (article: Article) => {
-    try {
-      const { status } = await ImagePicker.requestCameraPermissionsAsync();
-      if (status !== 'granted') {
-        Alert.alert('Permission needed', 'Camera permission is required to take photos');
-        return;
-      }
-
-      const result = await ImagePicker.launchCameraAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: true,
-        aspect: [4, 3],
-        quality: 0.8,
-      });
-
-      if (!result.canceled && result.assets[0]) {
-        const photoUri = result.assets[0].uri;
-        
-        // Save photo to permanent storage
-        const fileName = `article_photo_${article.id}_${Date.now()}.jpg`;
-        const permanentUri = `${FileSystem.documentDirectory}${fileName}`;
-        
-        await FileSystem.copyAsync({
-          from: photoUri,
-          to: permanentUri,
-        });
-
-        // Update photos state and storage
-        const newPhotos = { ...articlePhotos, [article.id]: permanentUri };
-        setArticlePhotos(newPhotos);
-        await storage.setItem(PHOTOS_KEY, JSON.stringify(newPhotos));
-        
-        Alert.alert('Success', 'Photo saved successfully!');
-      }
-    } catch (error) {
-      console.error('Error taking photo:', error);
-      Alert.alert('Error', 'Failed to take photo');
-    }
-  };
-
-  const viewPhoto = (article: Article) => {
-    setSelectedPhotoArticle(article);
-    setPhotoModalVisible(true);
-  };
-
-  const sharePhotoWithSummary = async (article: Article) => {
-    try {
-      const photoUri = articlePhotos[article.id];
-      if (!photoUri) return;
-
-      const summary = `Article Summary:\n` +
-        `Name: ${article.articleName || 'N/A'}\n` +
-        `Code: ${article.articleCode || 'N/A'}\n` +
-        `Composition: ${article.composition || 'N/A'}\n` +
-        `Weight: ${article.weightGSM || 'N/A'} GSM\n` +
-        `Width: ${article.widthCM || 'N/A'} CM`;
-
-      if (Platform.OS === 'web') {
-        Alert.alert('Article Info', summary);
-        return;
-      }
-
-      // Check if sharing is available
-      const isAvailable = await Sharing.isAvailableAsync();
-      if (!isAvailable) {
-        Alert.alert('Sharing not available', summary);
-        return;
-      }
-
-      await Sharing.shareAsync(photoUri, {
-        mimeType: 'image/jpeg',
-        dialogTitle: `Share ${article.articleName || 'Article'} Photo`,
-        UTI: 'public.jpeg',
-      });
-    } catch (error) {
-      console.error('Error sharing photo:', error);
-      Alert.alert('Error', 'Failed to share photo');
-    }
-  };
-
-  const deletePhoto = async (articleId: string) => {
-    Alert.alert(
-      'Delete Photo',
-      'Are you sure you want to delete this photo?',
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Delete',
-          style: 'destructive',
-          onPress: async () => {
-            try {
-              const photoUri = articlePhotos[articleId];
-              if (photoUri) {
-                await FileSystem.deleteAsync(photoUri, { idempotent: true });
-              }
-              const newPhotos = { ...articlePhotos };
-              delete newPhotos[articleId];
-              setArticlePhotos(newPhotos);
-              await storage.setItem(PHOTOS_KEY, JSON.stringify(newPhotos));
-              setPhotoModalVisible(false);
-              Alert.alert('Success', 'Photo deleted');
-            } catch (error) {
-              console.error('Error deleting photo:', error);
-            }
-          },
-        },
-      ]
-    );
   };
 
   const getTotalSalesForArticle = (articleId: string) => {
@@ -903,22 +773,6 @@ export default function HomeScreen() {
               </Text>
             )}
           </View>
-          
-          {/* Photo Icon / Thumbnail - Bottom Right */}
-          <View style={styles.photoContainer}>
-            {articlePhotos[mainArticle.id] ? (
-              <TouchableOpacity onPress={() => viewPhoto(mainArticle)} style={styles.photoThumbnailBtn}>
-                <Image 
-                  source={{ uri: articlePhotos[mainArticle.id] }} 
-                  style={styles.photoThumbnail}
-                />
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity onPress={() => takePhoto(mainArticle)} style={styles.cameraBtn}>
-                <Ionicons name="camera-outline" size={20} color={theme.textTertiary} />
-              </TouchableOpacity>
-            )}
-          </View>
         </TouchableOpacity>
 
         {/* Expanded Variants List */}
@@ -1088,15 +942,15 @@ export default function HomeScreen() {
           onPress={handleImportCSV}
           disabled={loading}
         >
-          <Text style={styles.primaryButtonText}>Import File</Text>
+          <Text style={styles.primaryButtonText}>IMPORT</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={[styles.actionButton, styles.secondaryButton, { backgroundColor: theme.cardBackground, borderColor: theme.primary }]}
           onPress={() => router.push('/filter')}
         >
-          <Ionicons name="filter" size={20} color={theme.primary} />
-          <Text style={[styles.secondaryButtonText, { color: theme.primary }]}>Filter</Text>
+          
+          <Text style={[styles.secondaryButtonText, { color: theme.primary }]}>FILTER</Text>
           {activeFilters && (
             (activeFilters.seasons?.length > 0 || 
              activeFilters.sections?.length > 0 || 
@@ -1136,8 +990,8 @@ export default function HomeScreen() {
           style={[styles.actionButton, styles.secondaryButton, { backgroundColor: theme.cardBackground, borderColor: theme.primary }]}
           onPress={() => setSortModalVisible(true)}
         >
-          <Ionicons name="swap-vertical" size={20} color={theme.primary} />
-          <Text style={[styles.secondaryButtonText, { color: theme.primary }]}>Sort</Text>
+          
+          <Text style={[styles.secondaryButtonText, { color: theme.primary }]}>SORT</Text>
         </TouchableOpacity>
 
         {articles.length > 0 && (
@@ -1261,80 +1115,6 @@ export default function HomeScreen() {
             ))}
           </View>
         </TouchableOpacity>
-      </Modal>
-
-      {/* Photo Viewer Modal */}
-      <Modal
-        visible={photoModalVisible}
-        animationType="fade"
-        transparent={true}
-        onRequestClose={() => setPhotoModalVisible(false)}
-      >
-        <View style={styles.photoModalOverlay}>
-          <View style={[styles.photoModalContent, { backgroundColor: theme.cardBackground }]}>
-            {/* Header */}
-            <View style={[styles.photoModalHeader, { borderBottomColor: theme.border }]}>
-              <Text style={[styles.photoModalTitle, { color: theme.text }]} numberOfLines={1}>
-                {selectedPhotoArticle?.articleName || 'Photo'}
-              </Text>
-              <TouchableOpacity onPress={() => setPhotoModalVisible(false)}>
-                <Ionicons name="close" size={24} color={theme.text} />
-              </TouchableOpacity>
-            </View>
-            
-            {/* Photo */}
-            {selectedPhotoArticle && articlePhotos[selectedPhotoArticle.id] && (
-              <View style={styles.photoViewContainer}>
-                <Image 
-                  source={{ uri: articlePhotos[selectedPhotoArticle.id] }} 
-                  style={styles.photoFullView}
-                  resizeMode="contain"
-                />
-              </View>
-            )}
-            
-            {/* Article Summary */}
-            {selectedPhotoArticle && (
-              <View style={[styles.photoSummary, { backgroundColor: theme.background }]}>
-                <Text style={[styles.photoSummaryTitle, { color: theme.primary }]}>Article Summary</Text>
-                <Text style={[styles.photoSummaryText, { color: theme.text }]}>
-                  Name: {selectedPhotoArticle.articleName || 'N/A'}
-                </Text>
-                <Text style={[styles.photoSummaryText, { color: theme.text }]}>
-                  Code: {selectedPhotoArticle.articleCode || 'N/A'}
-                </Text>
-                <Text style={[styles.photoSummaryText, { color: theme.text }]}>
-                  Composition: {selectedPhotoArticle.composition || 'N/A'}
-                </Text>
-                <Text style={[styles.photoSummaryText, { color: theme.text }]}>
-                  Weight: {selectedPhotoArticle.weightGSM || 'N/A'} GSM
-                </Text>
-                <Text style={[styles.photoSummaryText, { color: theme.text }]}>
-                  Width: {selectedPhotoArticle.widthCM || 'N/A'} CM
-                </Text>
-              </View>
-            )}
-            
-            {/* Action Buttons */}
-            <View style={styles.photoModalActions}>
-              <TouchableOpacity 
-                style={[styles.photoActionBtn, { backgroundColor: theme.primary }]}
-                onPress={() => selectedPhotoArticle && sharePhotoWithSummary(selectedPhotoArticle)}
-              >
-                <Ionicons name="share-outline" size={20} color="#fff" />
-                <Text style={styles.photoActionBtnText}>Share</Text>
-              </TouchableOpacity>
-              
-              <TouchableOpacity 
-                style={[styles.photoActionBtn, { backgroundColor: theme.error }]}
-                onPress={() => selectedPhotoArticle && deletePhoto(selectedPhotoArticle.id)}
-              >
-                <Ionicons name="trash-outline" size={20} color="#fff" />
-                <Text style={styles.photoActionBtnText}>Delete</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
       </Modal>
     </SafeAreaView>
   );
@@ -1497,10 +1277,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     textAlign: 'center',
     width: '100%',
-  },
-  clearButton: {
-    flex: 0,
-    paddingHorizontal: 12,
   },
   savedSearchesContainer: {
     backgroundColor: '#fff',
@@ -1842,6 +1618,17 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     lineHeight: 20,
   },
+  pasteTextInput: {
+    flex: 1,
+    backgroundColor: '#f5f5f5',
+    borderWidth: 1,
+    borderColor: '#e0e0e0',
+    borderRadius: 8,
+    padding: 12,
+    fontSize: 12,
+    fontFamily: Platform.OS === 'ios' ? 'Courier' : 'monospace',
+    color: '#333',
+  },
   pasteModalFooter: {
     flexDirection: 'row',
     padding: 16,
@@ -1858,94 +1645,6 @@ const styles = StyleSheet.create({
     borderColor: '#e0e0e0',
   },
   pasteModalBtnText: {
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  // Photo feature styles
-  photoContainer: {
-    position: 'absolute',
-    bottom: 8,
-    right: 8,
-  },
-  cameraBtn: {
-    padding: 6,
-    borderRadius: 6,
-    backgroundColor: 'rgba(0,0,0,0.05)',
-  },
-  photoThumbnailBtn: {
-    borderRadius: 6,
-    overflow: 'hidden',
-  },
-  photoThumbnail: {
-    width: 36,
-    height: 36,
-    borderRadius: 6,
-  },
-  photoModalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.8)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-  },
-  photoModalContent: {
-    width: '100%',
-    maxHeight: '90%',
-    borderRadius: 16,
-    overflow: 'hidden',
-  },
-  photoModalHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 16,
-    borderBottomWidth: 1,
-  },
-  photoModalTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    flex: 1,
-    marginRight: 16,
-  },
-  photoViewContainer: {
-    width: '100%',
-    height: 300,
-    backgroundColor: '#000',
-  },
-  photoFullView: {
-    width: '100%',
-    height: '100%',
-  },
-  photoSummary: {
-    padding: 16,
-    margin: 12,
-    borderRadius: 10,
-  },
-  photoSummaryTitle: {
-    fontSize: 14,
-    fontWeight: '700',
-    marginBottom: 8,
-  },
-  photoSummaryText: {
-    fontSize: 13,
-    marginBottom: 4,
-  },
-  photoModalActions: {
-    flexDirection: 'row',
-    padding: 16,
-    gap: 12,
-  },
-  photoActionBtn: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 12,
-    borderRadius: 10,
-    gap: 8,
-  },
-  photoActionBtnText: {
-    color: '#fff',
     fontSize: 16,
     fontWeight: '600',
   },
