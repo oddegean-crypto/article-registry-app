@@ -7,7 +7,7 @@
     "icon": "./assets/icon.png",
     "scheme": "article-registry",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
+    "newArchEnabled": false,
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
@@ -46,23 +46,28 @@
     },
     "plugins": [
   "expo-router",
-  "expo-image-picker",
-      [
-        "expo-splash-screen",
-        {
-          "image": "./assets/icon.png",
-          "imageWidth": 200,
-          "resizeMode": "contain",
-          "backgroundColor": "#FFFFFF"
-        }
-      ],
-      "expo-secure-store",
-      "expo-mail-composer",
-      "expo-font",
-      "expo-web-browser",
-      "expo-document-picker",
-      "./plugins/withAndroidDocumentPicker.js"
-    ],
+  [
+    "expo-image-picker",
+    {
+      "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera to take photos of articles."
+    }
+  ],
+  [
+    "expo-splash-screen",
+    {
+      "image": "./assets/icon.png",
+      "imageWidth": 200,
+      "resizeMode": "contain",
+      "backgroundColor": "#FFFFFF"
+    }
+  ],
+  "expo-secure-store",
+  "expo-mail-composer",
+  "expo-font",
+  "expo-web-browser",
+  "expo-document-picker",
+  "./plugins/withAndroidDocumentPicker.js"
+],
     "experiments": {
       "typedRoutes": true
     },
