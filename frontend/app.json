@@ -39,3 +39,39 @@
         }
       ]
     },
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./assets/images/favicon.png"
+    },
+    "plugins": [
+  "expo-router",
+  "expo-image-picker",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/icon.png",
+          "imageWidth": 200,
+          "resizeMode": "contain",
+          "backgroundColor": "#FFFFFF"
+        }
+      ],
+      "expo-secure-store",
+      "expo-mail-composer",
+      "expo-font",
+      "expo-web-browser",
+      "expo-document-picker",
+      "./plugins/withAndroidDocumentPicker.js"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "f21030a5-43d0-497b-8ce6-0a8e89099a17"
+      }
+    },
+    "owner": "aisacon"
+  }
+}
