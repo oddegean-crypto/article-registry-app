@@ -15,6 +15,7 @@ import {
   Image,
   Dimensions,
 } from 'react-native';
+import * as ImageManipulator from 'expo-image-manipulator';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import * as DocumentPicker from 'expo-document-picker';
 import * as ImagePicker from 'expo-image-picker';
@@ -270,40 +271,35 @@ export default function HomeScreen() {
     }
   };
 
-    Veya şu şekilde yapın - takePhoto fonksiyonunun tamamını bulun ve silin, sonra şu kodu yapıştırın:
-
   const takePhoto = async (article: Article) => {
     try {
-      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-      if (status !== 'granted') {
-        Alert.alert('Permission needed', 'Gallery permission is required');
-        return;
-      }
-
-      const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: true,
-        aspect: [4, 3],
-        quality: 0.7,
+      const result = await DocumentPicker.getDocumentAsync({
+        type: 'image/*',
+        copyToCacheDirectory: true,
       });
 
-      console.log('Image picker result:', JSON.stringify(result));
-
       if (!result.canceled && result.assets && result.assets.length > 0) {
-        const photoUri = result.assets[0].uri;
-        console.log('Photo URI:', photoUri);
+        const originalUri = result.assets[0].uri;
+        
+        // Crop/resize the image
+        const manipResult = await ImageManipulator.manipulateAsync(
+          originalUri,
+          [{ resize: { width: 800 } }],
+          { compress: 0.8, format: ImageManipulator.SaveFormat.JPEG }
+        );
+        
+        const photoUri = manipResult.uri;
+        console.log('Processed photo URI:', photoUri);
         
         const newPhotos = { ...articlePhotos, [article.id]: photoUri };
         setArticlePhotos(newPhotos);
         await storage.setItem(PHOTOS_KEY, JSON.stringify(newPhotos));
         
         Alert.alert('Success', 'Photo saved!');
-      } else {
-        console.log('Image selection cancelled or no assets');
       }
     } catch (error: any) {
-      console.error('Error:', error);
-      Alert.alert('Error', error.message || 'Failed');
+      console.error('Error selecting photo:', error);
+      Alert.alert('Error', error.message || 'Failed to select photo');
     }
   };
 
@@ -317,30 +313,44 @@ export default function HomeScreen() {
       const photoUri = articlePhotos[article.id];
       if (!photoUri) return;
 
-      const summary = `Article Summary:\n` +
-        `Name: ${article.articleName || 'N/A'}\n` +
-        `Code: ${article.articleCode || 'N/A'}\n` +
-        `Composition: ${article.composition || 'N/A'}\n` +
-        `Weight: ${article.weightGSM || 'N/A'} GSM\n` +
-        `Width: ${article.widthCM || 'N/A'} CM`;
-
       if (Platform.OS === 'web') {
-        Alert.alert('Article Info', summary);
+        Alert.alert('Info', 'Sharing is not available on web');
         return;
       }
 
-      // Check if sharing is available
       const isAvailable = await Sharing.isAvailableAsync();
       if (!isAvailable) {
-        Alert.alert('Sharing not available', summary);
+        Alert.alert('Error', 'Sharing is not available on this device');
         return;
       }
 
+      // Create summary text
+      const summary = 
+        `📦 ARTICLE DETAILS\n` +
+        `━━━━━━━━━━━━━━━━━━\n` +
+        `📌 Name: ${article.articleName || 'N/A'}\n` +
+        `🔢 Code: ${article.articleCode || 'N/A'}\n` +
+        `🎨 Color: ${article.colorName || 'N/A'} (${article.colorCode || 'N/A'})\n` +
+        `🧵 Composition: ${article.composition || 'N/A'}\n` +
+        `⚖️ Weight: ${article.weightGSM || 'N/A'} GSM\n` +
+        `📏 Width: ${article.widthCM || 'N/A'} CM\n` +
+        `💰 Price: ${article.basePriceEUR || 'N/A'} EUR\n` +
+        `🏭 Supplier: ${article.supplier || 'N/A'}\n` +
+        `━━━━━━━━━━━━━━━━━━`;
+
+      // Copy summary to clipboard first
+      if (Platform.OS !== 'web') {
+        const Clipboard = require('expo-clipboard');
+        await Clipboard.setStringAsync(summary);
+      }
+
+      // Share the photo
       await Sharing.shareAsync(photoUri, {
         mimeType: 'image/jpeg',
         dialogTitle: `Share ${article.articleName || 'Article'} Photo`,
-        UTI: 'public.jpeg',
       });
+
+      Alert.alert('Info', 'Article details copied to clipboard. You can paste it along with the photo.');
     } catch (error) {
       console.error('Error sharing photo:', error);
       Alert.alert('Error', 'Failed to share photo');
@@ -1302,22 +1312,39 @@ export default function HomeScreen() {
             {/* Article Summary */}
             {selectedPhotoArticle && (
               <View style={[styles.photoSummary, { backgroundColor: theme.background }]}>
-                <Text style={[styles.photoSummaryTitle, { color: theme.primary }]}>Article Summary</Text>
-                <Text style={[styles.photoSummaryText, { color: theme.text }]}>
-                  Name: {selectedPhotoArticle.articleName || 'N/A'}
-                </Text>
-                <Text style={[styles.photoSummaryText, { color: theme.text }]}>
-                  Code: {selectedPhotoArticle.articleCode || 'N/A'}
-                </Text>
-                <Text style={[styles.photoSummaryText, { color: theme.text }]}>
-                  Composition: {selectedPhotoArticle.composition || 'N/A'}
-                </Text>
-                <Text style={[styles.photoSummaryText, { color: theme.text }]}>
-                  Weight: {selectedPhotoArticle.weightGSM || 'N/A'} GSM
-                </Text>
-                <Text style={[styles.photoSummaryText, { color: theme.text }]}>
-                  Width: {selectedPhotoArticle.widthCM || 'N/A'} CM
-                </Text>
+                <Text style={[styles.photoSummaryTitle, { color: theme.primary }]}>📋 Article Details</Text>
+                <View style={styles.summaryRow}>
+                  <Text style={[styles.summaryLabel, { color: theme.textSecondary }]}>Name:</Text>
+                  <Text style={[styles.summaryValue, { color: theme.text }]}>{selectedPhotoArticle.articleName || 'N/A'}</Text>
+                </View>
+                <View style={styles.summaryRow}>
+                  <Text style={[styles.summaryLabel, { color: theme.textSecondary }]}>Code:</Text>
+                  <Text style={[styles.summaryValue, { color: theme.text }]}>{selectedPhotoArticle.articleCode || 'N/A'}</Text>
+                </View>
+                <View style={styles.summaryRow}>
+                  <Text style={[styles.summaryLabel, { color: theme.textSecondary }]}>Color:</Text>
+                  <Text style={[styles.summaryValue, { color: theme.text }]}>{selectedPhotoArticle.colorName || 'N/A'} ({selectedPhotoArticle.colorCode || 'N/A'})</Text>
+                </View>
+                <View style={styles.summaryRow}>
+                  <Text style={[styles.summaryLabel, { color: theme.textSecondary }]}>Composition:</Text>
+                  <Text style={[styles.summaryValue, { color: theme.text }]}>{selectedPhotoArticle.composition || 'N/A'}</Text>
+                </View>
+                <View style={styles.summaryRow}>
+                  <Text style={[styles.summaryLabel, { color: theme.textSecondary }]}>Weight:</Text>
+                  <Text style={[styles.summaryValue, { color: theme.text }]}>{selectedPhotoArticle.weightGSM || 'N/A'} GSM</Text>
+                </View>
+                <View style={styles.summaryRow}>
+                  <Text style={[styles.summaryLabel, { color: theme.textSecondary }]}>Width:</Text>
+                  <Text style={[styles.summaryValue, { color: theme.text }]}>{selectedPhotoArticle.widthCM || 'N/A'} CM</Text>
+                </View>
+                <View style={styles.summaryRow}>
+                  <Text style={[styles.summaryLabel, { color: theme.textSecondary }]}>Price:</Text>
+                  <Text style={[styles.summaryValue, { color: theme.text }]}>{selectedPhotoArticle.basePriceEUR || 'N/A'} EUR</Text>
+                </View>
+                <View style={styles.summaryRow}>
+                  <Text style={[styles.summaryLabel, { color: theme.textSecondary }]}>Supplier:</Text>
+                  <Text style={[styles.summaryValue, { color: theme.text }]}>{selectedPhotoArticle.supplier || 'N/A'}</Text>
+                </View>
               </View>
             )}
             
@@ -1954,5 +1981,18 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontWeight: '600',
+  },
+   summaryRow: {
+    flexDirection: 'row',
+    paddingVertical: 4,
+  },
+  summaryLabel: {
+    fontSize: 13,
+    fontWeight: '600',
+    width: 100,
+  },
+  summaryValue: {
+    fontSize: 13,
+    flex: 1,
   },
 });
