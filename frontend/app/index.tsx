@@ -259,29 +259,57 @@ export default function HomeScreen() {
 
   const takePhoto = async (article: Article) => {
     try {
-      const { status } = await ImagePicker.requestCameraPermissionsAsync();
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
       if (status !== 'granted') {
-        Alert.alert('Permission needed', 'Camera permission is required to take photos');
+        Alert.alert('Permission needed', 'Gallery permission is required to select photos');
         return;
       }
 
-      const result = await ImagePicker.launchCameraAsync({
-        allowsEditing: true,
-        quality: 0.7,
-      });
-
-      if (!result.canceled && result.assets && result.assets.length > 0) {
-        const photoUri = result.assets[0].uri;
-        
-        const newPhotos = { ...articlePhotos, [article.id]: photoUri };
-        setArticlePhotos(newPhotos);
-        await storage.setItem(PHOTOS_KEY, JSON.stringify(newPhotos));
-        
-        Alert.alert('Success', 'Photo saved!');
-      }
+      Alert.alert(
+        'Add Photo',
+        'Choose an option',
+        [
+          {
+            text: 'Take Photo',
+            onPress: async () => {
+              const cameraStatus = await ImagePicker.requestCameraPermissionsAsync();
+              if (cameraStatus.status !== 'granted') {
+                Alert.alert('Permission needed', 'Camera permission is required');
+                return;
+              }
+              try {
+                const result = await ImagePicker.launchCameraAsync({
+                  allowsEditing: true,
+                  quality: 0.7,
+                });
+                if (!result.canceled && result.assets && result.assets.length > 0) {
+                  saveArticlePhoto(article, result.assets[0].uri);
+                }
+              } catch (e) {
+                // Camera failed, fallback to gallery
+                Alert.alert('Camera Error', 'Please use gallery instead. Take a photo with your camera app first, then select it from gallery.');
+              }
+            },
+          },
+          {
+            text: 'Choose from Gallery',
+            onPress: async () => {
+              const result = await ImagePicker.launchImageLibraryAsync({
+                mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                allowsEditing: true,
+                quality: 0.7,
+              });
+              if (!result.canceled && result.assets && result.assets.length > 0) {
+                saveArticlePhoto(article, result.assets[0].uri);
+              }
+            },
+          },
+          { text: 'Cancel', style: 'cancel' },
+        ]
+      );
     } catch (error: any) {
-      console.error('Error taking photo:', error);
-      Alert.alert('Error', error.message || 'Failed to take photo');
+      console.error('Error with photo:', error);
+      Alert.alert('Error', error.message || 'Failed to access photos');
     }
   };
 
